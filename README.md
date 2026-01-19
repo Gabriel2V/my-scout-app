@@ -11,8 +11,7 @@ Scadenza Consegna: 15 Febbraio 2026
 
 ScoutMaster 2026 è una Single Page Application (SPA) progettata per facilitare il lavoro di scouting calcistico in vista dei prossimi Mondiali. L'applicazione permette di esplorare un database dinamico di calciatori, visualizzarne le statistiche dettaglie e filtrare le informazioni in tempo reale.
 
-L'applicazione è accessibile online al seguente indirizzo:  
-[Inserisci qui la URI del tuo progetto, es: https://username.github.io/my-scout-app/]
+L'applicazione è accessibile online al seguente indirizzo:  https://github.com/Gabriel2V/my-scout-app.git
 
 ## Stack Tecnologico
 
@@ -53,7 +52,7 @@ Per eseguire il progetto sul proprio computer, seguire questi passaggi:
 ### 1. Clonare il repository
 
 ```bash
-git clone https://github.com/tuo-username/my-scout-app.git
+git clone https://github.com/Gabriel2V/my-scout-app.git
 cd my-scout-app
 ```
 
