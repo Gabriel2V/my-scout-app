@@ -1,0 +1,64 @@
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  
+  /* NUOVO: Impostazioni per rendere la card più quadrata e controllata */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente il contenuto */
+  align-items: center;     /* Centra orizzontalmente */
+  aspect-ratio: 1 / 1;     /* Forza un rapporto d'aspetto quadrato */
+  min-height: 200px;       /* Altezza minima per evitare che siano troppo piccole */
+  position: relative;      /* Per eventuali badge o posizionamenti assoluti */
+  overflow: hidden;        /* Assicura che nulla esca dai bordi arrotondati */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Movimento verso l'alto più fluido di scale */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  border-bottom: 4px solid #ff6b35; /* Accento arancione */
+}
+
+/* Gestione Immagini (Bandiere/Loghi) */
+.card img {
+  width: 80px;            /* Dimensione fissa per uniformità */
+  height: 80px;           /* Dimensione fissa per uniformità */
+  object-fit: contain;    /* Mantiene le proporzioni originali senza tagliare */
+  margin-bottom: 1rem;    /* Spazio tra immagine e testo */
+  transition: transform 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.1);  /* Leggero zoom dell'immagine all'hover */
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #003366;
+  font-weight: 600;
+  /* Gestione testo lungo */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Media query per schermi piccoli */
+@media (max-width: 480px) {
+  .card {
+    min-height: 150px;
+    padding: 1rem;
+  }
+  
+  .card img {
+    width: 60px;
+    height: 60px;
+  }
+}

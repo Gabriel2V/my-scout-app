@@ -3,28 +3,79 @@
  * Visualizza i dettagli completi del singolo calciatore.
  * Utilizza useParams per recuperare l'ID dall'URL
  */
-import React from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
-import { usePlayersViewModel } from '../viewmodels/usePlayersViewModel';
-import styles from './components/PlayerDetailView.module.css'; // CSS Modules 
+import React, { useState, useEffect } from 'react';
+import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
+import PlayerService from '../services/PlayerService';
+import { Player } from '../models/Player';
+import styles from '../styles/PlayerDetailView.module.css';
 
-export function PlayerDetailView() {
-  const { id } = useParams(); // Recupera l'ID dalla rotta dinamica 
-  const { players, loading } = usePlayersViewModel();
+export default function PlayerDetailView() {
+  const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Tentativo di recupero dallo state (navigazione)
+  const initialPlayer = location.state?.player || null;
+
+  const [player, setPlayer] = useState(initialPlayer);
+  const [loading, setLoading] = useState(!initialPlayer);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Se abbiamo il player dallo state, siamo a posto.
+    if (player) return;
+
+    // Altrimenti (refresh pagina o link diretto), scarichiamo.
+    const loadSinglePlayer = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        console.log("Fetching player details form API...");
+        const data = await PlayerService.getPlayerById(id);
+        
+        if (data && data.length > 0) {
+          const newPlayer = new Player(data[0]);
+          setPlayer(newPlayer);
+        } else {
+          setError("Giocatore non trovato o API limitata.");
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Errore di connessione o limite API raggiunto.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSinglePlayer();
+  }, [id]); // Rimosso 'player' dalle dipendenze per evitare loop
 
   if (loading) return <div className={styles.loading}>Caricamento dettagli...</div>;
 
-  // Ricerca del calciatore nel dataset tramite ID
-  const player = players.find(p => p.id === parseInt(id));
-
-  // Validazione: se il calciatore non esiste, reindirizza alla home (404) 
-  if (!player) {
-    return <Navigate to="/" replace />;
+  if (error) {
+    return (
+      <div className={styles.container} style={{ textAlign: 'center', color: 'white' }}>
+        <h2>⚠️ {error}</h2>
+        <p>Prova a tornare indietro o ricaricare tra un minuto.</p>
+        <button onClick={() => navigate(-1)} className={styles.backBtn} style={{background:'none', border:'none', cursor:'pointer', color: '#00ff88'}}>
+          Torna indietro
+        </button>
+      </div>
+    );
   }
+
+  // Se non c'è loading, non c'è errore, ma player è null, mostriamo errore generico invece di redirect
+  if (!player) return <div className={styles.loading}>Dati giocatore non disponibili.</div>;
 
   return (
     <div className={styles.container}>
-      <Link to="/" className={styles.backBtn}>← Torna alla Lista</Link>
+      <button 
+        onClick={() => navigate(-1)} 
+        className={styles.backBtn}
+        style={{background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1rem', padding: 0, color: '#00ff88', fontFamily:'inherit'}}
+      >
+        ← Torna indietro
+      </button>
       
       <div className={styles.detailCard}>
         <div className={styles.header}>
