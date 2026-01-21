@@ -2,74 +2,97 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f5f5f5;
 }
 
 .header {
   position: sticky;
   top: 0;
-  background: white;
+  background: rgba(255, 255, 255, 0.95); /* Effetto vetro leggero */
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   z-index: 1000;
-  gap: 2rem;
 }
 
 .logo {
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #003366;
-  white-space: nowrap;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.05em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+/* Barra di ricerca moderna */
 .searchBar {
   flex: 1;
-  max-width: 500px;
+  max-width: 400px;
+  margin: 0 2rem;
 }
 
 .searchBar input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 25px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  outline: none;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--bg-body); /* Grigio chiaro interno */
+  border: 1px solid transparent;
+  border-radius: 9999px; /* Pill shape */
+  font-size: 0.95rem;
+  color: var(--primary);
+  transition: all 0.2s ease;
 }
 
 .searchBar input:focus {
-  border-color: #003366;
-  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+  background-color: white;
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1); /* Glow verde */
 }
 
 .content {
   flex: 1;
+  max-width: 1280px; /* Contenitore centrato largo */
+  width: 100%;
+  margin: 0 auto;
   padding: 2rem;
-  padding-bottom: 100px;
 }
 
 .footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #2c3e50;
-  color: white;
-  text-align: center;
-  padding: 1.5rem;
+  background-color: white;
+  border-top: 1px solid var(--border-color);
+  color: var(--primary-light);
+  padding: 1rem 2rem;
   font-size: 0.875rem;
+  margin-top: auto;
+  
+  /* NUOVO: Flexbox per separare logo e testo */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-@media (max-width: 768px) {
-  .header {
+.footerLogo {
+  height: 50px; /* Dimensione fissa per il logo */
+  width: auto;
+  object-fit: contain;
+}
+
+.footerText {
+  text-align: right;
+}
+
+/* Adattamento mobile */
+@media (max-width: 600px) {
+  .footer {
     flex-direction: column;
     gap: 1rem;
+    text-align: center;
   }
-  
-  .searchBar {
-    max-width: 100%;
+  .footerText {
+    text-align: center;
   }
 }

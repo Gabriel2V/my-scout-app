@@ -1,56 +1,65 @@
 .card {
-  background: white;
-  border-radius: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
   padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-color); /* Qui manteniamo il bordo neutro o accent */
 }
 
 .photo {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #003366;
+  border: 3px solid white; /* Bordo bianco interno */
+  box-shadow: 0 0 0 1px var(--border-color); /* Bordo sottile esterno */
+  margin-bottom: 1rem;
+  background-color: var(--bg-body);
 }
 
 .card h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #333;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
 }
 
 .card p {
-  margin: 0;
-  color: #666;
   font-size: 0.875rem;
+  color: var(--primary-light);
+  font-weight: 500;
+  margin-bottom: 1rem;
+  background-color: var(--bg-body);
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
 }
 
 .btn {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.6rem 1.5rem;
-  background-color: #003366;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  color: var(--primary);
   font-weight: 600;
+  text-decoration: none;
   font-size: 0.875rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .btn:hover {
-  background-color: #ff6b35;
-  transform: scale(1.05);
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
 }

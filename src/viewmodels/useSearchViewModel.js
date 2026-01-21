@@ -1,6 +1,6 @@
 /**
  * VIEWMODEL: useSearchViewModel.js
- * Gestisce la ricerca globale di giocatori e squadre con strategia Cache-First
+ * Gestisce la ricerca globale di giocatori, squadre e nazioni con strategia Cache-First
  */
 import { useState, useEffect } from 'react';
 import PlayerService from '../services/PlayerService';
@@ -9,106 +9,117 @@ import { Player } from '../models/Player';
 export function useSearchViewModel(searchTerm) {
   const [players, setPlayers] = useState([]);
   const [teams, setTeams] = useState([]);
+  const [nations, setNations] = useState([]); 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
-      // Se il termine di ricerca è troppo corto, pulisci i risultati e esci
       if (!searchTerm || searchTerm.trim().length < 3) {
         setPlayers([]);
         setTeams([]);
+        setNations([]);
         return;
       }
 
       setLoading(true);
 
-      // --- 1. RICERCA LOCALE (CACHE) ---
-      let localPlayers = [];
       try {
-        // Scansioniamo tutte le chiavi del localStorage
+        // --- 1. RICERCA NAZIONI (con cache dedicata) ---
+        let allNations = [];
+        const nationsCache = localStorage.getItem('all_nations');
+        
+        if (nationsCache) {
+          // Usa cache se disponibile
+          allNations = JSON.parse(nationsCache);
+        } else {
+          // Altrimenti carica e salva in cache
+          allNations = await PlayerService.getCountries();
+          localStorage.setItem('all_nations', JSON.stringify(allNations));
+        }
+        
+        // Filtra nazioni localmente
+        const filteredNations = allNations.filter(n => 
+          n.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setNations(filteredNations);
+
+        // --- 2. RICERCA GIOCATORI (cache locale) ---
+        let localPlayers = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          // Cerchiamo solo nelle chiavi che contengono giocatori (salvate precedentemente)
-          if (key.startsWith('players_')) {
+          if (key && key.startsWith('players_')) {
             try {
               const cachedData = JSON.parse(localStorage.getItem(key));
               if (Array.isArray(cachedData)) {
-                // Filtriamo i giocatori che corrispondono alla ricerca
                 const matches = cachedData.filter(p => 
+                  p.player && p.player.name && 
                   p.player.name.toLowerCase().includes(searchTerm.toLowerCase())
                 );
                 localPlayers = [...localPlayers, ...matches];
               }
-            } catch (parseError) {
-              console.warn(`Errore parsing cache per chiave: ${key}`, parseError);
+            } catch (e) {
+              console.warn(`Errore parsing cache ${key}:`, e);
             }
           }
         }
-      } catch (e) {
-        console.warn("Errore generale lettura cache", e);
-      }
+        
+        // Rimuovi duplicati per ID
+        const uniqueLocalPlayers = Array.from(
+          new Map(localPlayers.map(item => [item.player.id, item])).values()
+        );
+        setPlayers(uniqueLocalPlayers.map(item => new Player(item)));
 
-      // Rimuoviamo duplicati locali (basandoci sull'ID del giocatore)
-      const uniqueLocalPlayers = Array.from(
-        new Map(localPlayers.map(item => [item.player.id, item])).values()
-      );
-
-      // Impostiamo subito i dati locali per dare un feedback immediato
-      setPlayers(uniqueLocalPlayers.map(item => new Player(item)));
-      
-      // Estraiamo squadre dalla cache giocatori (trucco per avere squadre offline)
-      const localTeamsNames = [...new Set(uniqueLocalPlayers.map(p => p.statistics[0].team.name))];
-      const localTeamsObj = localTeamsNames.map((name, idx) => ({
-         id: `local-team-${idx}`,
-         name: name,
-         logo: uniqueLocalPlayers.find(p => p.statistics[0].team.name === name)?.statistics[0].team.logo,
-         country: 'Cache'
-      }));
-      setTeams(localTeamsObj);
-
-      // --- 2. RICERCA API (FALLBACK SICURO) ---
-      try {
-        // Eseguiamo le chiamate API in parallelo
-        // Usiamo .catch() su ogni promessa per evitare che il fallimento di una blocchi tutto
-        const [apiPlayersData, apiTeamsData] = await Promise.all([
+        // --- 3. RICERCA API (solo se ricerca > 3 caratteri per limitare chiamate) ---
+        if (searchTerm.trim().length >= 3) {
+          const [apiPlayersData, apiTeamsData] = await Promise.all([
             PlayerService.searchPlayers(searchTerm).catch(err => {
-                console.warn("API Search Players fallita:", err);
-                return []; 
+              console.warn("Errore ricerca API players:", err);
+              return [];
             }),
             PlayerService.searchTeams(searchTerm).catch(err => {
-                console.warn("API Search Teams fallita:", err);
-                return [];
+              console.warn("Errore ricerca API teams:", err);
+              return [];
             })
-        ]);
+          ]);
 
-        // Merge Giocatori: Uniamo API con Cache
-        if (apiPlayersData && apiPlayersData.length > 0) {
+          // Aggiungi giocatori API solo se non già presenti
+          if (apiPlayersData.length > 0) {
             const existingIds = new Set(uniqueLocalPlayers.map(p => p.player.id));
-            const newApiPlayers = apiPlayersData.filter(p => !existingIds.has(p.player.id));
-            const combinedRaw = [...uniqueLocalPlayers, ...newApiPlayers];
-            setPlayers(combinedRaw.map(item => new Player(item)));
-        }
+            const newApiPlayers = apiPlayersData.filter(p => 
+              p.player && p.player.id && !existingIds.has(p.player.id)
+            );
+            
+            if (newApiPlayers.length > 0) {
+              setPlayers(prev => [
+                ...prev, 
+                ...newApiPlayers.map(item => new Player(item))
+              ]);
+            }
+          }
 
-        // Merge Squadre: Priorità ai dati API se disponibili
-        if (apiTeamsData && apiTeamsData.length > 0) {
-             setTeams(apiTeamsData.map(item => ({
+          // Imposta squadre da API
+          if (apiTeamsData.length > 0) {
+            setTeams(apiTeamsData
+              .filter(item => item.team && item.team.id)
+              .map(item => ({
                 id: item.team.id,
                 name: item.team.name,
                 logo: item.team.logo,
                 country: item.team.country
-            })));
+              }))
+            );
+          }
         }
-      } catch (globalApiError) {
-        console.error("Errore critico durante la ricerca API:", globalApiError);
-        // Non facciamo nulla qui: lo stato è già popolato con i dati della cache
-        // quindi l'utente vedrà comunque qualcosa se disponibile.
+
+      } catch (error) {
+        console.error("Errore critico durante la ricerca:", error);
       } finally {
         setLoading(false);
       }
-    }, 500); // Debounce di 500ms
+    }, 400); // Debounce ridotto a 400ms per ricerca più reattiva
 
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
-  return { players, teams, loading };
+  return { players, teams, nations, loading }; 
 }

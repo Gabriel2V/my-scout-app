@@ -55,7 +55,7 @@ export default function PlayerDetailView() {
   if (error) {
     return (
       <div className={styles.container} style={{ textAlign: 'center', color: 'white' }}>
-        <h2>⚠️ {error}</h2>
+        <h2> {error}</h2>
         <p>Prova a tornare indietro o ricaricare tra un minuto.</p>
         <button onClick={() => navigate(-1)} className={styles.backBtn} style={{background:'none', border:'none', cursor:'pointer', color: '#00ff88'}}>
           Torna indietro

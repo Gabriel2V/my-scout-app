@@ -12,9 +12,6 @@ export function PlayerCard({ player }) {
       <img src={player.photo} alt={player.name} className={styles.photo} />
       <h3>{player.name}</h3>
       <p>Rating: {player.rating}</p>
-      {/* 1. Corretto il link: punta a /giocatori/ invece di /player/
-         2. Aggiunto state={{ player }}: passa i dati senza nuove chiamate
-      */}
       <Link 
         to={`/giocatori/${player.id}`} 
         state={{ player }} 

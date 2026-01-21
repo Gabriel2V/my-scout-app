@@ -1,6 +1,7 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import styles from '../../styles/Layout.module.css';
+import uniLogo from '../../assets/logo_uni.png'; 
 
 export default function MainLayout() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -11,14 +12,11 @@ export default function MainLayout() {
     const value = e.target.value;
     setSearchTerm(value);
     
-    // Logica di navigazione per la ricerca
     if (value.trim().length > 1) {
-      // Se l'utente scrive, andiamo alla pagina dedicata alla ricerca
       if (location.pathname !== '/ricerca') {
         navigate('/ricerca');
       }
     } else if (value.trim() === '' && location.pathname === '/ricerca') {
-      // Se cancella tutto mentre è in ricerca, torna alla home
       navigate('/');
     }
   };
@@ -32,7 +30,6 @@ export default function MainLayout() {
             setSearchTerm('');
             navigate('/');
           }} 
-          style={{cursor: 'pointer'}}
         >
           My Scout App
         </div>
@@ -47,12 +44,18 @@ export default function MainLayout() {
       </header>
       
       <main className={styles.content}>
-        {/* Passiamo il contesto a tutte le pagine figlie */}
         <Outlet context={{ searchTerm, setSearchTerm }} />
       </main>
 
       <footer className={styles.footer}>
-        <p>My Scout App - Autore: Gabriele - 2026</p>
+        {/* LOGO A SINISTRA */}
+        <img src={uniLogo} alt="Logo Università" className={styles.footerLogo} />
+        
+        {/* TESTO A DESTRA */}
+        <div className={styles.footerText}>
+          <p>My Scout App - Progetto Esame: Applicazioni Web</p>
+          <p>Autore: Gabriele Vizzi - Matricola: 933539 - 2026</p>
+        </div>
       </footer>
     </div>
   );
