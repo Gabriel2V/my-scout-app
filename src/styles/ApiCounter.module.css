@@ -1,0 +1,125 @@
+.container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: scale(1.05);
+}
+
+/* --- BADGE COMPATTO --- */
+.badge {
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+/* --- CARD ESPANSA --- */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  min-width: 250px;
+  border-width: 3px;
+  border-style: solid;
+  /* Il colore del bordo è gestito dinamicamente in React */
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.title {
+  margin: 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+/* Progress Bar */
+.progressTrack {
+  background: #e5e7eb;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progressFill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Statistiche */
+.statsContainer {
+  font-size: 0.875rem;
+  color: #666;
+  line-height: 1.8;
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Footer percentuale */
+.percentageRow {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Alert Box */
+.alertBox {
+  margin-top: 12px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Varianti Alert */
+.alertWarning {
+  background: #fef3c7; /* Giallo chiaro */
+  color: #92400e;       /* Marrone */
+}
+
+.alertCritical {
+  background: #fee2e2; /* Rosso chiaro */
+  color: #991b1b;      /* Rosso scuro */
+}
+
+/* Footer Reset info */
+.resetInfo {
+  margin-top: 8px;
+  font-size: 0.7rem;
+  color: #9ca3af;
+  text-align: center;
+}

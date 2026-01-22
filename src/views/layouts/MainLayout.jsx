@@ -2,6 +2,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import styles from '../../styles/Layout.module.css';
 import uniLogo from '../../assets/logo_uni.png'; 
+import ApiCounter from '../components/ApiCounter';
 
 export default function MainLayout() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,6 +58,8 @@ export default function MainLayout() {
           <p>Autore: Gabriele Vizzi - Matricola: 933539 - 2026</p>
         </div>
       </footer>
+      {/* Contatore API floating */}
+      <ApiCounter />
     </div>
   );
 }

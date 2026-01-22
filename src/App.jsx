@@ -11,6 +11,7 @@ import Teams from './views/pages/Teams';
 import Players from './views/pages/Players';
 import SearchResults from './views/pages/SearchResults';
 import PlayerDetailView from './views/PlayerDetailView';
+import ApiDebug from './views/pages/ApiDebug';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           
           <Route path="squadre/:squadraId/giocatori" element={<Players />} />
           <Route path="giocatori/:id" element={<PlayerDetailView />} /> 
+          <Route path="api-debug" element={<ApiDebug />} />
         </Route>
       </Routes>
     </Router>
