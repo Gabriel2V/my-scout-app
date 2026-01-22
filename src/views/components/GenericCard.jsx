@@ -1,3 +1,8 @@
+/**
+ * COMPONENT: GenericCard.jsx
+ * Componente riutilizzabile per visualizzare entità generiche (Nazioni, Squadre, Leghe)
+ * Supporta varianti di stile (es. immagine circolare o quadrata)
+ */
 import React from 'react';
 import styles from '../../styles/Card.module.css';
 

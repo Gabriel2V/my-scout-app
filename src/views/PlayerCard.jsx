@@ -1,7 +1,7 @@
 /**
- * VIEW: PlayerCard.jsx
- * Componente funzionale per la visualizzazione a card del singolo calciatore
- * Riceve i dati tramite Props in sola lettura
+ * COMPONENT: PlayerCard.jsx
+ * Card semplice per la visualizzazione dell'anteprima di un giocatore
+ * Utilizzata nelle griglie di risultati
  */
 import { Link } from 'react-router-dom';
 import styles from '../styles/PlayerCard.module.css';

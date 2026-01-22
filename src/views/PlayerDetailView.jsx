@@ -1,6 +1,7 @@
 /**
  * VIEW: PlayerDetailView.jsx
- * Gestisce visualizzazione giocatore, ritorno alla scheda precedente e scorrimento a destra sinistra tra giocatori
+ * Pagina di dettaglio del singolo calciatore
+ * Mostra statistiche approfondite e gestisce la navigazione "precedente/successivo" mantenendo il contesto della lista di origine
  */
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';

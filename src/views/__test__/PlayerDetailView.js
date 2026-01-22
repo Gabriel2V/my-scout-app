@@ -1,3 +1,8 @@
+/**
+ * TEST: PlayerDetailView.js
+ * Suite di test per la pagina di dettaglio del giocatore
+ * Verifica che lo stato di caricamento iniziale appaia e che, una volta ricevuti i dati dal mock del service, vengano mostrate le informazioni corrette (nome, squadra, statistiche)
+ */
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import PlayerDetailView from '../PlayerDetailView';

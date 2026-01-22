@@ -1,3 +1,8 @@
+/**
+ * PAGE: Home.jsx
+ * Pagina iniziale dell'applicazione (Dashboard)
+ * Offre un accesso rapido alle sezioni principali: Nazioni e Giocatori Mondiali
+ */
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/HomePage.module.css';
 import cardStyles from '../../styles/Card.module.css';

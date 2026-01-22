@@ -1,7 +1,7 @@
 /**
  * MODEL: Player.js
- * Rappresenta la struttura dati del calciatore. 
- * Isola la logica di business e la validazione dei dati grezzi provenienti dall'API.
+ * Classe di dominio che normalizza i dati grezzi provenienti dall'API
+ * Isola la logica di validazione e fornisce metodi helper (es. isTopPlayer)
  */
 export class Player {
   constructor(apiData) {

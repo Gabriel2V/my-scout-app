@@ -1,3 +1,8 @@
+/**
+ * TEST: Nations.test.js
+ * Verifica il comportamento della pagina Nazioni
+ * Controlla che la chiamata API per ottenere le nazioni venga effettuata e che i risultati (bandiere e nomi) siano renderizzati correttamente
+ */
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';

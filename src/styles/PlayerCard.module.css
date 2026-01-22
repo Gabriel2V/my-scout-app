@@ -1,3 +1,7 @@
+/*
+ * STYLES: PlayerCard
+ * Stili specifici per la card del giocatore, inclusa la gestione dell'immagine circolare e del badge rating
+ */
 .card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);

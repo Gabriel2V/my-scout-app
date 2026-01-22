@@ -1,7 +1,7 @@
 /**
  * TEST: PlayerService.test.js
- * Descrizione: Verifica le chiamate asincrone verso l'API esterna.
- * Utilizza il mocking di fetch per simulare le risposte del server e testare la gestione degli errori.
+ * Descrizione: Verifica le chiamate asincrone verso l'API esterna
+ * Utilizza il mocking di fetch per simulare le risposte del server e testare la gestione degli errori
  */
 import PlayerService from '../PlayerService';
 

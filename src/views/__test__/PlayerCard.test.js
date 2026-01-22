@@ -1,7 +1,7 @@
 /**
  * TEST: PlayerCard.test.js
- * Descrizione: Verifica il corretto rendering del componente UI PlayerCard.
- * Controlla che le informazioni del giocatore siano visualizzate e che i link di navigazione siano corretti.
+ * Unit test per il componente PlayerCard
+ * Si assicura che le props (nome, foto, rating) siano visualizzate nel DOM e che il link di navigazione ("Dettaglio") punti all'URL corretto
  */
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'; 

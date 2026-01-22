@@ -1,3 +1,8 @@
+/**
+ * COMPONENT: FilterBar.jsx
+ * Barra dei filtri per la lista giocatori
+ * Contiene i controlli per filtrare per Rating (slider) e Ruolo (select)
+ */
 import React from 'react';
 
 export default function FilterBar({ minRating, setMinRating, roleFilter, setRoleFilter }) {

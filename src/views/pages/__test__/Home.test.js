@@ -1,6 +1,6 @@
 /**
- * TEST: Home.test.js
- * Descrizione: Verifica la presenza delle sezioni principali nella Home.
+ * TEST: HomePage
+ * Verifica il rendering correttodella dashboard iniziale e dei link di navigazione
  */
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';

@@ -1,3 +1,7 @@
+/*
+ * STYLES: ApiCounter
+ * Stili per il widget flottante, incluse le animazioni di espansione e la progress bar
+ */
 .container {
   position: fixed;
   bottom: 20px;
@@ -11,7 +15,6 @@
   transform: scale(1.05);
 }
 
-/* --- BADGE COMPATTO --- */
 .badge {
   color: white;
   padding: 12px 20px;
@@ -25,7 +28,6 @@
   transition: background-color 0.3s ease;
 }
 
-/* --- CARD ESPANSA --- */
 .card {
   background: white;
   padding: 20px;
@@ -34,7 +36,6 @@
   min-width: 250px;
   border-width: 3px;
   border-style: solid;
-  /* Il colore del bordo è gestito dinamicamente in React */
   animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -60,7 +61,6 @@
   font-size: 1.5rem;
 }
 
-/* Progress Bar */
 .progressTrack {
   background: #e5e7eb;
   height: 10px;
@@ -107,13 +107,13 @@
 
 /* Varianti Alert */
 .alertWarning {
-  background: #fef3c7; /* Giallo chiaro */
-  color: #92400e;       /* Marrone */
+  background: #fef3c7; 
+  color: #92400e;      
 }
 
 .alertCritical {
-  background: #fee2e2; /* Rosso chiaro */
-  color: #991b1b;      /* Rosso scuro */
+  background: #fee2e2;
+  color: #991b1b;     
 }
 
 /* Footer Reset info */

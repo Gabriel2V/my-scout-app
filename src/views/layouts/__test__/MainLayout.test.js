@@ -1,9 +1,9 @@
 /**
- * TEST: MainLayout.test.js
- * Descrizione: Verifica il layout principale, l'header e la navigazione del logo.
+ * TEST: MainLayout
+ * Verifica la struttura base, la presenza dell'Header/Footer e il comportamento della barra di ricerca
  */
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom'; // Necessario per toBeInTheDocument
+import '@testing-library/jest-dom';
 import React from 'react';
 import MainLayout from '../MainLayout';
 

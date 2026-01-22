@@ -1,6 +1,6 @@
 /**
- * TEST: Players.test.js
- * Descrizione: Verifica il filtraggio per rating nella pagina dei giocatori.
+ * TEST: Players Page
+ * Verifica l'applicazione corretta dei filtri (Rating, Ruolo) sulla lista giocatori
  */
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';

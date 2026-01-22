@@ -1,11 +1,6 @@
 /**
- * TEST: useSearchViewModel.test.js
- * Descrizione: Suite di test completa per la logica di ricerca globale.
- * Copre:
- * 1. Debouncing (attesa input utente)
- * 2. Ricerca Nazioni (filtraggio locale)
- * 3. Ricerca Giocatori (Cache locale + API remota)
- * 4. Ricerca Squadre (API remota)
+ * TEST: useSearchViewModel
+ * Verifica il flusso di ricerca globale, il debounce dell'input e l'aggregazione dei risultati
  */
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { useSearchViewModel } from '../useSearchViewModel';
@@ -57,7 +52,7 @@ describe('useSearchViewModel Hook', () => {
     jest.useRealTimers();
   });
 
-  // --- TEST 1: Input e Debounce ---
+  // --- Input e Debounce ---
   test('Non deve eseguire ricerche se il termine è inferiore a 3 caratteri', async () => {
     const { result } = renderHook(() => useSearchViewModel('It'));
 
@@ -72,7 +67,7 @@ describe('useSearchViewModel Hook', () => {
     expect(PlayerService.getCountries).not.toHaveBeenCalled();
   });
 
-  // --- TEST 2: Ricerca Nazioni ---
+  // --- Ricerca Nazioni ---
   test('Deve trovare e filtrare le nazioni correttamente', async () => {
     const { result } = renderHook(() => useSearchViewModel('Ita'));
 
@@ -88,19 +83,19 @@ describe('useSearchViewModel Hook', () => {
     });
   });
 
-  // --- TEST 3: Ricerca Giocatori (Cache + API) ---
+  // ---  Ricerca Giocatori (Cache + API) ---
   test('Deve unire i risultati della cache locale con quelli dell API', async () => {
-    // 1. Setup Cache Locale
+    //  Setup Cache Locale
     localStorageMock.setItem('players_serieA', JSON.stringify(mockCachedPlayers));
 
-    // 2. Setup Risposta API (nuovo giocatore non in cache)
+    // Setup Risposta API (nuovo giocatore non in cache)
     const mockApiPlayers = [{
       player: { id: 20, name: 'Alessandro Bastoni', photo: 'url' },
       statistics: [{ team: { name: 'Inter' }, games: { position: 'Defender', rating: '7.5' }, goals: { total: 2 } }]
     }];
     PlayerService.searchPlayers.mockResolvedValue(mockApiPlayers);
 
-    // 3. Esecuzione hook con termine "Ale" (matcha sia Del Piero che Bastoni)
+    // Esecuzione hook con termine "Ale" (matcha sia Del Piero che Bastoni)
     const { result } = renderHook(() => useSearchViewModel('Ale'));
 
     await act(async () => {
@@ -117,7 +112,7 @@ describe('useSearchViewModel Hook', () => {
     });
   });
 
-  // --- TEST 4: Ricerca Squadre ---
+  // --- Ricerca Squadre ---
   test('Deve trovare le squadre tramite API', async () => {
     const mockTeams = [{
       team: { id: 100, name: 'Inter Miami', logo: 'logo_im', country: 'USA' }
@@ -136,9 +131,8 @@ describe('useSearchViewModel Hook', () => {
     });
   });
 
-  // --- TEST 5: Gestione Errori ---
+  // --- Gestione Errori ---
   test('Deve gestire il fallimento delle API senza crashare', async () => {
-    // Simuliamo un errore su getCountries e searchPlayers
     PlayerService.getCountries.mockRejectedValue(new Error('Network Error'));
     PlayerService.searchPlayers.mockRejectedValue(new Error('API Down'));
 
@@ -150,7 +144,6 @@ describe('useSearchViewModel Hook', () => {
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
-      // Gli array dovrebbero essere vuoti ma l'app non deve esplodere
       expect(result.current.nations).toEqual([]);
       expect(result.current.players).toEqual([]);
     });

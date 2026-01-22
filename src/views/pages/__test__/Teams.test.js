@@ -1,14 +1,13 @@
 /**
  * TEST: Teams.test.js
- * Descrizione: Verifica la visualizzazione delle squadre per una serie.
+ * Verifica la pagina delle Squadre di un campionato
+ * Testa il caricamento dei dati, la gestione dello stato di loading e la visualizzazione del messaggio in caso di lista vuota
  */
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 import Teams from '../Teams';
 import PlayerService from '../../../services/PlayerService';
-
-// Mock virtuale per risolvere l'errore del modulo mancante
 jest.mock('react-router-dom', () => ({
   useParams: () => ({ serieId: '135' }),
   useNavigate: () => jest.fn()
@@ -17,10 +16,9 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../../../services/PlayerService');
 
 describe('Pagina Teams', () => {
-  // CORREZIONE: Pulizia profonda prima di ogni singolo test
   beforeEach(() => {
     jest.clearAllMocks();
-    localStorage.clear(); // Rimuove la cache che bloccava il test dell'errore
+    localStorage.clear();
   });
 
   test('Deve mostrare lo stato di caricamento e poi l\'elenco delle squadre', async () => {
@@ -42,13 +40,11 @@ describe('Pagina Teams', () => {
   });
 
   test('Deve mostrare un messaggio se non vengono trovate squadre', async () => {
-    // Ora che localStorage è pulito, il componente chiamerà l'API mockata qui
     PlayerService.getTeams.mockResolvedValue([]);
 
     render(<Teams />);
 
     await waitFor(() => {
-      // Verifichiamo che compaia il messaggio corretto invece dei vecchi dati
       expect(screen.getByText(/Nessuna squadra trovata/i)).toBeInTheDocument();
     });
   });

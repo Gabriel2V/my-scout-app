@@ -1,3 +1,8 @@
+/**
+ * PAGE: SearchResults.jsx
+ * Pagina dei risultati della ricerca globale
+ * Mostra risultati aggregati divisi per categorie: Nazioni, Squadre e Giocatori
+ */
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useSearchViewModel } from '../../viewmodels/useSearchViewModel';
 import { PlayerCard } from '../PlayerCard';

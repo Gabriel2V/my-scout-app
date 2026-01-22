@@ -1,7 +1,7 @@
 /**
  * SERVICE: PlayerService.js
- * Gestisce tutte le chiamate asincrone verso API-Sports con monitoraggio limite giornaliero
- * Supporto per caricamento incrementale (Lazy Loading) dei Top Players
+ * Gestisce tutte le comunicazioni con l'API esterna (API-Sports)
+ * Implementa il monitoraggio del rate-limit, il caching delle risposte e la logica di paginazione/lazy loading
  */
 class PlayerService {
   constructor() {

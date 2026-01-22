@@ -1,3 +1,7 @@
+/*
+ * STYLES: Layout
+ * Stili specifici per la struttura principale: Header, Footer, Container e Barra di ricerca
+ */
 .container {
   display: flex;
   flex-direction: column;

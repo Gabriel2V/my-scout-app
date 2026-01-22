@@ -1,7 +1,6 @@
 /**
- * TEST: SearchResults.test.js
- * Descrizione: Verifica la corretta visualizzazione e interazione della pagina dei risultati di ricerca.
- * Copre: stati di caricamento, input non valido, risultati vuoti, rendering delle sezioni e navigazione.
+ * TEST: SearchResults Page
+ * Verifica il rendering delle diverse sezioni di risultati e la gestione degli stati vuoti o di caricamento
  */
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';

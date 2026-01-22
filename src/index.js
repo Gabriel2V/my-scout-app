@@ -1,3 +1,8 @@
+/**
+ * ENTRY POINT: index.js
+ * Punto di ingresso dell'applicazione React
+ * Inizializza il rendering del componente radice (App) all'interno del DOM
+ */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

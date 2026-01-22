@@ -1,3 +1,8 @@
+/**
+ * PAGE: ApiDebug.jsx
+ * Dashboard di servizio per il monitoraggio delle chiamate API
+ * Permette di visualizzare il consumo giornaliero e forzare la pulizia della cache o dei contatori
+ */
 import { useState, useEffect } from 'react';
 import PlayerService from '../../services/PlayerService';
 import styles from '../../styles/ApiDebug.module.css';

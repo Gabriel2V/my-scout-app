@@ -1,8 +1,11 @@
+/*
+ * STYLES: PlayerDetailView
+ * Layout per la pagina di dettaglio: header con foto grande, griglia statistiche e frecce di navigazione
+ */
 .container {
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
-  /* Per posizionare le frecce relative a questo container */
   position: relative; 
 }
 

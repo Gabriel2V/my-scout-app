@@ -1,3 +1,8 @@
+/**
+ * PAGE: Teams.jsx
+ * Elenca le squadre appartenenti a un determinato campionato
+ * Gestisce il caricamento e il caching della lista squadre
+ */
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import PlayerService from '../../services/PlayerService';

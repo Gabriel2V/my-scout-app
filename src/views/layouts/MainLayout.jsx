@@ -1,3 +1,8 @@
+/**
+ * LAYOUT: MainLayout.jsx
+ * Layout principale dell'applicazione (HOC)
+ * Contiene l'Header (con ricerca), il Footer e il wrapper per il contenuto dinamico (Outlet)
+ */
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import styles from '../../styles/Layout.module.css';

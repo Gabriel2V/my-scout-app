@@ -1,3 +1,8 @@
+/**
+ * COMPONENT: ApiCounter.jsx
+ * Widget flottante che mostra in tempo reale l'utilizzo delle chiamate API
+ * Fornisce feedback visivo (colori/alert) all'avvicinarsi del limite giornaliero
+ */
 import { useState, useEffect } from 'react';
 import PlayerService from '../../services/PlayerService';
 import styles from '../../styles/ApiCounter.module.css';

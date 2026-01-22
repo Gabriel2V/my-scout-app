@@ -1,3 +1,8 @@
+/**
+ * PAGE: Series.jsx
+ * Mostra i campionati (leghe) disponibili per una specifica nazione selezionata
+ * Permette la navigazione verso le squadre o i giocatori di quel campionato
+ */
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import PlayerService from '../../services/PlayerService';

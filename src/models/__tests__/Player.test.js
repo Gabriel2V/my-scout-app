@@ -1,7 +1,7 @@
 /**
  * TEST: Player.test.js
- * Descrizione: Verifica la corretta instanziazione del modello Player e la logica di business associata.
- * Questo file testa che i dati grezzi dell'API siano mappati correttamente e che le funzioni di calcolo operino come previsto.
+ * Descrizione: Verifica la corretta instanziazione del modello Player e la logica di business associata
+ * Questo file testa che i dati grezzi dell'API siano mappati correttamente e che le funzioni di calcolo operino come previsto
  */
 import { Player } from '../Player';
 

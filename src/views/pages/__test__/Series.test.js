@@ -1,6 +1,7 @@
 /**
  * TEST: Series.test.js
- * Descrizione: Verifica il caricamento dei campionati per nazione.
+ * Verifica la visualizzazione dei campionati (Series) per una nazione
+ * Controlla che vengano mostrati i bottoni di navigazione verso "Squadre" e "Giocatori" per ogni lega trovata
  */
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -25,7 +26,6 @@ describe('Pagina Series', () => {
 
     render(<Series />);
 
-    // Aspettiamo che il caricamento finisca e che compaiano titolo e dati
     await waitFor(() => {
       expect(screen.getByText(/Campionati in Italy/i)).toBeInTheDocument();
       expect(screen.getByText('Serie A')).toBeInTheDocument();

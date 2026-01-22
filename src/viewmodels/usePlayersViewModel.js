@@ -1,6 +1,7 @@
 /**
  * VIEWMODEL: usePlayersViewModel.js
- * Gestisce la logica di recupero dati dinamica basata sui parametri della rotta
+ * Custom Hook che gestisce lo stato e la logica per le liste di giocatori
+ * Coordina il recupero dati (per lega, squadra o globale), la paginazione e il filtraggio locale
  */
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';

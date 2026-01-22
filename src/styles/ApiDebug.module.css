@@ -1,3 +1,7 @@
+/*
+ * STYLES: ApiDebug
+ * Layout per la dashboard di debug, griglie statistiche e box di stato colorati
+ */
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -21,7 +25,7 @@
 
 .cardTitle {
   margin: 0;
-  color: #003366; /* O var(--primary) se vuoi usare le globali */
+  color: #003366;
 }
 
 .statusIcon {
@@ -64,7 +68,6 @@
   font-size: 0.875rem;
 }
 
-/* Colori testo specifici */
 .textGreen { color: #16a34a; }
 .textDarkGreen { color: #166534; }
 .textYellow { color: #ca8a04; }

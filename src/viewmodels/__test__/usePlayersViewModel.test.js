@@ -1,8 +1,6 @@
 /**
- * TEST: usePlayersViewModel.test.js
- * Descrizione: Verifica la logica del custom hook usePlayersViewModel.
- * Testa il recupero dinamico dei dati (per squadra o per lega), l'integrazione con useParams,
- * il sistema di caching tramite localStorage e la logica di filtraggio dei risultati.
+ * TEST: usePlayersViewModel
+ * Verifica la logica di stato, il recupero dati condizionale e l'integrazione con il service
  */
 import { renderHook, waitFor } from '@testing-library/react';
 import { usePlayersViewModel } from '../usePlayersViewModel';
@@ -14,7 +12,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => jest.fn(),
 }), { virtual: true });
 
-// Importiamo useParams dal mock per poterlo manipolare nei test
+// Importa useParams dal mock per poterlo manipolare nei test
 import { useParams } from 'react-router-dom';
 
 jest.mock('../../services/PlayerService');

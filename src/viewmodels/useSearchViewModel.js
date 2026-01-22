@@ -1,6 +1,7 @@
 /**
  * VIEWMODEL: useSearchViewModel.js
- * Gestisce la ricerca globale di giocatori, squadre e nazioni con strategia Cache-First
+ * Custom Hook per la gestione della ricerca globale
+ * Aggrega risultati da nazioni, squadre e giocatori gestendo il debounce dell'input e la priorità della cache
  */
 import { useState, useEffect } from 'react';
 import PlayerService from '../services/PlayerService';

@@ -1,6 +1,7 @@
 /**
- * VIEW: Players.jsx
- *  lista "contextList" al dettaglio per navigazione next/prev
+ * PAGE: Players.jsx
+ * Visualizza la lista dei giocatori con supporto per Infinite Scroll
+ * Integra la barra dei filtri (ruolo, rating) e gestisce la navigazione al dettaglio
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useOutletContext, useNavigate, useLocation } from 'react-router-dom';

@@ -1,3 +1,8 @@
+/**
+ * PAGE: Nations.jsx
+ * Visualizza l'elenco delle nazioni disponibili
+ * Utilizza la cache per evitare chiamate API ripetute per dati statici
+ */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlayerService from '../../services/PlayerService';
