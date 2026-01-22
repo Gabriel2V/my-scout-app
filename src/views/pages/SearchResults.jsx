@@ -21,6 +21,17 @@ export default function SearchResults() {
 
   const hasResults = players.length > 0 || teams.length > 0 || nations.length > 0;
 
+  // Helper per navigazione con contesto
+const goToPlayerDetail = (player) => {
+    navigate(`/giocatori/${player.id}`, { 
+      state: { 
+        player: player, 
+        contextList: players,
+        from: '/ricerca' 
+      } 
+    });
+  };
+
   return (
     <div>
       <h2 className="pageTitle">Risultati per "{searchTerm}"</h2>
@@ -29,15 +40,12 @@ export default function SearchResults() {
         <p style={{textAlign: 'center', padding: '2rem', color: '#666'}}>Nessun risultato trovato.</p>
       )}
 
-      {/* SEZIONE NAZIONI (Geografia/Campionati) */}
+      {/* SEZIONE NAZIONI */}
       {nations.length > 0 && (
         <div style={{marginBottom: '3rem'}}>
           <h3 style={{color: '#003366', marginLeft: '1rem', borderBottom: '2px solid #00ff88', display: 'inline-block'}}>
             🏳️ Nazioni ({nations.length})
           </h3>
-          <p style={{marginLeft: '1rem', fontSize: '0.8rem', color: '#666', marginBottom: '1rem'}}>
-            Clicca qui per vedere <strong>campionati e competizioni</strong> di questa nazione.
-          </p>
           <div className="grid">
             {nations.map((nation) => (
               <GenericCard 
@@ -52,33 +60,23 @@ export default function SearchResults() {
         </div>
       )}
 
-      {/* SEZIONE SQUADRE (Club e Nazionali) */}
+      {/* SEZIONE SQUADRE */}
       {teams.length > 0 && (
         <div style={{marginBottom: '3rem'}}>
           <h3 style={{color: '#003366', marginLeft: '1rem', borderBottom: '2px solid #ff6b35', display: 'inline-block'}}>
             🛡️ Squadre & Nazionali ({teams.length})
           </h3>
-          <p style={{marginLeft: '1rem', fontSize: '0.8rem', color: '#666', marginBottom: '1rem'}}>
-            Clicca qui per vedere la <strong>rosa giocatori</strong>.
-          </p>
           <div className="grid">
             {teams.map((team) => (
               <GenericCard 
                 key={team.id}
                 title={team.name}
                 image={team.logo}
-                // Mostra un sottotitolo diverso se è una squadra nazionale
                 subtitle={team.isNational ? "⭐ Nazionale Ufficiale" : `Club: ${team.country}`}
                 onClick={() => navigate(`/squadre/${team.id}/giocatori`)}
               >
-                {/* Badge opzionale visivo se è una nazionale */}
                 {team.isNational && (
-                  <div style={{
-                    position: 'absolute', top: '10px', right: '10px', 
-                    fontSize: '1.2rem', title: 'Squadra Nazionale'
-                  }}>
-                    🏛️
-                  </div>
+                  <div style={{position: 'absolute', top: '10px', right: '10px', fontSize: '1.2rem'}}>🏛️</div>
                 )}
               </GenericCard>
             ))}
@@ -86,7 +84,7 @@ export default function SearchResults() {
         </div>
       )}
 
-      {/* 3. SEZIONE GIOCATORI */}
+      {/* SEZIONE GIOCATORI */}
       {players.length > 0 && (
         <div>
           <h3 style={{color: '#003366', marginLeft: '1rem', borderBottom: '2px solid #003366', display: 'inline-block'}}>
@@ -94,7 +92,10 @@ export default function SearchResults() {
           </h3>
           <div className="grid">
             {players.map(player => (
-              <PlayerCard key={player.id} player={player} />
+              // GenericCard modificata o il div diretto per poter usare l'onClick custom
+              <div key={player.id} onClick={() => goToPlayerDetail(player)} style={{cursor: 'pointer'}}>
+                 <PlayerCard player={player} />
+              </div>
             ))}
           </div>
         </div>

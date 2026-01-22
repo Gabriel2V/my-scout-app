@@ -2,6 +2,8 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
+  /* Per posizionare le frecce relative a questo container */
+  position: relative; 
 }
 
 .backBtn {
@@ -28,6 +30,9 @@
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-color);
   overflow: hidden;
+  /* Importante per z-index */
+  position: relative;
+  z-index: 10; 
 }
 
 .header {
@@ -58,8 +63,8 @@
 .infoGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1px; /* Gap piccolo per mostrare i bordi */
-  background-color: var(--border-color); /* Colore dei bordi della griglia */
+  gap: 1px;
+  background-color: var(--border-color);
 }
 
 .infoItem {
@@ -90,4 +95,51 @@
   color: var(--accent) !important;
   font-size: 1.5rem !important;
   font-weight: 800 !important;
+}
+
+/* FRECCE */
+.navArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border: 1px solid var(--border-color);
+  color: var(--primary);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s;
+  z-index: 5; /* Sotto la card se schermo piccolo, sopra se grande */
+}
+
+.navArrow:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.navArrowLeft {
+  left: -10px; /* Posizione rispetto al container */
+}
+
+.navArrowRight {
+  right: -10px;
+}
+
+/* Nascondi frecce su mobile o spostale */
+@media (max-width: 768px) {
+  .navArrow {
+    top: 20%; /* Sposta in alto vicino alla foto su mobile */
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  .navArrowLeft { left: 10px; }
+  .navArrowRight { right: 10px; }
 }

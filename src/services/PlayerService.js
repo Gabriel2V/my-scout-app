@@ -1,16 +1,26 @@
 /**
  * SERVICE: PlayerService.js
  * Gestisce tutte le chiamate asincrone verso API-Sports con monitoraggio limite giornaliero
+ * Supporto per caricamento incrementale (Lazy Loading) dei Top Players
  */
 class PlayerService {
   constructor() {
     this.apiKey = process.env.REACT_APP_FOOTBALL_API_KEY;
     this.baseUrl = 'https://v3.football.api-sports.io';
     this.dailyLimit = 100;
-    this.warningThreshold = 80; 
+    this.warningThreshold = 80;
+    
+    // Lista ordinata dei campionati da caricare sequenzialmente
+    this.topLeagues = [
+      { id: 39, name: 'Premier League' }, // 1. Inghilterra
+      { id: 135, name: 'Serie A' },       // 2. Italia
+      { id: 140, name: 'La Liga' },       // 3. Spagna
+      { id: 78, name: 'Bundesliga' },     // 4. Germania
+      { id: 61, name: 'Ligue 1' }         // 5. Francia
+    ];
   }
 
-  // --- SISTEMA DI MONITORAGGIO API (Invariato) ---
+  // --- SISTEMA DI MONITORAGGIO API ---
   _getApiCounter() {
     const stored = localStorage.getItem('api_counter');
     if (!stored) return { count: 0, date: new Date().toDateString() };
@@ -71,57 +81,40 @@ class PlayerService {
   async getPlayersByTeam(teamId, season = 2024) { 
     let allPlayers = [];
     let page = 1;
-    
-    // Ciclo while per scaricare tutte le pagine (di solito sono 2 o 3 per squadra)
     while (true) {
       console.log(`Scaricamento rosa squadra ${teamId} - Pagina ${page}...`);
-      
       try {
         const pageData = await this._apiCall(`players?team=${teamId}&season=${season}&page=${page}`);
-        
-        // Se la pagina è vuota, abbiamo finito
         if (!pageData || pageData.length === 0) break;
-        
         allPlayers = [...allPlayers, ...pageData];
-        
-        // Se la pagina contiene meno di 20 risultati, è l'ultima pagina (l'API ne manda 20 x pagina)
         if (pageData.length < 20) break;
-        
         page++;
-        
-        // Safety break: per evitare loop infiniti se l'API impazzisce (max 5 pagine = 100 giocatori)
         if (page > 5) break; 
-        
       } catch (error) {
         console.warn(`Errore pagina ${page} squadra ${teamId}:`, error);
-        break; //  in caso di errore per salvare almeno i dati parziali
+        break; 
       }
     }
-    
     return allPlayers;
   }
   
-  getPlayersByLeague(leagueId, season = 2024) { 
-    return this._apiCall(`players?league=${leagueId}&season=${season}`); 
+  getPlayersByLeague(leagueId, season = 2024, page = 1) { return this._apiCall(`players?league=${leagueId}&season=${season}&page=${page}`); 
   }
+  // Scarica un solo campionato alla volta per indice
+  async getTopPlayersBatch(batchIndex, season = 2024) {
+    // Se abbiamo finito i campionati, restituisci array vuoto
+    if (batchIndex >= this.topLeagues.length) return [];
 
-  // Metodo ottimizzato per top players globali
-  async getTopPlayers(season = 2024) {
-    const topLeagues = [
-      { id: 39, name: 'Premier League' },
-      { id: 135, name: 'Serie A' }, // Serie A
-      { id: 140, name: 'La Liga' },
-    ];
+    const league = this.topLeagues[batchIndex];
+    console.log(`Scaricamento batch ${batchIndex + 1}: ${league.name}`);
 
     try {
-      const allPromises = [];
-      topLeagues.forEach(league => {
-        allPromises.push(this._apiCall(`players/topscorers?league=${league.id}&season=${season}`).then(d => d.slice(0, 10)).catch(()=>[]));
-      });
-      const results = await Promise.all(allPromises);
-      return results.flat();
+      // Scarica i top 20 marcatori di questo campionato
+      const data = await this._apiCall(`players/topscorers?league=${league.id}&season=${season}`);
+      return data.slice(0, 20); 
     } catch (error) {
-      return this._apiCall(`players/topscorers?league=135&season=${season}`); // Fallback Serie A
+      console.error(`Errore batch ${league.name}:`, error);
+      return [];
     }
   }
 

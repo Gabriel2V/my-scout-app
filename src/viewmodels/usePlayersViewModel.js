@@ -2,7 +2,7 @@
  * VIEWMODEL: usePlayersViewModel.js
  * Gestisce la logica di recupero dati dinamica basata sui parametri della rotta
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerService from '../services/PlayerService';
 import { Player } from '../models/Player';
@@ -11,74 +11,107 @@ export function usePlayersViewModel(externalSearchTerm = "") {
   const [players, setPlayers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [batchIndex, setBatchIndex] = useState(1); 
+  const [hasMoreRemote, setHasMoreRemote] = useState(true);
 
   const { serieId, squadraId } = useParams();
+// Reset stato quando cambia la rotta
+  useEffect(() => {
+    setPlayers([]);
+    setBatchIndex(1); // Reset a pagina 1
+    setHasMoreRemote(true);
+    setLoading(true);
+  }, [serieId, squadraId]);
 
+  // Caricamento Dati
   useEffect(() => {
     const loadPlayers = async () => {
-      setLoading(true);
+      if (batchIndex === 1) setLoading(true);
 
-      // Definisci la chiave di cache in base al contesto
+      // Una chiave cache che include la pagina per evitare conflitti
       const cacheKey = squadraId 
         ? `players_team_${squadraId}` 
         : serieId 
-          ? `players_league_${serieId}` 
-          : 'players_global_top'; // Nuova chiave per top players
+          ? `players_league_${serieId}_page_${batchIndex}` 
+          : `players_global_batch_${batchIndex}`;
 
-      // 1. Controllo della Cache locale
+      // Controllo Cache (base)
       const cachedData = localStorage.getItem(cacheKey);
       if (cachedData) {
-        console.log(`✓ Caricamento da cache: ${cacheKey}`);
         const rawData = JSON.parse(cachedData);
-        setPlayers(rawData.map(item => new Player(item)));
+        const cachedPlayers = rawData.map(item => new Player(item));
+        
+        // Se è una squadra, sostituisci tutto
+        if (squadraId) {
+            setPlayers(cachedPlayers);
+            setHasMoreRemote(false);
+        } else {
+            // Se è lega o globale, appendi
+            setPlayers(prev => batchIndex === 1 ? cachedPlayers : [...prev, ...cachedPlayers]);
+        }
+        
         setLoading(false);
         return;
       }
 
-      // 2. Chiamata API dinamica
       try {
-        console.log(`⟳ Richiesta API per: ${cacheKey}`);
-        let rawData;
+        let newRawData = [];
 
-        if (squadraId) {
-          // Giocatori di una squadra specifica
-          rawData = await PlayerService.getPlayersByTeam(squadraId);
+        if (squadraId) { 
+          if (batchIndex === 1) { 
+            newRawData = await PlayerService.getPlayersByTeam(squadraId);
+            setHasMoreRemote(false);
+          }
         } else if (serieId) {
-          // Giocatori di una lega specifica
-          rawData = await PlayerService.getPlayersByLeague(serieId);
+          // --- LOGICA LEGA ---
+          newRawData = await PlayerService.getPlayersByLeague(serieId, 2024, batchIndex);
+          
+          // Se arrivano meno di 20 giocatori, siamo all'ultima pagina
+          if (!newRawData || newRawData.length < 20) {
+            setHasMoreRemote(false);
+          }
         } else {
-          // NOVITÀ: Carica i top players globali (mix di top scorers e assists)
-          // Questo usa 6 chiamate API ma ti dà i giocatori più rilevanti
-          rawData = await PlayerService.getTopPlayers();
-        }
-
-        // 3. Salvataggio in cache
-        localStorage.setItem(cacheKey, JSON.stringify(rawData));
-        setPlayers(rawData.map(item => new Player(item)));
-        
-      } catch (error) {
-        console.error("❌ Errore nel caricamento dei giocatori:", error);
-        
-        // Fallback: se tutto fallisce, prova almeno la Premier League
-        if (!squadraId && !serieId) {
-          try {
-            const fallbackData = await PlayerService.getPlayersByLeague(39);
-            localStorage.setItem(cacheKey, JSON.stringify(fallbackData));
-            setPlayers(fallbackData.map(item => new Player(item)));
-          } catch (fallbackError) {
-            console.error("❌ Anche il fallback è fallito:", fallbackError);
+          const globalBatchIndex = batchIndex - 1;
+          newRawData = await PlayerService.getTopPlayersBatch(globalBatchIndex);
+          
+          if (!newRawData || newRawData.length === 0) {
+            setHasMoreRemote(false);
           }
         }
+
+        if (newRawData && newRawData.length > 0) {
+          // Salva in cache (pagina specifica)
+          if (!squadraId) {
+             localStorage.setItem(cacheKey, JSON.stringify(newRawData));
+          }
+
+          const newPlayers = newRawData.map(item => new Player(item));
+          setPlayers(prev => batchIndex === 1 ? newPlayers : [...prev, ...newPlayers]);
+        }
+
+      } catch (error) {
+        console.error("Errore caricamento:", error);
+        setHasMoreRemote(false);
       } finally {
         setLoading(false);
       }
     };
 
-    loadPlayers();
+    if (hasMoreRemote) {
+        loadPlayers();
+    }
     
-  }, [serieId, squadraId]); 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serieId, squadraId, batchIndex]);
 
-  // Filtraggio per searchTerm
+  // Funzione per chiedere la prossima pagina/batch
+  const loadMore = useCallback(() => {
+    if (!loading && hasMoreRemote && !squadraId) {
+      console.log("📥 Richiesta pagina successiva...");
+      setBatchIndex(prev => prev + 1);
+    }
+  }, [loading, hasMoreRemote, squadraId]);
+
   const filteredPlayers = players.filter(p =>
     p.name.toLowerCase().includes(externalSearchTerm.toLowerCase())
   );
@@ -87,6 +120,8 @@ export function usePlayersViewModel(externalSearchTerm = "") {
     players: filteredPlayers,
     searchTerm,
     setSearchTerm,
-    loading
+    loading,
+    loadMore,
+    hasMoreRemote
   };
 }

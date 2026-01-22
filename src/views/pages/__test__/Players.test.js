@@ -8,10 +8,10 @@ import React from 'react';
 import Players from '../Players';
 import { usePlayersViewModel } from '../../../viewmodels/usePlayersViewModel';
 
-// CORREZIONE: Aggiunto useNavigate al mock
 jest.mock('react-router-dom', () => ({ 
   useOutletContext: () => ({ searchTerm: '' }),
-  useNavigate: () => jest.fn() 
+  useNavigate: () => jest.fn(),
+  useLocation: () => ({ pathname: '/giocatori' })
 }), { virtual: true });
 
 jest.mock('../../../viewmodels/usePlayersViewModel');
