@@ -20,12 +20,13 @@ Il progetto pone una forte enfasi sull'ottimizzazione delle risorse, implementan
 Il progetto utilizza uno stack moderno basato sull'ecosistema React:
 
 * **Core:** React.js (v18+)
+* **Build Tool:** Vite, scelto per la rapidità di compilazione e l'efficienza nello sviluppo.
 * **Routing:** React Router DOM (HashRouter per compatibilità deployment statico)
 * **State Management:** Custom Hooks e React Context
 * **Architettura:** MVVM (Model-View-ViewModel)
 * **Styling:** CSS Modules per stili locali e variabili CSS globali per il tema
 * **Data Fetching:** Fetch API con gestione errori centralizzata
-* **Testing:** Jest e React Testing Library per unit e integration test
+* **Testing:** Vitest e React Testing Library per unit e integration test, garantendo uno stack moderno e veloce.
 
 ---
 
@@ -135,14 +136,14 @@ npm install
 3. Creare un file `.env` nella root del progetto:
 
 ```
-REACT_APP_FOOTBALL_API_KEY=la_tua_chiave_api
+VITE_FOOTBALL_API_KEY=la_tua_chiave_api
 
 ```
 
 4. Avviare il server di sviluppo:
 
 ```bash
-npm start
+npm run dev
 
 ```
 
@@ -154,7 +155,7 @@ L'app sarà disponibile all'indirizzo http://localhost:3000.
 
 Il progetto include una suite di test completa che copre Services, ViewModels e Componenti View. I test verificano il rendering corretto, la gestione degli eventi e la logica asincrona.
 
-Per eseguire i test:
+Per eseguire i test tramite Vitest:
 
 ```bash
 npm test
@@ -163,8 +164,8 @@ npm test
 
 ## Sicurezza e Deployment
 
-* **Variabili d'ambiente:** La chiave API non è inclusa nel codice sorgente per motivi di sicurezza, ma viene gestita tramite il file `.env` in locale e tramite i "Secrets" di GitHub per la versione online.
-* **GitHub Pages:** Il deployment automatico è gestito tramite il pacchetto `gh-pages`.
+* **Variabili d'ambiente:** La chiave API non è inclusa nel codice sorgente per motivi di sicurezza, ma viene gestita in sicurezza tramite variabili prefissate con VITE_ e caricate tramite import.meta.env.
+* **Deployment:** Configurato per hosting statici tramite HashRouter e gh-pages.
 
 ---
 

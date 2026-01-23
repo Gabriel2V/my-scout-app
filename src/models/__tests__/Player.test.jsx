@@ -3,27 +3,17 @@
  * Descrizione: Verifica la corretta instanziazione del modello Player e la logica di business associata
  * Questo file testa che i dati grezzi dell'API siano mappati correttamente e che le funzioni di calcolo operino come previsto
  */
+import { describe, test, expect } from 'vitest';
 import { Player } from '../Player';
 
 describe('Classe Player Model', () => {
   const mockApiData = {
-    player: {
-      id: 1,
-      name: 'Lionel Messi',
-      photo: 'url_photo',
-      nationality: 'Argentina',
-      age: 36
-    },
-    statistics: [{
-      team: { name: 'Inter Miami' },
-      games: { rating: '8.5' },
-      goals: { total: 10 }
-    }]
+    player: { id: 1, name: 'Lionel Messi', photo: 'url_photo', nationality: 'Argentina', age: 36 },
+    statistics: [{ team: { name: 'Inter Miami' }, games: { rating: '8.5' }, goals: { total: 10 } }]
   };
 
   test('Deve creare correttamente un oggetto Player dai dati API', () => {
     const player = new Player(mockApiData);
-    
     expect(player.id).toBe(1);
     expect(player.name).toBe('Lionel Messi');
     expect(player.team).toBe('Inter Miami');

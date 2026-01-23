@@ -5,7 +5,7 @@
  */
 class PlayerService {
   constructor() {
-    this.apiKey = process.env.REACT_APP_FOOTBALL_API_KEY;
+    this.apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
     this.baseUrl = 'https://v3.football.api-sports.io';
     this.dailyLimit = 100;
     this.warningThreshold = 80;

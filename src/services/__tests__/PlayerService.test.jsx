@@ -3,14 +3,14 @@
  * Descrizione: Verifica le chiamate asincrone verso l'API esterna
  * Utilizza il mocking di fetch per simulare le risposte del server e testare la gestione degli errori
  */
+import { describe, test, expect, beforeEach, vi } from 'vitest';
 import PlayerService from '../PlayerService';
 
-// Mock della funzione fetch globale
-global.fetch = jest.fn();
+global.fetch = vi.fn();
 
 describe('PlayerService API Calls', () => {
   beforeEach(() => {
-    fetch.mockClear();
+    vi.clearAllMocks();
   });
 
   test('getCountries deve restituire una lista di nazioni in caso di successo', async () => {
@@ -21,17 +21,12 @@ describe('PlayerService API Calls', () => {
     });
 
     const result = await PlayerService.getCountries();
-    
     expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/countries'), expect.any(Object));
     expect(result).toEqual(mockResponse.response);
   });
 
   test('Deve lanciare un errore se la risposta HTTP non è ok', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 403,
-    });
-
+    fetch.mockResolvedValueOnce({ ok: false, status: 403 });
     await expect(PlayerService.getCountries()).rejects.toThrow('Errore HTTP: 403');
   });
 });
