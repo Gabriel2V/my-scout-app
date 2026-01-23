@@ -40,32 +40,36 @@ export default function Series() {
     loadLeagues();
   }, [nazioneId]);
 
-  if (loading) return <div className="loading">Caricamento campionati...</div>;
+  if (loading) return <div className="loading">Analisi campionati in corso...</div>;
 
   return (
     <div>
       <h2 className="pageTitle">Campionati in {nazioneId}</h2>
-      {leagues.length === 0 && !loading && <p style={{textAlign:'center'}}>Nessun campionato trovato.</p>}
       
       <div className="grid">
         {leagues.map(item => (
           <div key={item.league.id} className={styles.card}>
             <img src={item.league.logo} alt={item.league.name} />
             <h3>{item.league.name}</h3>
-            <div style={{display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: 'auto'}}>
+            
+            <div className={styles.extra}>
               <button 
-                className={styles.btn}
-                style={{fontSize: '0.7rem', padding: '0.4rem'}}
-                onClick={() => navigate(`/nazioni/${nazioneId}/serie/${item.league.id}/squadre`)}
+                className={`${styles.btnAction} ${styles.btnPrimary}`}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/nazioni/${nazioneId}/serie/${item.league.id}/squadre`);
+                }}
               >
-                Squadre
+                🛡️ Squadre
               </button>
               <button 
-                className={styles.btn}
-                style={{fontSize: '0.7rem', padding: '0.4rem', backgroundColor: '#444'}}
-                onClick={() => navigate(`/nazioni/${nazioneId}/serie/${item.league.id}/giocatori`)}
+                className={`${styles.btnAction} ${styles.btnAccent}`}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/nazioni/${nazioneId}/serie/${item.league.id}/giocatori`);
+                }}
               >
-                Giocatori
+                ⚽ Giocatori
               </button>
             </div>
           </div>

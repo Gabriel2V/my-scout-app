@@ -1,0 +1,74 @@
+.filterBar {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 140px;
+}
+
+.label {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.85rem;
+}
+
+.label span {
+  color: var(--accent);
+}
+
+.select {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: white;
+}
+
+.select:focus {
+  border-color: var(--accent);
+}
+
+.sortGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.sortSelect {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background-color: #f0fdf4;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--primary);
+  outline: none;
+}
+
+.rangeInput {
+  cursor: pointer;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .sortGroup {
+    margin-left: 0;
+    width: 100%;
+  }
+}

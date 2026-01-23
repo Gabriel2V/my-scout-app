@@ -1,6 +1,6 @@
 /*
  * STYLES: HomePage
- * Stili per la sezione Hero e la dashboard di navigazione iniziale
+ * Gestisce il layout della dashboard per allineare le card orizzontalmente
  */
 .hero {
   text-align: center;
@@ -14,28 +14,41 @@
   font-weight: 800;
   color: var(--primary);
   letter-spacing: -0.05em;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem; /* Aumentato spazio dal titolo */
   line-height: 1.1;
-}
-
-.hero p {
-  font-size: 1.25rem;
-  color: var(--primary-light);
-  max-width: 600px;
-  margin: 0 auto 3rem auto;
 }
 
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* FORZA 3 COLONNE su schermi desktop */
+  grid-template-columns: repeat(3, 1fr); 
   gap: 2rem;
-  max-width: 800px;
+  /* Aumentata larghezza massima per far stare 3 card affiancate */
+  max-width: 1100px; 
   margin: 0 auto;
 }
 
 .dashboard span {
-  font-size: 2.5rem;
+  font-size: 3rem;
   display: block;
-  margin-bottom: 1rem;
-  filter: grayscale(0.2); 
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* RESPONSIVE: se lo schermo è piccolo, le card tornano una sotto l'altra */
+@media (max-width: 992px) {
+  .dashboard {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }

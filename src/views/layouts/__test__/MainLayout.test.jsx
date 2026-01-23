@@ -16,9 +16,9 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('MainLayout', () => {
-  test("Deve renderizzare l'header con la barra di ricerca", () => {
+  test("Deve renderizzare l'header con la barra di ricerca aggiornata", () => {
     render(<MemoryRouter><MainLayout /></MemoryRouter>);
-    expect(screen.getByPlaceholderText(/Cerca giocatori/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Cerca nazioni, squadre/i)).toBeInTheDocument();
   });
 
   test('Il click sul logo deve resettare la ricerca e navigare alla home', () => {

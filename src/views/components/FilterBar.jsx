@@ -4,31 +4,63 @@
  * Contiene i controlli per filtrare per Rating (slider) e Ruolo (select)
  */
 import React from 'react';
+import styles from '../../styles/FilterBar.module.css';
 
-export default function FilterBar({ minRating, setMinRating, roleFilter, setRoleFilter }) {
+export default function FilterBar({ 
+  minRating, setMinRating, 
+  roleFilter, setRoleFilter,
+  natFilter, setNatFilter,
+  nationsList,
+  sortKey, setSortKey
+}) {
   const roles = ['All', 'Goalkeeper', 'Defender', 'Midfielder', 'Attacker'];
 
   return (
-    <div style={{
-      backgroundColor: '#fff', padding: '1.5rem', borderRadius: '12px', 
-      marginBottom: '2rem', display: 'flex', gap: '2rem', boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      alignItems: 'center', flexWrap: 'wrap'
-    }}>
-      <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
-        <label style={{fontWeight: 'bold', color: '#003366'}}>Rating Minimo: {minRating}</label>
+    <div className={styles.filterBar}>
+      <div className={styles.filterGroup}>
+        <label className={styles.label}>
+          Rating Minimo: <span>{minRating}</span>
+        </label>
         <input 
           type="range" min="0" max="10" step="0.1" 
           value={minRating} onChange={(e) => setMinRating(e.target.value)} 
+          className={styles.rangeInput}
         />
       </div>
 
-      <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
-        <label style={{fontWeight: 'bold', color: '#003366'}}>Ruolo:</label>
+      <div className={styles.filterGroup}>
+        <label className={styles.label}>Ruolo:</label>
         <select 
-          value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}
-          style={{padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc'}}
+          value={roleFilter} 
+          onChange={(e) => setRoleFilter(e.target.value)}
+          className={styles.select}
         >
           {roles.map(r => <option key={r} value={r}>{r}</option>)}
+        </select>
+      </div>
+
+      <div className={styles.filterGroup}>
+        <label className={styles.label}>Nazionalità:</label>
+        <select 
+          value={natFilter} 
+          onChange={(e) => setNatFilter(e.target.value)}
+          className={styles.select}
+        >
+          <option value="All">Tutte le nazioni</option>
+          {nationsList.map(n => <option key={n} value={n}>{n}</option>)}
+        </select>
+      </div>
+
+      <div className={styles.sortGroup}>
+        <label className={styles.label}>Ordina per:</label>
+        <select 
+          value={sortKey} 
+          onChange={(e) => setSortKey(e.target.value)}
+          className={styles.sortSelect}
+        >
+          <option value="rating">Miglior Rating</option>
+          <option value="goals">Più Gol</option>
+          <option value="name">Nome (A-Z)</option>
         </select>
       </div>
     </div>

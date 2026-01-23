@@ -45,7 +45,7 @@ Custom Hooks che fungono da ponte tra il Model e la View, gestendo la logica di 
 
 ### 3. View (`src/views/`)
 Componenti React puri che si occupano solo del rendering dell'interfaccia utente.
-* **Pages:** `Home`, `Nations`, `Series`, `Teams`, `Players`, `SearchResults`.
+* **Pages:** `Home`, `Nations`, `Series`, `Teams`, `Players`, `SearchResults`, `NationalTeams`, `NotFound`.
 * **Dettaglio:** `PlayerDetailView` per la scheda singola.
 * **Componenti UI:** `GenericCard`, `PlayerCard`, `FilterBar`, `ApiCounter`.
 
@@ -59,13 +59,22 @@ Componenti React puri che si occupano solo del rendering dell'interfaccia utente
 ### Navigazione Gerarchica e Ricerca
 L'applicazione permette due flussi di navigazione:
 1. **Esplorazione Guidata:** Dalle Nazioni ai Campionati, fino alle Squadre e ai Giocatori.
-2. **Ricerca Globale:** Una barra di ricerca persistente nell'header che interroga simultaneamente database locali e remoti per trovare nazioni, club e calciatori.
+2. **Ricerca Globale Basata su URL:** Una barra di ricerca persistente nell'header che utilizza i parametri di ricerca nell'URL (`?q=searchTerm`). Questo approccio garantisce che il tasto "Indietro" del browser funzioni correttamente e che i risultati della ricerca non vadano persi durante la navigazione.
+
+### Squadre Nazionali
+Una sezione dedicata accessibile dalla Dashboard permette di visualizzare direttamente le principali **Squadre Nazionali** mondiali. A differenza della navigazione per Nazione (geografica), questa vista permette di accedere direttamente alle rose dei convocati delle federazioni (es. Nazionale Italiana, Argentina, ecc.).
 
 ### Ottimizzazione e Performance (Lazy Loading & Caching)
 Per gestire grandi moli di dati e limiti API ristretti:
 * **Infinite Scroll:** La pagina `Players` implementa un caricamento progressivo basato su `IntersectionObserver`.
 * **Caching Locale:** Il `PlayerService` e i ViewModel salvano i dati in `localStorage`. Le richieste successive per le stesse risorse (es. lista squadre di una serie) vengono servite istantaneamente dalla cache senza consumare chiamate API.
 * **Paginazione Remota:** Il caricamento dei giocatori avviene in batch (pagine) solo quando l'utente scorre la lista, riducendo il carico iniziale.
+
+### Filtraggio Avanzato e Ordinamento
+La barra dei filtri (`FilterBar`) è stata potenziata per offrire un controllo granulare:
+* **Filtro Nazionalità Dinamico:** La lista delle nazionalità disponibili viene generata dinamicamente in base ai giocatori effettivamente presenti in lista.
+* **Ordinamento Dinamico:** Possibilità di ordinare i risultati per **Miglior Rating**, **Numero di Gol** o in **Ordine Alfabetico**.
+* **Filtro Testuale Locale:** Ogni lista di giocatori include un campo di ricerca locale per filtrare istantaneamente i nomi all'interno della selezione corrente senza attivare nuove chiamate API.
 
 ### Navigazione Contestuale
 La vista di dettaglio (`PlayerDetailView`) mantiene il contesto della lista di provenienza. L'utente può scorrere tra i giocatori (Precedente/Successivo) direttamente dalla scheda di dettaglio senza dover tornare all'elenco principale, grazie al passaggio dello stato tramite React Router.
@@ -77,18 +86,18 @@ Un componente dedicato (`ApiCounter`) e una dashboard di debug (`ApiDebug`) perm
 
 ## Approfondimento Tecnico: Gestione Stati e Flusso Dati
 
-L'applicazione adotta una gestione rigorosa del ciclo di vita dei componenti e degli stati asincroni, secondo il pattern MVVM. La logica è centralizzata nel ViewModel (`usePlayersViewModel.js`), garantendo una netta separazione tra business logic e presentazione.
+L'applicazione adotta una gestione rigorosa del ciclo di vita dei componenti e degli stati asincroni, secondo il pattern MVVM.
 
-### 1. Gestione dello Stato di Caricamento (Loading)
+### 1. Sincronizzazione Ricerca e URL
+La ricerca globale è gestita tramite l'hook `useSearchParams`. Questo separa la **Ricerca Globale** (che identifica nuove entità) dal **Filtraggio Locale** (che agisce sui dati già caricati). In questo modo, navigando verso la pagina di una squadra, il termine di ricerca nell'header non entra in conflitto con la visualizzazione della rosa completa, ma rimane disponibile per tornare ai risultati precedenti.
+
+### 2. Gestione dello Stato di Caricamento (Loading)
 Per garantire una User Experience fluida, è stata implementata una gestione esplicita dello stato di caricamento tramite l'hook `useState`. Lo stato `loading` viene inizializzato a `true` e aggiornato a `false` solo al termine delle operazioni asincrone (`finally`), garantendo che l'interfaccia mostri sempre un feedback coerente (skeleton o spinner) durante l'attesa.
 
-### 2. Gestione degli Errori
+### 3. Gestione degli Errori e Pagina 404
 La strategia di gestione degli errori avviene su due livelli:
 - **Livello Service:** Il modulo `PlayerService.js` intercetta le risposte HTTP non valide, sollevando eccezioni specifiche che vengono propagate al ViewModel.
-- **Livello View:** La pagina di dettaglio (`PlayerDetailView.jsx`) gestisce scenari di errore (es. ID non valido o problemi di rete) renderizzando un'interfaccia di fallback ("Giocatore non trovato") con opzioni di navigazione per tornare alla lista precedente, prevenendo crash dell'applicazione.
-
-### 3. Efficienza delle Chiamate API
-Per ottimizzare le risorse, le chiamate al servizio sono vincolate al ciclo di vita dei componenti tramite `useEffect`. L'array delle dipendenze è configurato accuratamente per ogni vista (es. vuoto `[]` per dati statici come le Nazioni, o dipendente dai parametri URL per i Dettagli), impedendo loop di richieste e garantendo che i dati vengano recuperati solo quando strettamente necessario.
+- **Livello View:** È stata implementata una rotta "catch-all" (`*`) che reindirizza l'utente a una pagina **NotFound (404)** personalizzata in caso di inserimento di URL inesistenti, fornendo un tasto rapido per tornare alla Dashboard principale.
 
 ---
 
@@ -99,10 +108,8 @@ L'applicazione utilizza React Router DOM per gestire la navigazione lato client 
 ### 1. Configurazione del Router
 È stato utilizzato `HashRouter` (importato come `Router`) per garantire la compatibilità del deployment su hosting statici (come GitHub Pages), gestendo i percorsi tramite l'identificatore fragment (#).
 
-### 2. Definizione delle Rotte
-Il componente `App.jsx` definisce l'albero di navigazione:
-- **Rotta Index (`/`):** Dashboard principale (`Home`).
-- **Rotte Dinamiche (`/giocatori/:id`, `/nazioni/:nazioneId`):** Utilizzano parametri dinamici nell'URL per identificare le risorse. I componenti estraggono questi parametri tramite l'hook `useParams` per caricare i dati contestuali corretti.
+### 2. Layout e Struttura Visiva
+Il `MainLayout` utilizza un sistema a griglia per il Footer, garantendo che il logo universitario e i testi informativi siano sempre correttamente bilanciati e centrati. La Dashboard principale è stata ottimizzata per mostrare le tre macro-aree (Nazioni, Nazionali, Top Player) affiancate orizzontalmente su schermi desktop, adattandosi fluidamente su dispositivi mobile.
 
 ### 3. Navigazione Ibrida
 La navigazione avviene attraverso due modalità:

@@ -4,7 +4,7 @@
  * Controlla che vengano mostrati i bottoni di navigazione verso "Squadre" e "Giocatori" per ogni lega trovata
  */
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { describe, test, expect, vi } from 'vitest';
 import '@testing-library/jest-dom';
 import React from 'react';
@@ -15,13 +15,21 @@ vi.mock('../../../services/PlayerService', () => ({
   default: { getLeagues: vi.fn() }
 }));
 
-describe('Pagina Series', () => {
+describe('Series Page', () => {
   test('Deve renderizzare i campionati con i relativi bottoni di azione', async () => {
-    PlayerService.getLeagues.mockResolvedValue([{ league: { id: 1, name: 'Serie A', logo: 'url' } }]);
-    render(<MemoryRouter><Series /></MemoryRouter>);
-    await waitFor(() => {
-      expect(screen.getByText('Serie A')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Squadre/i })).toBeInTheDocument();
-    });
+    const mockLeagues = [{ league: { id: 1, name: 'Serie A', logo: 'url' } }];
+    vi.mocked(PlayerService.getLeagues).mockResolvedValue(mockLeagues);
+
+    render(
+      <MemoryRouter initialEntries={['/nazioni/Italy']}>
+        <Routes>
+          <Route path="/nazioni/:nazioneId" element={<Series />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => expect(screen.getByText('Serie A')).toBeInTheDocument());
+    expect(screen.getByText(/🛡️ Squadre/i)).toBeInTheDocument();
+    expect(screen.getByText(/⚽ Giocatori/i)).toBeInTheDocument();
   });
 });

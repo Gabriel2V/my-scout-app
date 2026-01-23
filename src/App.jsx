@@ -13,6 +13,8 @@ import Players from './views/pages/Players';
 import SearchResults from './views/pages/SearchResults';
 import PlayerDetailView from './views/PlayerDetailView';
 import ApiDebug from './views/pages/ApiDebug';
+import NotFound from './views/pages/NotFound';
+import NationalTeams from './views/pages/NationalTeams';
 
 function App() {
   return (
@@ -22,16 +24,15 @@ function App() {
           <Route index element={<Home />} />
           <Route path="nazioni" element={<Nations />} />
           <Route path="ricerca" element={<SearchResults />} />
-          
           <Route path="giocatori" element={<Players />} />
-          
           <Route path="nazioni/:nazioneId" element={<Series />} />
+          <Route path="nazionali" element={<NationalTeams />} />
           <Route path="nazioni/:nazioneId/serie/:serieId/squadre" element={<Teams />} />
           <Route path="nazioni/:nazioneId/serie/:serieId/giocatori" element={<Players />} />
-          
           <Route path="squadre/:squadraId/giocatori" element={<Players />} />
           <Route path="giocatori/:id" element={<PlayerDetailView />} /> 
           <Route path="api-debug" element={<ApiDebug />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>

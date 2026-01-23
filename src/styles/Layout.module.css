@@ -72,10 +72,9 @@
   padding: 1rem 2rem;
   font-size: 0.875rem;
   margin-top: auto;
-  
-  /* NUOVO: Flexbox per separare logo e testo */
-  display: flex;
-  justify-content: space-between;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
 }
 

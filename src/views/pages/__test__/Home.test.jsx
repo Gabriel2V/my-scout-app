@@ -10,9 +10,10 @@ import React from 'react';
 import Home from '../Home';
 
 describe('Home Page', () => {
-  test('Deve mostrare le opzioni principali Nazioni e Giocatori', () => {
+  test('Deve mostrare le opzioni principali della Dashboard', () => {
     render(<MemoryRouter><Home /></MemoryRouter>);
-    expect(screen.getByText('Nazioni')).toBeInTheDocument();
-    expect(screen.getByText('Giocatori Mondiali')).toBeInTheDocument();
+    expect(screen.getByText(/Nazioni & Leghe/i)).toBeInTheDocument();
+    expect(screen.getByText(/Squadre Nazionali/i)).toBeInTheDocument();
+    expect(screen.getByText(/Top Player Mondiali/i)).toBeInTheDocument();
   });
 });

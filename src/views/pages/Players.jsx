@@ -3,29 +3,36 @@
  * Visualizza la lista dei giocatori con supporto per Infinite Scroll
  * Integra la barra dei filtri (ruolo, rating) e gestisce la navigazione al dettaglio
  */
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useOutletContext, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { usePlayersViewModel } from '../../viewmodels/usePlayersViewModel';
 import GenericCard from '../components/GenericCard';
 import FilterBar from '../components/FilterBar';
 
 export default function Players() {
-  const { searchTerm } = useOutletContext();
   const { players, loading } = usePlayersViewModel();
   const navigate = useNavigate();
   const location = useLocation();
   
+  // STATI LOCALI (Non usano più l'header globale per filtrare)
+  const [localSearch, setLocalSearch] = useState(''); 
   const [roleFilter, setRoleFilter] = useState('All');
   const [minRating, setMinRating] = useState(0);
+  const [natFilter, setNatFilter] = useState('All');
+  const [sortKey, setSortKey] = useState('rating');
 
-  // Infinite Scroll settings
   const ITEMS_PER_BATCH = 12;
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_BATCH);
+
+  const nationsList = useMemo(() => {
+    const nats = players.map(p => p.nationality).filter(Boolean);
+    return [...new Set(nats)].sort();
+  }, [players]);
 
   useEffect(() => {
     setVisibleCount(ITEMS_PER_BATCH);
     window.scrollTo(0, 0);
-  }, [searchTerm, roleFilter, minRating, location.pathname]);
+  }, [localSearch, roleFilter, minRating, natFilter, sortKey, location.pathname]);
 
   const getRatingValue = (rating) => {
     if (!rating || rating === "N/A") return null;
@@ -34,117 +41,79 @@ export default function Players() {
   };
 
   const filteredPlayers = players.filter(p => {
-    const matchesName = p.name.toLowerCase().includes(searchTerm?.toLowerCase() || '');
+    // FILTRO LOCALE: Cerca nel nome del giocatore
+    const matchesName = p.name.toLowerCase().includes(localSearch.toLowerCase());
     const matchesRole = roleFilter === 'All' || p.position === roleFilter;
+    const matchesNat = natFilter === 'All' || p.nationality === natFilter;
     const pRating = getRatingValue(p.rating);
-    let matchesRating;
-    if (minRating === 0 || minRating === "0") {
-      matchesRating = true;
-    } else {
-      matchesRating = pRating !== null && pRating >= parseFloat(minRating);
-    }
-    return matchesName && matchesRating && matchesRole;
+    let matchesRating = (minRating === 0 || minRating === "0") ? true : (pRating !== null && pRating >= parseFloat(minRating));
+
+    return matchesName && matchesRating && matchesRole && matchesNat;
   });
 
-  const sortedPlayers = [...filteredPlayers].sort((a, b) => {
-    const rateA = getRatingValue(a.rating);
-    const rateB = getRatingValue(b.rating);
-    if (rateA === null && rateB === null) return 0;
-    if (rateA === null) return 1;
-    if (rateB === null) return -1;
-    return rateB - rateA;
-  });
+  const sortedPlayers = useMemo(() => {
+    return [...filteredPlayers].sort((a, b) => {
+      if (sortKey === 'goals') return b.goals - a.goals;
+      if (sortKey === 'name') return a.name.localeCompare(b.name);
+      const rateA = getRatingValue(a.rating);
+      const rateB = getRatingValue(b.rating);
+      if (rateA === null) return 1;
+      if (rateB === null) return -1;
+      return rateB - rateA;
+    });
+  }, [filteredPlayers, sortKey]);
 
   const currentItems = sortedPlayers.slice(0, visibleCount);
   const hasMore = visibleCount < sortedPlayers.length;
 
   const observer = useRef();
-  
   const lastPlayerElementRef = useCallback(node => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setVisibleCount(prevCount => prevCount + ITEMS_PER_BATCH);
-      }
+      if (entries[0].isIntersecting && hasMore) setVisibleCount(prev => prev + ITEMS_PER_BATCH);
     });
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
 
-  // Funzione helper per la navigazione
-// Funzione helper per la navigazione
-  const goToDetail = (player) => {
-    navigate(`/giocatori/${player.id}`, { 
-      state: { 
-        player: player, 
-        contextList: sortedPlayers,
-        from: location.pathname 
-      } 
-    });
-  };
-  if (loading && visibleCount === ITEMS_PER_BATCH) {
-    return <div className="loading">Analisi database in corso...</div>;
-  }
+  if (loading && visibleCount === ITEMS_PER_BATCH) return <div className="loading">Analisi database in corso...</div>;
 
   return (
     <div>
       <h2 className="pageTitle">Scouting Report</h2>
       
+      {/* Aggiungiamo un input di ricerca veloce sopra i filtri */}
+      <div style={{marginBottom: '1rem'}}>
+        <input 
+          type="text" 
+          placeholder="Filtra per nome in questa lista..." 
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
+          style={{padding: '0.8rem 1.2rem', borderRadius: '10px', border: '1px solid #e2e8f0', width: '100%', maxWidth: '400px'}}
+        />
+      </div>
+
       <FilterBar 
         minRating={minRating} setMinRating={setMinRating}
         roleFilter={roleFilter} setRoleFilter={setRoleFilter}
+        natFilter={natFilter} setNatFilter={setNatFilter}
+        nationsList={nationsList}
+        sortKey={sortKey} setSortKey={setSortKey}
       />
 
-      <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', color: '#64748b', fontSize: '0.9rem'}}>
-        <span>Visualizzati: <strong>{currentItems.length}</strong> {/*su {sortedPlayers.length}*/}</span>
+      <div style={{marginBottom: '1rem', color: '#64748b', fontSize: '0.9rem'}}>
+        Trovati: <strong>{sortedPlayers.length}</strong> talenti
       </div>
 
       <div className="grid">
-        {currentItems.length > 0 ? (
-          currentItems.map((p, index) => {
-            if (currentItems.length === index + 1) {
-              return (
-                <div ref={lastPlayerElementRef} key={p.id}>
-                  <GenericCard 
-                    title={p.name}
-                    image={p.photo}
-                    subtitle={`Rating: ${p.rating} | ${p.position}`}
-                    variant="circle"
-                    onClick={() => goToDetail(p)}
-                  />
-                </div>
-              );
-            } else {
-              return (
-                <GenericCard 
-                  key={p.id}
-                  title={p.name}
-                  image={p.photo}
-                  subtitle={`Rating: ${p.rating} | ${p.position}`}
-                  variant="circle"
-                  onClick={() => goToDetail(p)}
-                />
-              );
-            }
-          })
-        ) : (
-          <p style={{gridColumn: '1/-1', textAlign:'center', padding: '2rem'}}>
-            Nessun giocatore corrisponde ai criteri di ricerca.
-          </p>
-        )}
+        {currentItems.map((p, index) => (
+          <div key={p.id} ref={currentItems.length === index + 1 ? lastPlayerElementRef : null}>
+            <GenericCard title={p.name} image={p.photo} subtitle={`${p.position} | Rating: ${p.rating} | Gol: ${p.goals}`} variant="circle"
+              onClick={() => navigate(`/giocatori/${p.id}`, { state: { player: p, contextList: sortedPlayers, from: location.pathname } })} />
+          </div>
+        ))}
       </div>
-
-      {hasMore && (
-        <div style={{textAlign: 'center', padding: '2rem', color: '#64748b', opacity: 0.7}}>
-          Caricamento altri talenti...
-        </div>
-      )}
-      
-      {!hasMore && currentItems.length > 0 && (
-        <div style={{textAlign: 'center', padding: '2rem', color: '#10b981', fontWeight: 'bold'}}>
-          ✅ Hai visualizzato tutti i giocatori disponibili.
-        </div>
-      )}
+      {hasMore && <div className="loading">Caricamento...</div>}
     </div>
   );
 }
