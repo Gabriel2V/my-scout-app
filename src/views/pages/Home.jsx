@@ -18,7 +18,7 @@ export default function Home() {
         {/* CARD 1: NAZIONI */}
         <div className={cardStyles.card} onClick={() => navigate('/nazioni')}>
           <span>🌍</span>
-          <h3>Nazioni & Leghe</h3>
+          <h3>Leghe per Nazione</h3>
         </div>
 
         {/* CARD 2: NAZIONALI */}

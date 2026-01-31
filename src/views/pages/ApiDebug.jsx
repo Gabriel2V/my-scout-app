@@ -120,6 +120,7 @@ export default function ApiDebug() {
           <div><strong>Data corrente:</strong> {usage.date}</div>
           <div><strong>Reset automatico:</strong> Mezzanotte (00:00)</div>
           <div><strong>Limite giornaliero:</strong> {usage.limit} chiamate</div>
+          <div><strong>Limite di chiamate per minuto:</strong> 10 chiamate/minuto</div>
         </div>
       </div>
 

@@ -2,10 +2,11 @@
  * STYLES: Cards
  * Stili per le card generiche e gli effetti interattivi
  */
+/* STYLES: Cards */
 .card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 20px; /* Più arrotondato per un look moderno */
+  border-radius: 20px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -25,12 +26,26 @@
   border-color: var(--accent);
 }
 
-.card img {
+
+.photoStandard, .photoCircle {
   width: 80px;
   height: 80px;
-  object-fit: contain;
+  object-fit: contain; 
   margin-bottom: 1.5rem;
   transition: transform 0.3s ease;
+}
+
+
+.photoStandard {
+  border-radius: 8px;
+}
+
+
+.photoCircle {
+  border-radius: 50%;
+  object-fit: cover; 
+  border: 3px solid white;
+  box-shadow: 0 0 0 1px var(--border-color);
 }
 
 .card:hover img {
@@ -44,7 +59,6 @@
   margin-bottom: 1rem;
 }
 
-/* Container bottoni */
 .extra {
   margin-top: auto;
   display: flex;
@@ -70,18 +84,10 @@
   background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
   box-shadow: 0 4px 6px rgba(15, 23, 42, 0.2);
 }
-
-.btnPrimary:hover {
-  transform: translateY(-2px);
-  background: var(--primary-light);
-}
+.btnPrimary:hover { transform: translateY(-2px); background: var(--primary-light); }
 
 .btnAccent {
   background: linear-gradient(135deg, var(--accent) 0%, #15803d 100%);
   box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
 }
-
-.btnAccent:hover {
-  transform: translateY(-2px);
-  background: var(--accent-hover);
-}
+.btnAccent:hover { transform: translateY(-2px); background: var(--accent-hover); }

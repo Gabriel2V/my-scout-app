@@ -67,6 +67,13 @@ class PlayerService {
     if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
     
     const data = await response.json();
+    if (data.errors && Object.keys(data.errors).length > 0) {
+      const errorMessage = JSON.stringify(data.errors);
+      console.error("API-Sports Error:", data.errors);
+      throw new Error(`Errore API: ${errorMessage}`);
+    }
+    // ---------------------------------------------------------
+
     this._incrementApiCounter();
     
     return data.response;

@@ -20,7 +20,7 @@ describe('PlayerDetailView', () => {
     expect(screen.getByText(/Caricamento dettagli/i)).toBeInTheDocument();
   });
 
-  test('Deve mostrare i dati del giocatore dopo il fetch', async () => {
+test('Deve mostrare i dati del giocatore dopo il fetch', async () => {
     PlayerService.getPlayerById.mockResolvedValue([{
       player: { id: 1, name: 'Lionel Messi', photo: 'url' },
       statistics: [{ team: { name: 'Inter Miami' }, games: { rating: '8.5' } }]
@@ -33,6 +33,8 @@ describe('PlayerDetailView', () => {
     );
 
     await waitFor(() => expect(screen.getByText('Lionel Messi')).toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText(/Caricamento dettagli/i)).not.toBeInTheDocument());
+
     expect(screen.getByText('Inter Miami')).toBeInTheDocument();
   });
 });

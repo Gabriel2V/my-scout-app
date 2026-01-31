@@ -10,11 +10,10 @@ import GenericCard from '../components/GenericCard';
 import FilterBar from '../components/FilterBar';
 
 export default function Players() {
-  const { players, loading } = usePlayersViewModel();
+  const { players, loading, loadMore, hasMoreRemote } = usePlayersViewModel();
   const navigate = useNavigate();
   const location = useLocation();
   
-  // STATI LOCALI (Non usano più l'header globale per filtrare)
   const [localSearch, setLocalSearch] = useState(''); 
   const [roleFilter, setRoleFilter] = useState('All');
   const [minRating, setMinRating] = useState(0);
@@ -41,7 +40,6 @@ export default function Players() {
   };
 
   const filteredPlayers = players.filter(p => {
-    // FILTRO LOCALE: Cerca nel nome del giocatore
     const matchesName = p.name.toLowerCase().includes(localSearch.toLowerCase());
     const matchesRole = roleFilter === 'All' || p.position === roleFilter;
     const matchesNat = natFilter === 'All' || p.nationality === natFilter;
@@ -64,25 +62,31 @@ export default function Players() {
   }, [filteredPlayers, sortKey]);
 
   const currentItems = sortedPlayers.slice(0, visibleCount);
-  const hasMore = visibleCount < sortedPlayers.length;
+  const hasMoreLocal = visibleCount < sortedPlayers.length;
 
   const observer = useRef();
+
   const lastPlayerElementRef = useCallback(node => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();
+    
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) setVisibleCount(prev => prev + ITEMS_PER_BATCH);
+      if (entries[0].isIntersecting) {
+        if (hasMoreLocal) {
+            setVisibleCount(prev => prev + ITEMS_PER_BATCH);
+        } else if (hasMoreRemote) {
+            console.log("Fine lista locale -> Richiedo prossima lega...");
+            loadMore();
+        }
+      }
     });
+    
     if (node) observer.current.observe(node);
-  }, [loading, hasMore]);
-
-  if (loading && visibleCount === ITEMS_PER_BATCH) return <div className="loading">Analisi database in corso...</div>;
-
+  }, [loading, hasMoreLocal, hasMoreRemote, loadMore]);
   return (
     <div>
       <h2 className="pageTitle">Scouting Report</h2>
       
-      {/* Aggiungiamo un input di ricerca veloce sopra i filtri */}
       <div style={{marginBottom: '1rem'}}>
         <input 
           type="text" 
@@ -108,12 +112,22 @@ export default function Players() {
       <div className="grid">
         {currentItems.map((p, index) => (
           <div key={p.id} ref={currentItems.length === index + 1 ? lastPlayerElementRef : null}>
-            <GenericCard title={p.name} image={p.photo} subtitle={`${p.position} | Rating: ${p.rating} | Gol: ${p.goals}`} variant="circle"
-              onClick={() => navigate(`/giocatori/${p.id}`, { state: { player: p, contextList: sortedPlayers, from: location.pathname } })} />
+            <GenericCard 
+              title={p.name} 
+              image={p.photo} 
+              subtitle={`${p.position} | Rating: ${p.rating} | Gol: ${p.goals}`} 
+              variant="circle"
+              onClick={() => navigate(`/giocatori/${p.id}`, { state: { player: p, contextList: sortedPlayers, from: location.pathname } })} 
+            />
           </div>
         ))}
       </div>
-      {hasMore && <div className="loading">Caricamento...</div>}
+      {loading && <div className="loading">Analisi database in corso...</div>}
+      {!loading && !hasMoreLocal && !hasMoreRemote && sortedPlayers.length > 0 && (
+          <div style={{textAlign: 'center', padding: '2rem', color: '#94a3b8'}}>
+            -- Fine Scouting Report --
+          </div>
+      )}
     </div>
   );
 }

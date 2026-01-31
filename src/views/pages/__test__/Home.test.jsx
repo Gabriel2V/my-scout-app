@@ -12,7 +12,7 @@ import Home from '../Home';
 describe('Home Page', () => {
   test('Deve mostrare le opzioni principali della Dashboard', () => {
     render(<MemoryRouter><Home /></MemoryRouter>);
-    expect(screen.getByText(/Nazioni & Leghe/i)).toBeInTheDocument();
+    expect(screen.getByText(/Leghe per Nazione/i)).toBeInTheDocument();
     expect(screen.getByText(/Squadre Nazionali/i)).toBeInTheDocument();
     expect(screen.getByText(/Top Player Mondiali/i)).toBeInTheDocument();
   });
