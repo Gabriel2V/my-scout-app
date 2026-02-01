@@ -3,7 +3,7 @@
  * Custom Hook per la gestione della ricerca globale
  * Aggrega risultati da nazioni, squadre e giocatori gestendo il debounce dell'input e la priorità della cache
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PlayerService from '../services/PlayerService';
 import { Player } from '../models/Player';
 
@@ -12,100 +12,84 @@ export function useSearchViewModel(searchTerm) {
   const [teams, setTeams] = useState([]);
   const [nations, setNations] = useState([]); 
   const [loading, setLoading] = useState(false);
+  const lastSearchRef = useRef("");
 
   useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      if (!searchTerm || searchTerm.trim().length < 3) {
-        setPlayers([]);
-        setTeams([]);
-        setNations([]);
-        return;
-      }
+    const term = searchTerm?.trim() || "";
+    
+    if (term.length < 3) {
+      setPlayers([]);
+      setTeams([]);
+      setNations([]);
+      lastSearchRef.current = "";
+      setLoading(false);
+      return;
+    }
 
+    // Se stiamo cercando la stessa cosa e abbiamo già risultati, non ripetere l'API
+    if (lastSearchRef.current === term && (players.length > 0 || teams.length > 0)) {
+      setLoading(false);
+      return;
+    }
+
+    const performSearch = async () => {
       setLoading(true);
-
       try {
-        // RICERCA NAZIONI (Filtra la lista geografica)
-        // Questo trova la "Nazione" per andare ai campionati
-        let allNations = [];
-        const nationsCache = localStorage.getItem('all_nations');
-        
-        if (nationsCache) {
-          allNations = JSON.parse(nationsCache);
-        } else {
-          allNations = await PlayerService.getCountries();
-          localStorage.setItem('all_nations', JSON.stringify(allNations));
+        // RICERCA LOCALE (Sempre eseguita se lo stato è vuoto)
+        const nationsData = localStorage.getItem('all_nations') || localStorage.getItem('cache_nations');
+        if (nationsData) {
+          const filtered = JSON.parse(nationsData).filter(n => n.name.toLowerCase().includes(term.toLowerCase()));
+          setNations(filtered);
         }
-        
-        const filteredNations = allNations.filter(n => 
-          n.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setNations(filteredNations);
 
-        //  RICERCA GIOCATORI (Logica Cache esistente) 
-        let localPlayers = [];
+        let localMatches = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key && key.startsWith('players_')) {
-            try {
-              const cachedData = JSON.parse(localStorage.getItem(key));
-              if (Array.isArray(cachedData)) {
-                const matches = cachedData.filter(p => 
-                  p.player?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                localPlayers = [...localPlayers, ...matches];
-              }
-            } catch (e) { console.warn(e); }
-          }
-        }
-        
-        const uniqueLocalPlayers = Array.from(
-          new Map(localPlayers.map(item => [item.player.id, item])).values()
-        );
-        setPlayers(uniqueLocalPlayers.map(item => new Player(item)));
-
-        //  RICERCA API (Squadre e Giocatori) 
-        if (searchTerm.trim().length >= 3) {
-          const [apiPlayersData, apiTeamsData] = await Promise.all([
-            PlayerService.searchPlayers(searchTerm).catch(() => []),
-            PlayerService.searchTeams(searchTerm).catch(() => [])
-          ]);
-
-          // Merge Giocatori
-          if (apiPlayersData.length > 0) {
-            const existingIds = new Set(uniqueLocalPlayers.map(p => p.player.id));
-            const newApiPlayers = apiPlayersData.filter(p => 
-              p.player?.id && !existingIds.has(p.player.id)
-            );
-            
-            if (newApiPlayers.length > 0) {
-              setPlayers(prev => [...prev, ...newApiPlayers.map(item => new Player(item))]);
+          if (key?.startsWith('players_')) {
+            const data = JSON.parse(localStorage.getItem(key));
+            if (Array.isArray(data)) {
+              const matches = data.filter(p => (p.player?.name || p.name)?.toLowerCase().includes(term.toLowerCase()));
+              localMatches = [...localMatches, ...matches];
             }
           }
+        }
+        const uniqueLocal = Array.from(new Map(localMatches.map(m => [m.player?.id || m.id, m])).values());
+        setPlayers(uniqueLocal.map(item => new Player(item)));
 
-          // Merge Squadre (Inclusa la mappatura per isNational)
+        // Se abbiamo già fatto questa ricerca remota, non chiamare l'API
+        if (lastSearchRef.current !== term) {
+          lastSearchRef.current = term;
+          const [apiPlayersData, apiTeamsData] = await Promise.all([
+            PlayerService.searchPlayers(term).catch(() => []),
+            PlayerService.searchTeams(term).catch(() => [])
+          ]);
+
+          if (apiPlayersData.length > 0) {
+            const newPlayers = apiPlayersData.map(item => new Player(item));
+            setPlayers(prev => {
+              const combined = [...prev, ...newPlayers];
+              return Array.from(new Map(combined.map(p => [p.id, p])).values());
+            });
+          }
+
           if (apiTeamsData.length > 0) {
-            setTeams(apiTeamsData
-              .filter(item => item.team && item.team.id)
-              .map(item => ({
-                id: item.team.id,
-                name: item.team.name,
-                logo: item.team.logo,
-                country: item.team.country,
-                isNational: item.team.national //  Cattura flag
-              }))
-            );
+            setTeams(apiTeamsData.map(item => ({
+              id: item.team.id,
+              name: item.team.name,
+              logo: item.team.logo,
+              country: item.team.country,
+              isNational: item.team.national
+            })));
           }
         }
-
       } catch (error) {
-        console.error("Errore ricerca:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
-    }, 400);
+    };
 
-    return () => clearTimeout(timeoutId);
+    performSearch();
   }, [searchTerm]);
 
   return { players, teams, nations, loading }; 

@@ -1,54 +1,31 @@
 /**
  * PAGE: Teams.jsx
- * Elenca le squadre appartenenti a un determinato campionato
- * Gestisce il caricamento e il caching della lista squadre
+ * Elenca le squadre appartenenti a un determinato campionato.
+ * Comunica esclusivamente con il TeamsViewModel seguendo il pattern MVVM.
  */
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import PlayerService from '../../services/PlayerService';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTeamsViewModel } from '../../viewmodels/useTeamsViewModel';
 import styles from '../../styles/Card.module.css';
 
 export default function Teams() {
-  const { serieId } = useParams();
-  const [teams, setTeams] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { teams, loading } = useTeamsViewModel();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const loadTeams = async () => {
-      const cacheKey = `cache_teams_${serieId}`;
-      const cachedData = localStorage.getItem(cacheKey);
-
-      if (cachedData) {
-        setTeams(JSON.parse(cachedData));
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        const data = await PlayerService.getTeams(serieId);
-        setTeams(data);
-        localStorage.setItem(cacheKey, JSON.stringify(data));
-      } catch (error) {
-        console.error("Errore caricamento squadre:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadTeams();
-  }, [serieId]);
 
   if (loading) return <div className="loading">Caricamento squadre...</div>;
 
   return (
     <div>
       <h2 className="pageTitle">Squadre del Campionato</h2>
-      {teams.length === 0 && !loading && <p style={{textAlign:'center'}}>Nessuna squadra trovata.</p>}
+  
+      {(!teams || teams.length === 0) && !loading && (
+        <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--primary-light)' }}>
+          Nessuna squadra trovata.
+        </p>
+      )}
 
       <div className="grid">
-        {teams.map(item => (
+        {(teams || []).map(item => (
           <div 
             key={item.team.id} 
             className={styles.card}

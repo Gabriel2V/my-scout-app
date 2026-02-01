@@ -1,3 +1,4 @@
+/** PAGE: Info.jsx. Presenta i dettagli del progetto ScoutMaster 2026 e i dati dell'autore. */
 import React from 'react';
 import styles from '../../styles/HomePage.module.css';
 

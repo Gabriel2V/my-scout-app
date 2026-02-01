@@ -1,3 +1,8 @@
+/**
+ * PAGE: NotFound.jsx
+ * Pagina di errore 404 personalizzata.
+ * Viene visualizzata quando l'utente naviga su una rotta inesistente.
+ */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/HomePage.module.css';

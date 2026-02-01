@@ -1,3 +1,8 @@
+/*
+ * STYLES: FilterBar
+ * Stili per la barra dei filtri nella pagina giocatori.
+ * Gestisce il layout flexbox dei controlli (slider rating, select ruoli/nazioni).
+ */
 .filterBar {
   background-color: #fff;
   padding: 1.5rem;

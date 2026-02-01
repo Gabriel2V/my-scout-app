@@ -1,3 +1,8 @@
+/**
+ * CONFIG: setupTests.js
+ * Configurazione dell'ambiente di test Vitest + React Testing Library.
+ * Estende i matcher di Jest, mocka le API browser non disponibili in JSDOM (fetch, IntersectionObserver, scrollTo).
+ */
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 

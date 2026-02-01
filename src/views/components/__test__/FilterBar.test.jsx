@@ -1,3 +1,8 @@
+/**
+ * TEST: FilterBar Component
+ * Verifica che i controlli di filtro (slider, select) renderizzino correttamente
+ * e che le callback (setRoleFilter, setMinRating, etc.) vengano chiamate al cambio valore.
+ */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import '@testing-library/jest-dom';

@@ -5,8 +5,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import PlayerService from '../services/PlayerService';
-import { Player } from '../models/Player';
+import { usePlayerDetailViewModel } from '../viewmodels/usePlayerDetailViewModel';
 import styles from '../styles/PlayerDetailView.module.css';
 
 export default function PlayerDetailView() {
@@ -17,12 +16,11 @@ export default function PlayerDetailView() {
   const initialPlayer = location.state?.player || null;
   const contextList = location.state?.contextList || []; 
   const returnPath = location.state?.from || '/'; 
-  
-  const [player, setPlayer] = useState(initialPlayer);
-  const [loading, setLoading] = useState(!initialPlayer);
-  const [error, setError] = useState(null);
 
-  // Logica Navigazione Prev/Next
+  // FIX: Chiamata al ViewModel SPOSTATA QUI, prima dell'utilizzo di 'player'
+  const { player, loading, error } = usePlayerDetailViewModel(id, initialPlayer);
+
+  // Logica Navigazione Prev/Next (ora 'player' è definito)
   const currentIndex = player ? contextList.findIndex(p => p.id === player.id) : -1;
   const prevPlayer = currentIndex > 0 ? contextList[currentIndex - 1] : null;
   const nextPlayer = currentIndex !== -1 && currentIndex < contextList.length - 1 ? contextList[currentIndex + 1] : null;
@@ -36,42 +34,6 @@ export default function PlayerDetailView() {
       } 
     });
   };
-
-  useEffect(() => {
-    // Se abbiamo già il player caricato e corrisponde all'ID richiesto, non facciamo nulla.
-    // Questo check previene loop infiniti anche se 'player' è nelle dipendenze.
-    if (player && player.id.toString() === id.toString()) return;
-
-    // Caso 1: Dati passati via navigazione (es. click su card)
-    if (location.state?.player && location.state.player.id.toString() === id.toString()) {
-      setPlayer(location.state.player);
-      setLoading(false);
-      return;
-    }
-
-    // Caso 2: Fetch da API (es. refresh pagina o link diretto)
-    const loadSinglePlayer = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await PlayerService.getPlayerById(id);
-        if (data && data.length > 0) {
-          const newPlayer = new Player(data[0]);
-          setPlayer(newPlayer);
-        } else {
-          setError("Giocatore non trovato.");
-        }
-      } catch (err) {
-        console.error(err);
-        setError("Errore di connessione.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadSinglePlayer();
-
-  }, [id, location.state, player]);
 
   if (loading) return <div className={styles.loading}>Caricamento dettagli...</div>;
 

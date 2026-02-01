@@ -39,9 +39,12 @@ Definisce la struttura dei dati e la logica di dominio.
 * **Player.js:** Classe che normalizza i dati grezzi provenienti dall'API, gestendo casi di dati mancanti e fornendo metodi di utilità come `isTopPlayer()`.
 
 ### 2. ViewModel (`src/viewmodels/`)
-Custom Hooks che fungono da ponte tra il Model e la View, gestendo la logica di presentazione e lo stato.
-* **usePlayersViewModel.js:** Gestisce il caricamento della lista giocatori, supportando tre modalità: per squadra, per campionato (con paginazione) e globale (con caricamento batch incrementale).
-* **useSearchViewModel.js:** Gestisce la logica della ricerca globale, aggregando risultati da Nazioni, Squadre e Giocatori con logica di debounce e priorità alla cache locale.
+Custom Hooks che fungono da ponte tra il Model e la View, gestendo la logica di presentazione, lo stato e il polling dei dati.
+* **usePlayersViewModel.js:** Gestisce il caricamento della lista giocatori (per squadra, lega o globale), implementando la logica di *Infinite Scroll* e deduplicazione dei dati.
+* **useSearchViewModel.js:** Implementa una **strategia di ricerca ibrida**: interroga prima la cache locale (`localStorage`) per risultati immediati e, solo se necessario, effettua chiamate API in background, unendo i risultati.
+* **useApiUsageViewModel.js:** Centralizza la logica di monitoraggio delle quote API. Gestisce il polling automatico per aggiornare i contatori in tempo reale e le operazioni di manutenzione (reset contatori, pulizia cache) utilizzate dai componenti di debug.
+* **useNationalTeamsViewModel.js:** Gestisce il recupero parallelo (`Promise.all`) delle principali nazionali mondiali.
+* **usePlayerDetailViewModel.js:** Gestisce il recupero del singolo giocatore, con logica di fallback per recuperare i dati sia dalla navigazione precedente che tramite chiamata diretta.
 
 ### 3. View (`src/views/`)
 Componenti React puri che si occupano solo del rendering dell'interfaccia utente.
@@ -79,8 +82,17 @@ La barra dei filtri (`FilterBar`) è stata potenziata per offrire un controllo g
 ### Navigazione Contestuale
 La vista di dettaglio (`PlayerDetailView`) mantiene il contesto della lista di provenienza. L'utente può scorrere tra i giocatori (Precedente/Successivo) direttamente dalla scheda di dettaglio senza dover tornare all'elenco principale, grazie al passaggio dello stato tramite React Router.
 
-### Monitoraggio API
-Un componente dedicato (`ApiCounter`) e una dashboard di debug (`ApiDebug`) permettono di monitorare in tempo reale il consumo delle chiamate API giornaliere, visualizzando lo stato di salute del servizio e permettendo il reset manuale della cache.
+### Ricerca Ibrida Intelligente
+Il sistema di ricerca (`useSearchViewModel`) adotta un approccio "Local-First":
+1.  All'input dell'utente, scansiona istantaneamente il `localStorage` per trovare giocatori, squadre o nazioni già visitati.
+2.  Esegue una chiamata API (debounced) solo se il termine di ricerca è nuovo.
+3.  Aggrega i risultati locali e remoti rimuovendo i duplicati, garantendo un feedback immediato all'utente e risparmiando chiamate API.
+
+### Monitoraggio API e Debug
+L'applicazione include un sistema robusto per la gestione dei limiti del tier gratuito di API-Sports (100 chiamate/giorno):
+* **Service Layer:** `PlayerService` tiene traccia delle chiamate HTTP e blocca le richieste se il limite è raggiunto, prevenendo errori 429.
+* **ViewModel Layer:** `useApiUsageViewModel` aggiorna l'interfaccia in tempo reale (polling ogni 2s) e gestisce la logica di reset.
+* **UI:** Il widget `ApiCounter` cambia colore (Verde/Giallo/Rosso) in base alla percentuale di utilizzo, mentre la pagina `ApiDebug` offre strumenti per pulire la cache e resettare i contatori manualmente.
 
 ---
 
@@ -160,8 +172,13 @@ L'app sarà disponibile all'indirizzo http://localhost:3000.
 
 ## Testing
 
-Il progetto include una suite di test completa che copre Services, ViewModels e Componenti View. I test verificano il rendering corretto, la gestione degli eventi e la logica asincrona.
+Il progetto include una suite di test completa basata su **Vitest** e **React Testing Library**.
+La copertura include:
 
+* **Unit Test dei Service:** Verifica del mocking di `fetch`, gestione errori HTTP e parsing della risposta.
+* **Integration Test dei ViewModel:** Verifica della logica di business, gestione del loading state e integrazione con il `localStorage` (mockato) senza dover renderizzare l'intera UI.
+* **Component Testing:** Verifica del rendering dei componenti (es. `PlayerCard`, `ApiCounter`) e delle interazioni utente.
+* **Page Testing:** Verifica del routing e dei flussi completi (es. `PlayerDetailView` che mostra il loading e poi i dati).
 Per eseguire i test tramite Vitest:
 
 ```bash

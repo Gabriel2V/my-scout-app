@@ -1,53 +1,47 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { describe, test, expect, vi, beforeEach } from 'vitest';
+/**
+ * TEST: ApiCounter Component
+ * Test unitario per il widget di monitoraggio API.
+ * Verifica la corretta visualizzazione dei dati passati dal ViewModel e l'espansione/chiusura del widget.
+ */
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, test, expect, vi } from 'vitest';
 import '@testing-library/jest-dom';
 import React from 'react';
 import ApiCounter from '../ApiCounter';
-import PlayerService from '../../../services/PlayerService';
+import { useApiUsageViewModel } from '../../../viewmodels/useApiUsageViewModel';
 
-vi.mock('../../../services/PlayerService', () => ({
-  default: {
-    getApiUsage: vi.fn()
-  }
-}));
+// Mock del ViewModel
+vi.mock('../../../viewmodels/useApiUsageViewModel');
 
 describe('ApiCounter Component', () => {
   const mockUsage = {
     used: 45,
     limit: 100,
     remaining: 55,
-    percentage: 45,
-    date: 'Fri Jan 23 2026'
+    percentage: 45
   };
 
-  beforeEach(() => {
-    vi.useFakeTimers();
-    vi.mocked(PlayerService.getApiUsage).mockReturnValue(mockUsage);
-  });
-
-  test('Deve mostrare il badge compatto con il conteggio iniziale', () => {
+  test('Deve mostrare i dati forniti dal ViewModel', () => {
+    vi.mocked(useApiUsageViewModel).mockReturnValue({ usage: mockUsage });
+    
     render(<ApiCounter />);
     expect(screen.getByText('45/100')).toBeInTheDocument();
   });
 
-  test('Deve espandersi al click e mostrare i dettagli di utilizzo', async () => {
+  test('Deve espandersi al click', () => {
+    vi.mocked(useApiUsageViewModel).mockReturnValue({ usage: mockUsage });
+    
     render(<ApiCounter />);
-    const badgeElement = screen.getByText('45/100').parentElement;
-    fireEvent.click(badgeElement);
+    const badge = screen.getByText('45/100').closest('div');
+    fireEvent.click(badge);
     
     expect(screen.getByText('API Usage')).toBeInTheDocument();
-    expect(screen.getByText('55')).toBeInTheDocument();
+    expect(screen.getByText('55')).toBeInTheDocument(); // Rimanenti
   });
 
-  test('Deve aggiornare i dati periodicamente tramite interval', () => {
-    render(<ApiCounter />);
-    const updatedUsage = { ...mockUsage, used: 50, percentage: 50 };
-    vi.mocked(PlayerService.getApiUsage).mockReturnValue(updatedUsage);
-
-    act(() => {
-      vi.advanceTimersByTime(2000);
-    });
-
-    expect(screen.getByText('50/100')).toBeInTheDocument();
+  test('Non deve renderizzare nulla se usage è null', () => {
+    vi.mocked(useApiUsageViewModel).mockReturnValue({ usage: null });
+    const { container } = render(<ApiCounter />);
+    expect(container).toBeEmptyDOMElement();
   });
 });

@@ -1,3 +1,8 @@
+/*
+ * STYLES: SearchResults
+ * Gestione del layout per la pagina dei risultati di ricerca.
+ * Definisce i bordi colorati per categorie (Nazioni, Squadre, Giocatori) e gli stati vuoti.
+ */
 .section {
   margin-bottom: 4rem;
 }

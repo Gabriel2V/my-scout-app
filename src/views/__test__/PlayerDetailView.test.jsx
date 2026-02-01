@@ -15,9 +15,10 @@ vi.mock('../../services/PlayerService', () => ({
 }));
 
 describe('PlayerDetailView', () => {
-  test("Deve mostrare lo stato di caricamento all'inizio", () => {
+  test("Deve mostrare lo stato di caricamento all'inizio", async () => {
     render(<MemoryRouter initialEntries={['/giocatori/1']}><PlayerDetailView /></MemoryRouter>);
-    expect(screen.getByText(/Caricamento dettagli/i)).toBeInTheDocument();
+    // Usiamo findByText che gestisce implicitamente l'attesa asincrona
+    expect(await screen.findByText(/Caricamento dettagli/i)).toBeInTheDocument();
   });
 
 test('Deve mostrare i dati del giocatore dopo il fetch', async () => {

@@ -1,7 +1,7 @@
 /**
- * TEST: Teams.test.js
- * Verifica la pagina delle Squadre di un campionato
- * Testa il caricamento dei dati, la gestione dello stato di loading e la visualizzazione del messaggio in caso di lista vuota
+ * TEST: Teams Page
+ * Integration test per la pagina Squadre.
+ * Verifica il caricamento, la gestione della cache e il rendering della griglia o del messaggio di errore.
  */
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -16,13 +16,19 @@ vi.mock('../../../services/PlayerService', () => ({
 }));
 
 describe('Pagina Teams', () => {
-  beforeEach(() => { vi.clearAllMocks(); localStorage.clear(); });
+  beforeEach(() => {
+    vi.clearAllMocks();
+    localStorage.clear(); // FIX: Pulisce la cache per evitare che i dati del test precedente influenzino quello attuale
+  });
 
   test("Deve mostrare lo stato di caricamento e poi l'elenco delle squadre", async () => {
-    PlayerService.getTeams.mockResolvedValue([{ team: { id: 1, name: 'Inter', logo: 'url' } }]);
+    const mockTeams = [{ team: { id: 1, name: 'AC Milan', logo: 'url' } }];
+    PlayerService.getTeams.mockResolvedValue(mockTeams);
+
     render(<MemoryRouter><Teams /></MemoryRouter>);
     expect(screen.getByText(/Caricamento squadre/i)).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText('Inter')).toBeInTheDocument());
+
+    await waitFor(() => expect(screen.getByText('AC Milan')).toBeInTheDocument());
   });
 
   test('Deve mostrare un messaggio se non vengono trovate squadre', async () => {
