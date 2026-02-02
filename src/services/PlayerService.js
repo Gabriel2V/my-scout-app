@@ -1,7 +1,7 @@
 /**
  * SERVICE: PlayerService.js
  * Gestisce tutte le comunicazioni con l'API esterna (API-Sports)
- * Implementa il monitoraggio del rate-limit, il caching delle risposte e la logica di paginazione/lazy loading
+ * Implementa rate-limit, caching e deduplicazione delle richieste.
  */
 class PlayerService {
   constructor() {
@@ -15,6 +15,8 @@ class PlayerService {
       { id: 78, name: 'Bundesliga' },
       { id: 61, name: 'Ligue 1' }
     ];
+    // FIX: Mappa per gestire le richieste in corso ed evitare duplicati
+    this.pendingRequests = new Map();
   }
 
   _getApiCounter() {
@@ -44,19 +46,34 @@ class PlayerService {
   }
 
   async _apiCall(endpoint) {
-    const counter = this._getApiCounter();
-    if (counter.count >= this.dailyLimit) throw new Error(`Limite API raggiunto.`);
+    // FIX: Se c'è già una richiesta identica in corso, restituisci la sua promise
+    if (this.pendingRequests.has(endpoint)) {
+      return this.pendingRequests.get(endpoint);
+    }
 
-    const response = await fetch(`${this.baseUrl}/${endpoint}`, {
-      method: 'GET',
-      headers: { 'x-apisports-key': this.apiKey }
-    });
-    
-    if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
-    const data = await response.json();
-    
-    this._incrementApiCounter();
-    return data.response;
+    const requestPromise = (async () => {
+      try {
+        const counter = this._getApiCounter();
+        if (counter.count >= this.dailyLimit) throw new Error(`Limite API raggiunto.`);
+
+        const response = await fetch(`${this.baseUrl}/${endpoint}`, {
+          method: 'GET',
+          headers: { 'x-apisports-key': this.apiKey }
+        });
+        
+        if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
+        const data = await response.json();
+        
+        this._incrementApiCounter();
+        return data.response;
+      } finally {
+        // Pulizia: rimuovi la richiesta dalla mappa una volta completata (successo o errore)
+        this.pendingRequests.delete(endpoint);
+      }
+    })();
+
+    this.pendingRequests.set(endpoint, requestPromise);
+    return requestPromise;
   }
 
   getCountries() { return this._apiCall('countries'); }

@@ -58,6 +58,7 @@ export default function FilterBar({
           onChange={(e) => setSortKey(e.target.value)}
           className={styles.sortSelect}
         >
+          <option value="default">Predefinito</option>
           <option value="rating">Miglior Rating</option>
           <option value="goals">Più Gol</option>
           <option value="name">Nome (A-Z)</option>

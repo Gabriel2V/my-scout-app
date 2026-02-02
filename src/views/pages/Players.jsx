@@ -7,6 +7,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayersViewModel } from '../../viewmodels/usePlayersViewModel';
 import GenericCard from '../components/GenericCard';
+import EmptyState from '../components/EmptyState';
 import FilterBar from '../components/FilterBar';
 
 export default function Players() {
@@ -17,7 +18,7 @@ export default function Players() {
   const [roleFilter, setRoleFilter] = useState('All');
   const [minRating, setMinRating] = useState(0);
   const [natFilter, setNatFilter] = useState('All');
-  const [sortKey, setSortKey] = useState('rating');
+  const [sortKey, setSortKey] = useState('default');
   const [visibleCount, setVisibleCount] = useState(12);
 
   const nationsList = useMemo(() => {
@@ -39,9 +40,13 @@ export default function Players() {
     });
   }, [players, localSearch, roleFilter, minRating, natFilter]);
 
-  const sorted = useMemo(() => {
+const sorted = useMemo(() => {
+    if (sortKey === 'default') {
+      return filtered;
+    }
     return [...filtered].sort((a, b) => {
       if (sortKey === 'name') return a.name.localeCompare(b.name);
+      // Rating / Goals
       const rA = parseFloat(a.rating) || 0;
       const rB = parseFloat(b.rating) || 0;
       return rB - rA;
@@ -84,18 +89,25 @@ export default function Players() {
         nationsList={nationsList}
         sortKey={sortKey} setSortKey={setSortKey}
       />
-
-      <div className="grid">
-        {currentItems.map((p, i) => (
-          <div key={`${p.id}-${i}`} ref={currentItems.length === i + 1 ? lastPlayerRef : null}>
-            <GenericCard 
-              title={p.name} image={p.photo} variant="circle"
-              subtitle={`${p.position} | Rating: ${p.rating}`}
-              onClick={() => navigate(`/giocatori/${p.id}`, { state: { player: p } })} 
-            />
-          </div>
-        ))}
-      </div>
+      {!loading && players.length === 0 ? (
+        <EmptyState message="Non ci sono giocatori disponibili per questa selezione." icon="player_off" />
+      ) : (
+        <div className="grid">
+          {currentItems.map((p, i) => (
+            <div key={`${p.id}-${i}`} ref={currentItems.length === i + 1 ? lastPlayerRef : null}>
+              <GenericCard
+                title={p.name} image={p.photo} variant="circle"
+                subtitle={`${p.position} | Rating: ${p.rating}`}
+                onClick={() => navigate(`/giocatori/${p.id}`, { 
+                  state: { 
+                    player: p, 
+                    contextList: sorted,
+                    from: window.location.pathname 
+                  } })}
+              />
+            </div>
+          ))}
+      </div>)}
       {loading && <div className="loading">Caricamento talenti...</div>}
       {!loading && !hasMoreRemote && currentItems.length === sorted.length && (
         <div style={{textAlign: 'center', padding: '2rem', color: 'var(--accent)'}}>-- Rosa Completa --</div>

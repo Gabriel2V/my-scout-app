@@ -1,62 +1,88 @@
 /**
  * VIEWMODEL: usePlayerDetailViewModel.js
  * Gestisce il recupero dei dati per il dettaglio di un giocatore.
+ * MVVM COMPLIANT: Gestisce internamente la logica di navigazione (prev/next) e la priorità dei dati locali.
  */
-import { useState, useEffect } from 'react';
+/**
+ * VIEWMODEL: usePlayerDetailViewModel.js
+ * Gestisce il dettaglio giocatore.
+ * MVVM COMPLIANT: Gestisce internamente la logica di navigazione (prev/next) e la priorità dei dati locali.
+ * FIX: Aggiunti controlli di sicurezza su ID null/undefined per evitare crash durante findIndex.
+ */
+import { useState, useEffect, useMemo } from 'react';
 import PlayerService from '../services/PlayerService';
 import { Player } from '../models/Player';
 
-export function usePlayerDetailViewModel(id, initialPlayer) {
-  const [player, setPlayer] = useState(initialPlayer);
-  const [loading, setLoading] = useState(!initialPlayer);
+export function usePlayerDetailViewModel(id, initialPlayer, contextList = []) {
+  // STATO DERIVATO (Sincrono)
+  const cachedData = useMemo(() => {
+    
+    if (initialPlayer && initialPlayer.id != null && initialPlayer.id.toString() === id?.toString()) {
+      return new Player(initialPlayer);
+    }
+    return null;
+  }, [id, initialPlayer]);
+
+  const [remotePlayer, setRemotePlayer] = useState(null);
+  const [loading, setLoading] = useState(!cachedData);
   const [error, setError] = useState(null);
 
+  // Il giocatore attivo è quello della cache (se presente) o quello remoto
+  const player = cachedData || remotePlayer;
+
+  //  LOGICA DI NAVIGAZIONE 
+  // Calcoliamo chi sono prev e next basandoci sulla lista passata
+  const { prevPlayer, nextPlayer } = useMemo(() => {
+    if (!player || !contextList || contextList.length === 0) {
+      return { prevPlayer: null, nextPlayer: null };
+    }
+    
+
+    const index = contextList.findIndex(p => 
+      p?.id != null && 
+      player.id != null && 
+      p.id.toString() === player.id.toString()
+    );
+    
+    return {
+      prevPlayer: index > 0 ? new Player(contextList[index - 1]) : null,
+      nextPlayer: index !== -1 && index < contextList.length - 1 ? new Player(contextList[index + 1]) : null
+    };
+  }, [player, contextList]);
+
+  // SIDE EFFECT (Solo per accesso diretto via URL)
   useEffect(() => {
-    // Se abbiamo già il giocatore completo (passato via state), non ricaricare se l'ID coincide
-    if (player && player.id && player.id.toString() === id.toString()) {
+    // Se abbiamo cachedData, il Service è escluso.
+    if (cachedData) {
       setLoading(false);
+      setError(null);
       return;
     }
 
-    const loadSinglePlayer = async () => {
+    const loadFromService = async () => {
       setLoading(true);
       setError(null);
       try {
-        // Cerchiamo il giocatore per ID (usiamo un metodo specifico o search se non esiste getById diretto)
-        // Assumiamo che PlayerService.getPlayersByTeam o simile possa essere adattato, 
-        // ma qui usiamo una chiamata specifica se il service la supporta, o fallback.
-        // Nota: Il service mockato nei test usa getPlayerById, quindi lo usiamo qui.
-        
-        let data = null;
+        let data = [];
         if (PlayerService.getPlayerById) {
            data = await PlayerService.getPlayerById(id);
-        } else {
-           // Fallback se il metodo non esiste nel service reale (simulazione)
-           // In produzione servirebbe un endpoint specifico o iterare.
-           data = []; 
         }
-
+        
         if (Array.isArray(data) && data.length > 0) {
-           // Adattamento dati se necessario, dipende dalla risposta API
-           // Se l'API ritorna la struttura { player:..., statistics:... }
-           setPlayer(new Player(data[0]));
-        } else if (data && !Array.isArray(data)) {
-           setPlayer(new Player(data));
+           setRemotePlayer(new Player(data[0]));
         } else {
-           // Tentativo di recupero dalla cache globale se presente
-           // (omesso per brevità, ci affidiamo al service)
            setError("Giocatore non trovato.");
         }
       } catch (err) {
         console.error(err);
-        setError("Impossibile caricare i dettagli del giocatore.");
+        setError("Impossibile caricare i dati.");
       } finally {
         setLoading(false);
       }
     };
 
-    loadSinglePlayer();
-  }, [id]); // Rimuovi 'player' dalle dipendenze per evitare loop se l'oggetto cambia riferimento
+    loadFromService();
+  }, [id, cachedData]); 
 
-  return { player, loading, error };
+  return { player, prevPlayer, nextPlayer, loading, error };
 }

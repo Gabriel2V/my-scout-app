@@ -1,9 +1,8 @@
 /**
  * VIEW: PlayerDetailView.jsx
- * Pagina di dettaglio del singolo calciatore
- * Mostra statistiche approfondite e gestisce la navigazione "precedente/successivo" mantenendo il contesto della lista di origine
+ * Pagina di dettaglio. Delega logica e navigazione interamente al ViewModel.
  */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { usePlayerDetailViewModel } from '../viewmodels/usePlayerDetailViewModel';
 import styles from '../styles/PlayerDetailView.module.css';
@@ -13,26 +12,34 @@ export default function PlayerDetailView() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Estrae dati dallo state della navigazione (Router)
   const initialPlayer = location.state?.player || null;
   const contextList = location.state?.contextList || []; 
   const returnPath = location.state?.from || '/'; 
 
-  // FIX: Chiamata al ViewModel SPOSTATA QUI, prima dell'utilizzo di 'player'
-  const { player, loading, error } = usePlayerDetailViewModel(id, initialPlayer);
+  const { player, prevPlayer, nextPlayer, loading, error } = usePlayerDetailViewModel(id, initialPlayer, contextList);
 
-  // Logica Navigazione Prev/Next (ora 'player' è definito)
-  const currentIndex = player ? contextList.findIndex(p => p.id === player.id) : -1;
-  const prevPlayer = currentIndex > 0 ? contextList[currentIndex - 1] : null;
-  const nextPlayer = currentIndex !== -1 && currentIndex < contextList.length - 1 ? contextList[currentIndex + 1] : null;
-
+  // Funzione di navigazione
   const goToPlayer = (targetPlayer) => {
     navigate(`/giocatori/${targetPlayer.id}`, { 
       state: { 
         player: targetPlayer, 
-        contextList: contextList,
+        contextList: contextList, 
         from: returnPath 
       } 
     });
+  };
+  const handleTeamClick = () => {
+    if (player.teamId) {
+      // Naviga alla lista giocatori di quella squadra
+      navigate(`/squadre/${player.teamId}/giocatori`);
+    }
+  };
+  const handleNationalityClick = () => {
+    if (player.nationality) {
+      // Cerca la nazione tramite la ricerca globale per trovare sia il paese che la nazionale
+      navigate(`/ricerca?q=${encodeURIComponent(player.nationality)}`);
+    }
   };
 
   if (loading) return <div className={styles.loading}>Caricamento dettagli...</div>;
@@ -54,12 +61,9 @@ export default function PlayerDetailView() {
 
   return (
     <div className={styles.container}>
-      {/* HEADER NAVIGAZIONE */}
+    
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-        <button 
-          onClick={() => navigate(returnPath)} 
-          className={styles.backBtn}
-        >
+        <button onClick={() => navigate(returnPath)} className={styles.backBtn}>
           ← Torna alla lista
         </button>
       </div>
@@ -86,19 +90,37 @@ export default function PlayerDetailView() {
       )}
 
       {/* CARD DETTAGLIO */}
-      <div className={styles.detailCard}>
+ <div className={styles.detailCard}>
         <div className={styles.header}>
           <img src={player.photo} alt={player.name} className={styles.mainPhoto} />
           <h1>{player.name}</h1>
         </div>
         
         <div className={styles.infoGrid}>
+          {/* SQUADRA CLICCABILE*/}
           <div className={styles.infoItem}>
-            <strong>Squadra</strong> <span>{player.team}</span>
+            <strong>Squadra</strong> 
+            <span 
+              onClick={handleTeamClick} 
+              className={player.teamId ? styles.clickableLink : ''}
+              title={player.teamId ? "Vedi rosa squadra" : ""}
+            >
+              {player.team}
+            </span>
           </div>
+
+          {/* NAZIONALITÀ CLICCABILE  */}
           <div className={styles.infoItem}>
-            <strong>Nazionalità</strong> <span>{player.nationality}</span>
+            <strong>Nazionalità</strong> 
+            <span 
+              onClick={handleNationalityClick}
+              className={styles.clickableLink}
+              title="Cerca nazione"
+            >
+              {player.nationality}
+            </span>
           </div>
+
           <div className={styles.infoItem}>
             <strong>Età</strong> <span>{player.age}</span>
           </div>

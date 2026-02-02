@@ -5,15 +5,34 @@
  */
 export class Player {
   constructor(apiData) {
+    // Se l'oggetto ha già le proprietà 'piatte' e non ha la struttura API 'player'
+    // Significa che stiamo ricaricando un oggetto Player salvato nello state o nella cache.
+    if (!apiData.player && apiData.id) {
+      this.id = apiData.id;
+      this.name = apiData.name;
+      this.photo = apiData.photo;
+      this.nationality = apiData.nationality;
+      this.age = apiData.age;
+      this.position = apiData.position;
+      this.team = apiData.team;
+      this.teamId = apiData.teamId;
+      this.rating = apiData.rating;
+      this.goals = apiData.goals;
+      return; // Stop, abbiamo finito.
+    }
+
+    // Logica standard per i dati grezzi dell'API
     this.id = apiData.player?.id;
     this.name = apiData.player?.name;
     this.photo = apiData.player?.photo;
     this.nationality = apiData.player?.nationality;
     this.age = apiData.player?.age;
-    // Controllo sull'esistenza delle statistiche
+    
+    // Statistiche
     const stats = apiData.statistics?.[0] || {};
-    this.position = stats.games?.position || "N/A"; // Difensore, Centrocampista, ecc.
+    this.position = stats.games?.position || "N/A"; 
     this.team = stats.team?.name || "N/A";
+    this.teamId = stats.team?.id;
     this.rating = stats.games?.rating || "N/A";
     this.goals = stats.goals?.total || 0;
   }

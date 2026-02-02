@@ -40,7 +40,7 @@ Definisce la struttura dei dati e la logica di dominio.
 
 ### 2. ViewModel (`src/viewmodels/`)
 Custom Hooks che fungono da ponte tra il Model e la View, gestendo la logica di presentazione, lo stato e il polling dei dati.
-* **usePlayersViewModel.js:** Gestisce il caricamento della lista giocatori (per squadra, lega o globale), implementando la logica di *Infinite Scroll* e deduplicazione dei dati.
+* **usePlayerDetailViewModel.js:** Gestisce il dettaglio giocatore implementando una logica **"Zero-Network Navigation"**. Se l'utente scorre tra i giocatori (Avanti/Indietro), il ViewModel utilizza i dati passati via contesto locale (Context List), azzerando i tempi di caricamento e il consumo API. Effettua il fetch remoto solo in caso di accesso diretto via URL (Deep Linking).
 * **useSearchViewModel.js:** Implementa una **strategia di ricerca ibrida**: interroga prima la cache locale (`localStorage`) per risultati immediati e, solo se necessario, effettua chiamate API in background, unendo i risultati.
 * **useApiUsageViewModel.js:** Centralizza la logica di monitoraggio delle quote API. Gestisce il polling automatico per aggiornare i contatori in tempo reale e le operazioni di manutenzione (reset contatori, pulizia cache) utilizzate dai componenti di debug.
 * **useNationalTeamsViewModel.js:** Gestisce il recupero parallelo (`Promise.all`) delle principali nazionali mondiali.
@@ -67,11 +67,17 @@ L'applicazione permette due flussi di navigazione:
 ### Squadre Nazionali
 Una sezione dedicata accessibile dalla Dashboard permette di visualizzare direttamente le principali **Squadre Nazionali** mondiali. A differenza della navigazione per Nazione (geografica), questa vista permette di accedere direttamente alle rose dei convocati delle federazioni (es. Nazionale Italiana, Argentina, ecc.).
 
-### Ottimizzazione e Performance (Lazy Loading & Caching)
+### Ottimizzazione e Performance (Lazy Loading)
 Per gestire grandi moli di dati e limiti API ristretti:
 * **Infinite Scroll:** La pagina `Players` implementa un caricamento progressivo basato su `IntersectionObserver`.
-* **Caching Locale:** Il `PlayerService` e i ViewModel salvano i dati in `localStorage`. Le richieste successive per le stesse risorse (es. lista squadre di una serie) vengono servite istantaneamente dalla cache senza consumare chiamate API.
 * **Paginazione Remota:** Il caricamento dei giocatori avviene in batch (pagine) solo quando l'utente scorre la lista, riducendo il carico iniziale.
+
+### Strategie di Caching
+Il progetto implementa una strategia di caching a più livelli per minimizzare le chiamate di rete e migliorare la reattività:
+
+1.  **LocalStorage (Persistente):** Utilizzato per dati che cambiano raramente (lista nazioni, dettagli squadre, rose giocatori). Permette all'app di funzionare quasi offline per le risorse già visitate.
+2.  **SessionStorage (Volatile):** Implementato nel `useSearchViewModel`. Memorizza i risultati dell'ultima ricerca effettuata. Questo garantisce che, tornando indietro da una pagina di dettaglio, i risultati della ricerca riaiano istantaneamente senza ricaricare l'API ("Instant Back-Navigation").
+3.  **Data Re-hydration:** Il Model `Player.js` è progettato per gestire sia dati grezzi (dall'API) che dati "re-idratati" (dallo stato della navigazione), permettendo di passare oggetti complessi tra le viste senza doverli riscaricare.
 
 ### Filtraggio Avanzato e Ordinamento
 La barra dei filtri (`FilterBar`) è stata potenziata per offrire un controllo granulare:
@@ -93,6 +99,13 @@ L'applicazione include un sistema robusto per la gestione dei limiti del tier gr
 * **Service Layer:** `PlayerService` tiene traccia delle chiamate HTTP e blocca le richieste se il limite è raggiunto, prevenendo errori 429.
 * **ViewModel Layer:** `useApiUsageViewModel` aggiorna l'interfaccia in tempo reale (polling ogni 2s) e gestisce la logica di reset.
 * **UI:** Il widget `ApiCounter` cambia colore (Verde/Giallo/Rosso) in base alla percentuale di utilizzo, mentre la pagina `ApiDebug` offre strumenti per pulire la cache e resettare i contatori manualmente.
+
+### Gestione Limiti API (Free Plan Protection)
+Poiché l'API utilizzata impone restrizioni severe sul piano gratuito (max 100 chiamate/giorno, max pagina 3 per la paginazione), sono stati implementati meccanismi di difesa attiva:
+
+* **Pagination Hard-Limit:** I ViewModel interrompono automaticamente le richieste oltre la pagina 3 per prevenire errori 403/429 e spreco di quota.
+* **Concurrency Semaphore:** Utilizzo di `useRef` ("isFetching") nei ViewModel per prevenire *Race Conditions* e doppie chiamate involontarie durante lo scroll veloce (Infinite Scroll).
+* **Deduplicazione nel Service:** Il `PlayerService` traccia le richieste in volo (`pendingRequests`) e restituisce la stessa Promise a chiamate parallele identiche, evitando il problema del "Double Fetch" di React in Strict Mode.
 
 ---
 

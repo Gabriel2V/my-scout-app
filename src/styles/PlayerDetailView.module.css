@@ -146,3 +146,16 @@
   .navArrowLeft { left: 10px; }
   .navArrowRight { right: 10px; }
 }
+
+.clickableLink {
+  cursor: pointer;
+  color: var(--primary);
+  text-decoration: underline;
+  font-weight: bold;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.clickableLink:hover {
+  color: var(--accent);
+  opacity: 0.8;
+}
