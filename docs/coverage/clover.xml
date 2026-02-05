@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1770283469827" clover="3.2.0">
+  <project timestamp="1770283469827" name="All files">
+    <metrics statements="497" coveredstatements="364" conditionals="365" coveredconditionals="207" methods="135" coveredmethods="84" elements="997" coveredelements="655" complexity="0" loc="497" ncloc="497" packages="9" files="33" classes="33"/>
+    <package name="assets">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="logo_uni.png" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/assets/logo_uni.png">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="models">
+      <metrics statements="24" coveredstatements="13" conditionals="16" coveredconditionals="14" methods="2" coveredmethods="2"/>
+      <file name="Player.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/models/Player.js">
+        <metrics statements="24" coveredstatements="13" conditionals="16" coveredconditionals="14" methods="2" coveredmethods="2"/>
+        <line num="18" count="6" type="cond" truecount="2" falsecount="2"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="33" count="6" type="stmt"/>
+        <line num="34" count="6" type="stmt"/>
+        <line num="35" count="6" type="stmt"/>
+        <line num="36" count="6" type="stmt"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="40" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="6" type="stmt"/>
+        <line num="44" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="2" type="cond" truecount="2" falsecount="0"/>
+      </file>
+    </package>
+    <package name="services">
+      <metrics statements="43" coveredstatements="31" conditionals="18" coveredconditionals="7" methods="16" coveredmethods="8"/>
+      <file name="PlayerService.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/services/PlayerService.js">
+        <metrics statements="43" coveredstatements="31" conditionals="18" coveredconditionals="7" methods="16" coveredmethods="8"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="24" count="5" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="29" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="48" count="2" type="stmt"/>
+        <line num="49" count="2" type="stmt"/>
+        <line num="59" count="4" type="stmt"/>
+        <line num="67" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="74" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="81" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="88" count="2" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="96" count="2" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="98" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="109" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="110" count="0" type="stmt"/>
+        <line num="111" count="0" type="stmt"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="117" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="styles">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="ApiCounter.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/ApiCounter.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="ApiDebug.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/ApiDebug.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="Card.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/Card.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="FilterBar.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/FilterBar.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="HomePage.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/HomePage.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="Layout.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/Layout.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="PlayerCard.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/PlayerCard.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="PlayerDetailView.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/PlayerDetailView.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="SearchResults.module.css" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/styles/SearchResults.module.css">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="viewmodels">
+      <metrics statements="266" coveredstatements="201" conditionals="153" coveredconditionals="81" methods="49" coveredmethods="36"/>
+      <file name="useApiUsageViewModel.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/viewmodels/useApiUsageViewModel.js">
+        <metrics statements="22" coveredstatements="22" conditionals="7" coveredconditionals="6" methods="7" coveredmethods="7"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="11" count="14" type="stmt"/>
+        <line num="13" count="14" type="stmt"/>
+        <line num="14" count="10" type="stmt"/>
+        <line num="15" count="10" type="stmt"/>
+        <line num="18" count="14" type="stmt"/>
+        <line num="19" count="6" type="stmt"/>
+        <line num="20" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="22" count="6" type="stmt"/>
+        <line num="26" count="14" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="31" count="14" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="3" type="stmt"/>
+        <line num="35" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="43" count="14" type="stmt"/>
+      </file>
+      <file name="useNationsViewModel.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/viewmodels/useNationsViewModel.js">
+        <metrics statements="24" coveredstatements="20" conditionals="4" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="18" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="24" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="45" count="4" type="stmt"/>
+      </file>
+      <file name="usePlayerDetailViewModel.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/viewmodels/usePlayerDetailViewModel.js">
+        <metrics statements="34" coveredstatements="25" conditionals="30" coveredconditionals="16" methods="6" coveredmethods="5"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="14" count="2" type="cond" truecount="2" falsecount="3"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
+        <line num="22" count="4" type="stmt"/>
+        <line num="25" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="4" type="stmt"/>
+        <line num="30" count="4" type="cond" truecount="4" falsecount="1"/>
+        <line num="31" count="4" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="48" count="4" type="stmt"/>
+        <line num="50" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="57" count="2" type="stmt"/>
+        <line num="58" count="2" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
+        <line num="61" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="65" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="78" count="2" type="stmt"/>
+        <line num="81" count="4" type="stmt"/>
+      </file>
+      <file name="usePlayersViewModel.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/viewmodels/usePlayersViewModel.js">
+        <metrics statements="71" coveredstatements="47" conditionals="67" coveredconditionals="34" methods="14" coveredmethods="8"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="17" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="24" count="5" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="26" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="39" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="40" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="44" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="52" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="55" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="60" count="1" type="cond" truecount="4" falsecount="1"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="64" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="69" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="73" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="77" count="1" type="cond" truecount="2" falsecount="2"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="86" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="92" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="100" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="101" count="1" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
+        <line num="104" count="1" type="cond" truecount="2" falsecount="2"/>
+        <line num="105" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="110" count="0" type="stmt"/>
+        <line num="111" count="0" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
+        <line num="114" count="2" type="stmt"/>
+        <line num="118" count="5" type="stmt"/>
+        <line num="120" count="2" type="cond" truecount="2" falsecount="2"/>
+        <line num="121" count="2" type="stmt"/>
+        <line num="125" count="5" type="stmt"/>
+        <line num="127" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="129" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="133" count="5" type="stmt"/>
+        <line num="134" count="1" type="stmt"/>
+      </file>
+      <file name="useSearchViewModel.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/viewmodels/useSearchViewModel.js">
+        <metrics statements="69" coveredstatements="49" conditionals="37" coveredconditionals="19" methods="13" coveredmethods="7"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
+        <line num="14" count="6" type="stmt"/>
+        <line num="15" count="6" type="stmt"/>
+        <line num="16" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="19" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="21" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="31" count="2" type="cond" truecount="2" falsecount="3"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="44" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="47" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="58" count="2" type="stmt"/>
+        <line num="59" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="60" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="67" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="3" type="stmt"/>
+        <line num="70" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="72" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="75" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="85" count="3" type="cond" truecount="0" falsecount="2"/>
+        <line num="86" count="3" type="stmt"/>
+        <line num="87" count="3" type="stmt"/>
+        <line num="90" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="98" count="2" type="stmt"/>
+        <line num="99" count="2" type="stmt"/>
+        <line num="102" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="103" count="1" type="stmt"/>
+        <line num="104" count="1" type="stmt"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="107" count="1" type="stmt"/>
+        <line num="111" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="119" count="0" type="stmt"/>
+        <line num="123" count="2" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="132" count="2" type="stmt"/>
+        <line num="136" count="2" type="stmt"/>
+        <line num="139" count="6" type="stmt"/>
+      </file>
+      <file name="useSeries.ViewModel.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/viewmodels/useSeries.ViewModel.js">
+        <metrics statements="23" coveredstatements="19" conditionals="4" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="23" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="43" count="4" type="stmt"/>
+      </file>
+      <file name="useTeamsViewModel.js" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/viewmodels/useTeamsViewModel.js">
+        <metrics statements="23" coveredstatements="19" conditionals="4" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="10" count="6" type="stmt"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
+        <line num="15" count="6" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="17" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="21" count="3" type="stmt"/>
+        <line num="23" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
+        <line num="31" count="3" type="stmt"/>
+        <line num="32" count="3" type="stmt"/>
+        <line num="33" count="3" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="37" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="43" count="6" type="stmt"/>
+      </file>
+    </package>
+    <package name="views">
+      <metrics statements="26" coveredstatements="17" conditionals="28" coveredconditionals="18" methods="9" coveredmethods="2"/>
+      <file name="PlayerCard.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/PlayerCard.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="10" count="2" type="stmt"/>
+      </file>
+      <file name="PlayerDetailView.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/PlayerDetailView.jsx">
+        <metrics statements="25" coveredstatements="16" conditionals="28" coveredconditionals="18" methods="8" coveredmethods="1"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="18" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="4" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="34" count="4" type="stmt"/>
+        <line num="35" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="47" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="58" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="60" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="64" count="4" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="views.components">
+      <metrics statements="23" coveredstatements="19" conditionals="32" coveredconditionals="19" methods="12" coveredmethods="9"/>
+      <file name="ApiCounter.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/components/ApiCounter.jsx">
+        <metrics statements="11" coveredstatements="11" conditionals="20" coveredconditionals="11" methods="3" coveredmethods="3"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="14" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="17" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="18" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="19" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+      </file>
+      <file name="EmptyState.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/components/EmptyState.jsx">
+        <metrics statements="2" coveredstatements="0" conditionals="3" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+      </file>
+      <file name="FilterBar.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/components/FilterBar.jsx">
+        <metrics statements="8" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="5"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="37" count="20" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="49" count="8" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+      </file>
+      <file name="GenericCard.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/components/GenericCard.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="9" coveredconditionals="8" methods="1" coveredmethods="1"/>
+        <line num="14" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="views.layouts">
+      <metrics statements="21" coveredstatements="13" conditionals="20" coveredconditionals="9" methods="9" coveredmethods="6"/>
+      <file name="MainLayout.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/layouts/MainLayout.jsx">
+        <metrics statements="21" coveredstatements="13" conditionals="20" coveredconditionals="9" methods="9" coveredmethods="6"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="18" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="36" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="49" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="50" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="51" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="61" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="views.pages">
+      <metrics statements="94" coveredstatements="70" conditionals="98" coveredconditionals="59" methods="38" coveredmethods="21"/>
+      <file name="ApiDebug.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/pages/ApiDebug.jsx">
+        <metrics statements="10" coveredstatements="10" conditionals="14" coveredconditionals="7" methods="3" coveredmethods="3"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="20" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="26" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="3" type="stmt"/>
+      </file>
+      <file name="Home.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/pages/Home.jsx">
+        <metrics statements="5" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="1"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+      </file>
+      <file name="Nations.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/pages/Nations.jsx">
+        <metrics statements="7" coveredstatements="6" conditionals="4" coveredconditionals="3" methods="3" coveredmethods="2"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+      </file>
+      <file name="Players.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/pages/Players.jsx">
+        <metrics statements="45" coveredstatements="33" conditionals="49" coveredconditionals="27" methods="14" coveredmethods="9"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="34" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="35" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="cond" truecount="4" falsecount="1"/>
+        <line num="38" count="2" type="cond" truecount="1" falsecount="3"/>
+        <line num="39" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="44" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="50" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="51" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="60" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="61" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="63" count="2" type="stmt"/>
+        <line num="64" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="65" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="72" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="97" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="101" count="0" type="stmt"/>
+      </file>
+      <file name="SearchResults.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/pages/SearchResults.jsx">
+        <metrics statements="14" coveredstatements="9" conditionals="21" coveredconditionals="13" methods="7" coveredmethods="2"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="17" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="19" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="28" count="1" type="cond" truecount="2" falsecount="1"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+      </file>
+      <file name="Series.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/pages/Series.jsx">
+        <metrics statements="7" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="2"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="14" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+      </file>
+      <file name="Teams.jsx" path="/home/gabriele/GitHub/AppWebExam/my-scout-app/my-scout-app/src/views/pages/Teams.jsx">
+        <metrics statements="6" coveredstatements="5" conditionals="8" coveredconditionals="7" methods="3" coveredmethods="2"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

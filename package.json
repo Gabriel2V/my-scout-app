@@ -15,8 +15,9 @@
     "build": "vite build",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage",
-    "docs": "jsdoc -c jsdoc.json"
+    "docs": "jsdoc -c jsdoc.json",
+    "coverage": "vitest run --coverage --coverage.reportsDirectory=docs/coverage",
+    "full-report": "npm run docs && npm run coverage"
   },
   "eslintConfig": {
     "extends": [

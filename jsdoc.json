@@ -2,10 +2,10 @@
   "source": {
     "include": ["src"],
     "includePattern": ".+\\.js(doc|x)?$",
-    "excludePattern": "(^|\\/|\\\\)_"
+    "excludePattern": "(^|\\/|\\\\)_|.+\\.test\\.jsx?$"
   },
   "opts": {
-    "destination": "./docs/gen",
+    "destination": "./docs/jsdoc",
     "recurse": true
   }
 }
