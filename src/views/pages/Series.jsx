@@ -1,6 +1,6 @@
-/** 
- * @component Series 
- * @description Vista dei campionati disponibili per la nazione selezionata. 
+/** * @component Series 
+ * @description Vista "Level 2". Visualizza i campionati (Leghe) disponibili per la nazione selezionata.
+ * Fornisce due azioni per ogni lega: vedere le Squadre o vedere direttamente i Giocatori (Top Scorers).
 */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,8 @@ export default function Series() {
           <div key={item.league.id} className={styles.card}>
             <img src={item.league.logo} alt={item.league.name} />
             <h3>{item.league.name}</h3>
+            
+            {/* Action Buttons Area */}
             <div className={styles.extra}>
               <button 
                 className={`${styles.btnAction} ${styles.btnPrimary}`}

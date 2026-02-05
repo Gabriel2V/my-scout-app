@@ -1,34 +1,78 @@
 /**
  * @module ViewModels/usePlayersViewModel
- * @description ViewModel per la gestione delle liste di giocatori.
- * Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il caching per contesto (squadra/lega).
- * @param {string} [externalSearchTerm=""] - Termine di ricerca opzionale per filtrare la lista.
- * @returns {Object} Esporta la lista dei giocatori, lo stato di caricamento e la funzione loadMore.
+ * @description ViewModel React Hook per la gestione delle liste di giocatori.
+ * * Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il caching per contesto.
+ * Supporta tre modalità di funzionamento in base ai parametri URL:
+ * 1. **Per Squadra:** Carica la rosa di un club specifico.
+ * 2. **Per Lega:** Carica i giocatori di un campionato.
+ * 3. **Top Players (Global):** Se nessun ID è fornito, carica i top scorer dei maggiori campionati europei.
+ * * **Pattern implementati:**
+ * - Infinite Scroll (gestione paginazione progressiva)
+ * - Request Throttling (semaforo `isFetching`)
+ * - Context-Aware Caching (chiavi di cache differenziate per contesto)
  */
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerService from '../services/PlayerService';
 import { Player } from '../models/Player';
 
+/**
+ * Hook per la gestione della lista giocatori.
+ * * @function usePlayersViewModel
+ * @param {string} [externalSearchTerm=""] - Termine di ricerca opzionale per filtrare la lista localmente.
+ * @returns {Object} Stato della lista giocatori.
+ * @returns {Array<Player>} return.players - Lista filtrata dei giocatori caricati.
+ * @returns {boolean} return.loading - Flag di caricamento in corso.
+ * @returns {Function} return.loadMore - Funzione per richiedere il caricamento della pagina successiva.
+ * @returns {boolean} return.hasMoreRemote - Indica se ci sono altre pagine da caricare dall'API.
+ */
 export function usePlayersViewModel(externalSearchTerm = "") {
+  /** 
+   *  Parametri URL per il contesto 
+   * @type {Array}
+  */
   const { serieId, squadraId } = useParams();
+
+  /** 
+   * Stato locale dei giocatori
+   *  @type {Array}
+   */
   const [players, setPlayers] = useState([]);
+
+  /** 
+   * Stato di caricamento 
+   *  @type {Array}
+  */
   const [loading, setLoading] = useState(true);
+
+  /** 
+   * Indice della pagina corrente (Batch)
+   *  @type {Array}
+   *  */
   const [batchIndex, setBatchIndex] = useState(serieId || squadraId ? 1 : 0);
+
+  /** 
+   * Flag per indicare la disponibilità di altri dati remoti  
+   * @type {Array}
+   * */
   const [hasMoreRemote, setHasMoreRemote] = useState(true);
 
-  // Blocca le chiamate multiple istantaneamente
   const isFetching = useRef(false);
 
-  // Reset stato al cambio contesto
+  // Reset stato al cambio contesto (es. cambio squadra o campionato)
   useEffect(() => {
     setPlayers([]);
     setBatchIndex(serieId || squadraId ? 1 : 0);
     setHasMoreRemote(true);
     setLoading(true);
-    isFetching.current = false; // Reset del semaforo
+    isFetching.current = false; 
   }, [serieId, squadraId]);
 
+  /**
+   * Carica un batch di giocatori.
+   * Gestisce la logica di cache (localStorage) e decide quale endpoint del Service chiamare.
+   * * @param {number} indexToLoad - Il numero di pagina o indice del batch da caricare.
+   */
   const loadPlayers = useCallback(async (indexToLoad) => {
     setLoading(true);
    
@@ -37,6 +81,7 @@ export function usePlayersViewModel(externalSearchTerm = "") {
       let isCacheDump = false;
 
       if (squadraId || serieId) {
+        // --- LOGICA CONTESTUALE (SQUADRA o LEGA) ---
         const contextKey = squadraId ? `team_${squadraId}` : `league_${serieId}`;
         const cacheKey = `players_${contextKey}_p${indexToLoad}`;
         const cachedData = localStorage.getItem(cacheKey);
@@ -56,16 +101,15 @@ export function usePlayersViewModel(externalSearchTerm = "") {
           }
         }
         
-        // Se non ci sono dati, stop paginazione
+        // Se non ci sono dati o limite pagina API free raggiunto (page > 3), stop.
         if (!newRawData || (Array.isArray(newRawData) && newRawData.length === 0)) {
           setHasMoreRemote(false);
         }
-        // L'API Free non permette pagina > 3.
         if (indexToLoad >= 3) {
           setHasMoreRemote(false);
         }
       } else {
-        // Logica Global Top Players
+        // --- LOGICA GLOBAL TOP PLAYERS ---
         if (indexToLoad < 5) {
           const leagueId = PlayerService.topLeagues[indexToLoad]?.id;
           const cacheKey = `players_global_top_${leagueId}`;
@@ -77,6 +121,7 @@ export function usePlayersViewModel(externalSearchTerm = "") {
             if (newRawData && newRawData.length > 0) localStorage.setItem(cacheKey, JSON.stringify(newRawData));
           }
         } else {
+          // Recupero "Cache Dump": mostra tutto ciò che è stato visitato in precedenza
           isCacheDump = true;
           setHasMoreRemote(false);
         }
@@ -103,6 +148,7 @@ export function usePlayersViewModel(externalSearchTerm = "") {
           // Se è la prima pagina, sostituisci. Altrimenti appendi.
           const isInitialLoad = indexToLoad === (serieId || squadraId ? 1 : 0);
           const combined = isInitialLoad ? newPlayers : [...prev, ...newPlayers];
+          // Deduplicazione finale tramite Map
           return Array.from(new Map(combined.map(p => [p.id, p])).values());
         });
       }
@@ -115,13 +161,17 @@ export function usePlayersViewModel(externalSearchTerm = "") {
     }
   }, [serieId, squadraId]); 
 
+  // Trigger caricamento al cambio di batchIndex
   useEffect(() => {
-    // Eseguiamo solo se c'è ancora roba da caricare
     if (hasMoreRemote || batchIndex === 0) {
       loadPlayers(batchIndex);
     }
   }, [batchIndex, loadPlayers, hasMoreRemote]);
 
+  /**
+   * Incrementa l'indice del batch per caricare la pagina successiva.
+   * Viene chiamata dall'Infinite Scroll della View.
+   */
   const handleLoadMore = () => {
     // Se stiamo già caricando (isFetching.current è TRUE), ignoriamo la richiesta
     if (loading || !hasMoreRemote || isFetching.current) return;

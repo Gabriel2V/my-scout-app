@@ -1,8 +1,10 @@
 /**
  * @component PlayerDetailView
- * @description Vista dettagliata di un calciatore.
- * Visualizza statistiche approfondite, dati anagrafici e permette la navigazione contestuale.
- * Utilizza il PlayerDetailViewModel per il recupero dei dati tramite ID.
+ * @description Vista di dettaglio del singolo calciatore.
+ * * **Features:**
+ * - **Contextual Navigation:** Permette di scorrere tra i giocatori (Prev/Next) mantenendo il filtro della lista precedente.
+ * - **Deep Linking:** Gestisce l'accesso diretto via URL o la navigazione dalla lista.
+ * - **Cross-Navigation:** Permette di saltare alla squadra o alla ricerca nazione cliccando sui metadati.
  */
 import React from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
@@ -14,14 +16,14 @@ export default function PlayerDetailView() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Estrae dati dallo state della navigazione (Router)
+  // Recupero stato di navigazione (per pulsante "Indietro" intelligente e liste contesto)
   const initialPlayer = location.state?.player || null;
   const contextList = location.state?.contextList || []; 
   const returnPath = location.state?.from || '/'; 
 
   const { player, prevPlayer, nextPlayer, loading, error } = usePlayerDetailViewModel(id, initialPlayer, contextList);
 
-  // Funzione di navigazione
+  /** Naviga al giocatore adiacente preservando il contesto */
   const goToPlayer = (targetPlayer) => {
     navigate(`/giocatori/${targetPlayer.id}`, { 
       state: { 
@@ -31,15 +33,17 @@ export default function PlayerDetailView() {
       } 
     });
   };
+
+  /** Naviga alla lista giocatori della squadra */
   const handleTeamClick = () => {
     if (player.teamId) {
-      // Naviga alla lista giocatori di quella squadra
       navigate(`/squadre/${player.teamId}/giocatori`);
     }
   };
+
+  /** Cerca la nazione globalmente */
   const handleNationalityClick = () => {
     if (player.nationality) {
-      // Cerca la nazione tramite la ricerca globale per trovare sia il paese che la nazionale
       navigate(`/ricerca?q=${encodeURIComponent(player.nationality)}`);
     }
   };
@@ -63,14 +67,13 @@ export default function PlayerDetailView() {
 
   return (
     <div className={styles.container}>
-    
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
         <button onClick={() => navigate(returnPath)} className={styles.backBtn}>
           ← Torna alla lista
         </button>
       </div>
       
-      {/* FRECCE DI NAVIGAZIONE */}
+      {/* Controlli di navigazione contesto (Prev/Next) */}
       {prevPlayer && (
         <button 
           className={`${styles.navArrow} ${styles.navArrowLeft}`}
@@ -91,15 +94,13 @@ export default function PlayerDetailView() {
         </button>
       )}
 
-      {/* CARD DETTAGLIO */}
- <div className={styles.detailCard}>
+      <div className={styles.detailCard}>
         <div className={styles.header}>
           <img src={player.photo} alt={player.name} className={styles.mainPhoto} />
           <h1>{player.name}</h1>
         </div>
         
         <div className={styles.infoGrid}>
-          {/* SQUADRA CLICCABILE*/}
           <div className={styles.infoItem}>
             <strong>Squadra</strong> 
             <span 
@@ -111,7 +112,6 @@ export default function PlayerDetailView() {
             </span>
           </div>
 
-          {/* NAZIONALITÀ CLICCABILE  */}
           <div className={styles.infoItem}>
             <strong>Nazionalità</strong> 
             <span 
@@ -123,19 +123,12 @@ export default function PlayerDetailView() {
             </span>
           </div>
 
+          <div className={styles.infoItem}><strong>Età</strong> <span>{player.age}</span></div>
           <div className={styles.infoItem}>
-            <strong>Età</strong> <span>{player.age}</span>
+            <strong>Rating</strong> <span className={styles.rating}>{formattedRating}</span>
           </div>
-          <div className={styles.infoItem}>
-            <strong>Rating</strong> 
-            <span className={styles.rating}>{formattedRating}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <strong>Gol Stagionali</strong> <span>{player.goals}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <strong>Ruolo</strong> <span>{player.position}</span>
-          </div>
+          <div className={styles.infoItem}><strong>Gol Stagionali</strong> <span>{player.goals}</span></div>
+          <div className={styles.infoItem}><strong>Ruolo</strong> <span>{player.position}</span></div>
         </div>
       </div>
     </div>

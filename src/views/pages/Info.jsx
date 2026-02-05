@@ -1,6 +1,7 @@
 /** 
- * @component Info 
- * @description Pagina informativa sul progetto e dati dello studente. 
+ *  @component Info 
+ * @description Pagina statica informativa.
+ * Visualizza i dettagli del progetto, l'autore e lo stack tecnologico utilizzato.
 */
 import React from 'react';
 import styles from '../../styles/HomePage.module.css';

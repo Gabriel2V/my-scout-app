@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: ViewModels/useNationalTeamsViewModel</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: ViewModels/useNationalTeamsViewModel</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">ViewModel React Hook per il caricamento delle principali squadre nazionali.
+
+Recupera le federazioni nazionali delle 8 nazioni più importanti tramite
+ricerca parallela e deduplicazione risultati.
+
+**Pattern implementati:**
+- Parallel Fetching: `Promise.all` per ottimizzare i tempi
+- Cache-First Loading
+- Deduplication: rimozione squadre duplicate per ID</div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="viewmodels_useNationalTeamsViewModel.js.html">viewmodels/useNationalTeamsViewModel.js</a>, <a href="viewmodels_useNationalTeamsViewModel.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~useNationalTeamsViewModel"><span class="type-signature">(inner) </span>useNationalTeamsViewModel<span class="signature">()</span><span class="type-signature"> &rarr; {Object|Array.&lt;Object>|number|string|string|boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Hook per il recupero delle squadre nazionali.
+
+**Flusso:**
+1. Verifica cache localStorage (`cache_national_teams`)
+2. Se assente, esegue 8 ricerche parallele (una per nazione)
+3. Filtra solo squadre con `team.national === true`
+4. Deduplica per ID e persiste risultato
+
+**Nazioni caricate:**
+Italy, France, Argentina, Brazil, Spain, Germany, England, Portugal
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="viewmodels_useNationalTeamsViewModel.js.html">viewmodels/useNationalTeamsViewModel.js</a>, <a href="viewmodels_useNationalTeamsViewModel.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    Stato delle nazionali
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.teams - Squadre nazionali
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.teams[].id - ID univoco nazionale
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.teams[].name - Nome nazionale (es. "Italy")
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.teams[].logo - URL logo
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.loading - Flag di caricamento
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const { teams, loading } = useNationalTeamsViewModel();
+// teams: [
+//   { id: 768, name: "Italy", logo: "..." },
+//   { id: 1569, name: "Argentina", logo: "..." },
+//   ...
+// ]</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

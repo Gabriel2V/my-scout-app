@@ -28,21 +28,25 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * @module Models/Player
- * @description Modello di dominio per un calciatore.
- * Isola la logica di validazione e fornisce metodi helper (es. isTopPlayer) 
+ * @description Modello di dominio (Domain Entity) per il Calciatore.
+ * * **Pattern Adapter/Normalizer:** Il costruttore agisce da adattatore, trasformando la struttura 
+ * complessa e nidificata dell'API (response -> player -> statistics) in un oggetto piatto 
+ * e facile da consumare per le View.
+ * * Gestisce anche la "reidratazione" da oggetti JSON salvati in cache/storage.
  */
 export class Player {
   /**
-   * @class Player
-   * @description Rappresenta un calciatore normalizzato. Converte i dati grezzi dell'API in un formato piatto utilizzabile dalla UI.
-   * @param {Object} apiData - Dati grezzi provenienti dall'API Football.
-   * @property {number} id - ID univoco del giocatore.
+   * Crea un'istanza di Player.
+   * @param {Object} apiData - L'oggetto grezzo ricevuto dall'API o dal localStorage.
+   * @property {number} id - Identificativo univoco.
    * @property {string} name - Nome completo.
-   * @property {string} rating - Valutazione media (es. "7.5").
+   * @property {string} photo - URL della foto profilo.
+   * @property {string} position - Ruolo (es. Attacker, Defender).
+   * @property {string} rating - Valutazione media (stringa, es. "7.2").
+   * @property {number} goals - Numero totale di gol nella stagione corrente.
    */
   constructor(apiData) {
-    // Se l'oggetto ha già le proprietà 'piatte' e non ha la struttura API 'player'
-    // Significa che stiamo ricaricando un oggetto Player salvato nello state o nella cache.
+    // Caso 1: Reidratazione da oggetto già normalizzato (es. da Cache o State)
     if (!apiData.player &amp;&amp; apiData.id) {
       this.id = apiData.id;
       this.name = apiData.name;
@@ -54,17 +58,17 @@ export class Player {
       this.teamId = apiData.teamId;
       this.rating = apiData.rating;
       this.goals = apiData.goals;
-      return; // Stop, abbiamo finito.
+      return; 
     }
 
-    // Logica standard per i dati grezzi dell'API
+    // Caso 2: Normalizzazione da risposta API grezza
     this.id = apiData.player?.id;
     this.name = apiData.player?.name;
     this.photo = apiData.player?.photo;
     this.nationality = apiData.player?.nationality;
     this.age = apiData.player?.age;
 
-    // Statistiche
+    // Estrazione statistiche dal primo array (campionato principale)
     const stats = apiData.statistics?.[0] || {};
     this.position = stats.games?.position || "N/A";
     this.team = stats.team?.name || "N/A";
@@ -73,6 +77,10 @@ export class Player {
     this.goals = stats.goals?.total || 0;
   }
 
+  /**
+   * Determina se il giocatore è considerato un "Top Player".
+   * @returns {boolean} True se il rating è superiore a 7.5.
+   */
   isTopPlayer() {
     return this.rating !== "N/A" &amp;&amp; parseFloat(this.rating) > 7.5;
   }
@@ -86,13 +94,13 @@ export class Player {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

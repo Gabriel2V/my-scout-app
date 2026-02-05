@@ -38,14 +38,132 @@
     <div class="container-overview">
     
         
-            <div class="description">ViewModel per la gestione delle liste di giocatori.
-Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il caching per contesto (squadra/lega).</div>
+            <div class="description">ViewModel React Hook per la gestione delle liste di giocatori.
+* Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il caching per contesto.
+Supporta tre modalità di funzionamento in base ai parametri URL:
+1. **Per Squadra:** Carica la rosa di un club specifico.
+2. **Per Lega:** Carica i giocatori di un campionato.
+3. **Top Players (Global):** Se nessun ID è fornito, carica i top scorer dei maggiori campionati europei.
+* **Pattern implementati:**
+- Infinite Scroll (gestione paginazione progressiva)
+- Request Throttling (semaforo `isFetching`)
+- Context-Aware Caching (chiavi di cache differenziate per contesto)</div>
         
 
         
             
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="viewmodels_usePlayersViewModel.js.html">viewmodels/usePlayersViewModel.js</a>, <a href="viewmodels_usePlayersViewModel.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".usePlayersViewModel"><span class="type-signature">(static) </span>usePlayersViewModel<span class="signature">(externalSearchTerm<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object|Array.&lt;Player>|boolean|function|boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Hook per la gestione della lista giocatori.
+* @function usePlayersViewModel
+</div>
 
 
 
@@ -116,7 +234,7 @@ Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il
                 </td>
             
 
-            <td class="description last">Termine di ricerca opzionale per filtrare la lista.</td>
+            <td class="description last">Termine di ricerca opzionale per filtrare la lista localmente.</td>
         </tr>
 
     
@@ -157,7 +275,7 @@ Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="viewmodels_usePlayersViewModel.js.html">viewmodels/usePlayersViewModel.js</a>, <a href="viewmodels_usePlayersViewModel.js.html#line1">line 1</a>
+        <a href="viewmodels_usePlayersViewModel.js.html">viewmodels/usePlayersViewModel.js</a>, <a href="viewmodels_usePlayersViewModel.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -183,10 +301,10 @@ Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il
 
 
 <h5>Returns:</h5>
-
-        
+<ul>
+        <li>
 <div class="param-desc">
-    Esporta la lista dei giocatori, lo stato di caricamento e la funzione loadMore.
+    Stato della lista giocatori.
 </div>
 
 
@@ -202,31 +320,94 @@ Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il
 
     </dd>
 </dl>
-
+</li>
     
+        <li>
+<div class="param-desc">
+    return.players - Lista filtrata dei giocatori caricati.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Player></span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.loading - Flag di caricamento in corso.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.loadMore - Funzione per richiedere il caricamento della pagina successiva.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.hasMoreRemote - Indica se ci sono altre pagine da caricare dall'API.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
 
 
 
 
 
         
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
 
     
@@ -242,13 +423,13 @@ Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

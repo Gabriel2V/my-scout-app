@@ -14,6 +14,18 @@ ScoutMaster 2026 è una Single Page Application (SPA) sviluppata con React proge
 Il progetto pone una forte enfasi sull'ottimizzazione delle risorse, implementando strategie avanzate di caching locale, lazy loading dei dati e monitoraggio attivo delle chiamate API per rispettare i limiti del fornitore esterno.
 
 ---
+---
+
+## 🚀 Demo e Documentazione
+
+L'applicazione è deployata e accessibile online. Per garantire la sicurezza e il rispetto dei limiti dell'API gratuita, la chiave API in produzione è **limitata al dominio di GitHub Pages**.
+
+- **Live App:** [ScoutMaster 2026 Live](https://Gabriel2V.github.io/my-scout-app)
+- **Hub Documentazione:** [Hub Documentazione](https://Gabriel2V.github.io/my-scout-app)
+- **Documentazione Tecnica (JSDoc):** [Vedi Documentazione](https://Gabriel2V.github.io/my-scout-app/jsdoc/index.html)
+- **Report Copertura Test:** [Vedi Coverage](https://Gabriel2V.github.io/my-scout-app/coverage/index.html)
+
+---
 
 ## Stack Tecnologico
 
@@ -56,6 +68,37 @@ Componenti React puri che si occupano solo del rendering dell'interfaccia utente
 * **PlayerService.js:** Singleton che gestisce tutte le comunicazioni HTTP. Implementa il monitoraggio del rate-limit giornaliero, la gestione dei token e la logica di paginazione delle chiamate verso API-Sports.
 
 ---
+## Struttura del Progetto
+
+Il progetto segue una struttura modulare che rispecchia la separazione dei compiti del pattern MVVM:
+
+```text
+my-scout-app/
+├── public/                 # Assets statici pubblici
+├── src/
+│   ├── assets/             # Risorse statiche (Loghi, immagini)
+│   ├── models/             # Business Logic & Data Normalization
+│   │   └── Player.js       # Classe per la normalizzazione dei dati atleta
+│   ├── services/           # Data Access Layer
+│   │   └── PlayerService.js # Gestione chiamate API, caching e rate-limit
+│   ├── viewmodels/         # Logica applicativa (Custom Hooks)
+│   │   ├── usePlayersViewModel.js
+│   │   ├── useSearchViewModel.js
+│   │   └── ...
+│   ├── views/              # Presentation Layer (UI)
+│   │   ├── components/     # Widget riutilizzabili (Card, FilterBar, ApiCounter)
+│   │   ├── layouts/        # Struttura comune (Navbar, Footer)
+│   │   └── pages/          # Pagine principali (Home, Teams, PlayerDetail)
+│   ├── styles/             # Fogli di stile (CSS Modules & Global)
+│   ├── App.jsx             # Routing e composizione principale
+│   └── setupTests.js       # Configurazione ambiente di test
+├── index.html              # Entry point applicazione
+├── package.json            # Dipendenze e script
+└── vite.config.js          # Configurazione Build e Test runner
+```
+
+---
+
 
 ## Funzionalità Principali
 
@@ -216,14 +259,12 @@ npm run full-report
 
 ## Documentazione e Coverage Report online
 
-Per preservare il limite di 100 chiamate giornaliere dell'API gratuita, l'applicazione live è protetta. 
 È possibile consultare online la documentazione tecnica e i report di copertura:
 
 - [Hub Documentazione](https://Gabriel2V.github.io/my-scout-app)
 - [📚 Documentazione Tecnica (JSDoc)](https://Gabriel2V.github.io/my-scout-app/jsdoc/index.html)
 - [📊 Report Copertura Test (Coverage)](https://Gabriel2V.github.io/my-scout-app/coverage/index.html)
 
-*Nota: La versione live dell'app non dispone di chiavi API caricate. Per testare l'app con i dati reali, clonare il repository e utilizzare il proprio file .env.*
 
 ## Sicurezza e Deployment
 

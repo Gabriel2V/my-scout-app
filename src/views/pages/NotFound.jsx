@@ -1,7 +1,8 @@
 /**
  * @component NotFound
- * @description Pagina di fallback (404).
- * Gestisce i tentativi di accesso a rotte non definite, fornendo un link di ritorno alla Home.
+ * @description Pagina di errore 404 (Page Not Found).
+ * Viene renderizzata dal Router quando nessun percorso corrisponde all'URL corrente.
+ * Offre un pulsante di azione per riportare l'utente alla Dashboard principale.
  */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,7 @@ export default function NotFound() {
       <span style={{ fontSize: '5rem' }}>🏟️</span>
       <h1 style={{ marginTop: '1rem' }}>404 - Fuorigioco!</h1>
       <p>La pagina che stai cercando non esiste o è stata spostata.</p>
+      
       <button 
         onClick={() => navigate('/')}
         style={{

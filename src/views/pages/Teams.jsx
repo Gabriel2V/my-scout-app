@@ -1,7 +1,7 @@
 /**
  * @component Teams
- * @description Visualizza i club appartenenti a un campionato selezionato.
- * Si interfaccia con useTeamsViewModel per i dati.
+ * @description Vista "Level 3". Visualizza i club partecipanti a uno specifico campionato.
+ * Gestisce anche lo stato "Nessuna squadra trovata" in caso di leghe minori o dati mancanti.
  */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';

@@ -38,7 +38,15 @@
     <div class="container-overview">
     
         
-            <div class="description">Gestisce i campionati filtrati per nazioneId.</div>
+            <div class="description">ViewModel React Hook per la gestione dei campionati (serie) di una nazione specifica.
+
+Recupera l'elenco delle competizioni calcistiche disponibili per una nazione,
+con strategia Cache-First e deduplicazione richieste tramite ref tracking.
+
+**Pattern implementati:**
+- Cache-First Loading
+- Request Deduplication via useRef
+- URL-Driven State (parametri React Router)</div>
         
 
         
@@ -136,6 +144,193 @@
     
 
     
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~useSeriesViewModel"><span class="type-signature">(inner) </span>useSeriesViewModel<span class="signature">()</span><span class="type-signature"> &rarr; {Object|Array.&lt;Object>|boolean|string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Hook per il recupero dei campionati di una nazione.
+
+**Flusso:**
+1. Estrae `nazioneId` da URL params
+2. Verifica ref `lastRequestKey` per evitare richieste duplicate
+3. Controlla cache localStorage
+4. Se assente, chiama API e salva risultato
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="viewmodels_useSeries.ViewModel.js.html">viewmodels/useSeries.ViewModel.js</a>, <a href="viewmodels_useSeries.ViewModel.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    Stato dei campionati
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.leagues - Campionati della nazione
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.loading - Flag di caricamento
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.nazioneId - Nome nazione da URL
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const { leagues, loading, nazioneId } = useSeriesViewModel();
+// nazioneId: "Italy"
+// leagues: [{ league: { id: 135, name: "Serie A", ... }, ... }]</code></pre>
+
+
+
+        
+    
 
     
 
@@ -150,13 +345,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

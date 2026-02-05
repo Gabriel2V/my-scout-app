@@ -1,8 +1,7 @@
 /**
  * @component NationalTeams
- * @description Vista dedicata alle squadre nazionali.
- * Permette di esplorare le rose delle selezioni nazionali caricate nel sistema.
- * Utilizza il ViewModel useNationalTeamsViewModel per la gestione dei dati.
+ * @description Vista collezione dedicata alle squadre nazionali.
+ * Presenta una selezione curata delle maggiori nazionali (recuperate in parallelo dal ViewModel).
  */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

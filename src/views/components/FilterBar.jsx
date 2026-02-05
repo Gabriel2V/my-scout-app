@@ -1,6 +1,17 @@
 /**
  * @component FilterBar
- * @description Barra degli strumenti per il filtraggio e l'ordinamento dinamico delle liste.
+ * @description Barra degli strumenti per il filtraggio e l'ordinamento dinamico delle liste di giocatori.
+ * Fornisce controlli per rating, ruolo, nazionalità e criterio di ordinamento.
+ * * @param {Object} props
+ * @param {number} props.minRating - Valore corrente del filtro rating minimo (0-10).
+ * @param {Function} props.setMinRating - Setter per il rating minimo.
+ * @param {string} props.roleFilter - Valore corrente del filtro ruolo (es. 'Midfielder', 'All').
+ * @param {Function} props.setRoleFilter - Setter per il filtro ruolo.
+ * @param {string} props.natFilter - Valore corrente del filtro nazionalità.
+ * @param {Function} props.setNatFilter - Setter per il filtro nazionalità.
+ * @param {Array<string>} props.nationsList - Lista di stringhe delle nazioni disponibili per il dropdown.
+ * @param {string} props.sortKey - Chiave di ordinamento attiva ('rating', 'goals', 'name', 'default').
+ * @param {Function} props.setSortKey - Setter per la chiave di ordinamento.
  */
 import React from 'react';
 import styles from '../../styles/FilterBar.module.css';
@@ -16,6 +27,7 @@ export default function FilterBar({
 
   return (
     <div className={styles.filterBar}>
+      {/* Gruppo: Filtro Rating */}
       <div className={styles.filterGroup}>
         <label className={styles.label}>
           Rating Minimo: <span>{minRating}</span>
@@ -27,6 +39,7 @@ export default function FilterBar({
         />
       </div>
 
+      {/* Gruppo: Filtro Ruolo */}
       <div className={styles.filterGroup}>
         <label className={styles.label}>Ruolo:</label>
         <select 
@@ -38,6 +51,7 @@ export default function FilterBar({
         </select>
       </div>
 
+      {/* Gruppo: Filtro Nazionalità */}
       <div className={styles.filterGroup}>
         <label className={styles.label}>Nazionalità:</label>
         <select 
@@ -50,6 +64,7 @@ export default function FilterBar({
         </select>
       </div>
 
+      {/* Gruppo: Ordinamento */}
       <div className={styles.sortGroup}>
         <label className={styles.label}>Ordina per:</label>
         <select 

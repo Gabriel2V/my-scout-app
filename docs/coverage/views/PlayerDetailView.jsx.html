@@ -198,14 +198,9 @@
 <a name='L133'></a><a href='#L133'>133</a>
 <a name='L134'></a><a href='#L134'>134</a>
 <a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L136'></a><a href='#L136'>136</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,15 +233,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,7 +268,6 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -292,16 +288,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -349,9 +335,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @component PlayerDetailView
- * @description Vista dettagliata di un calciatore.
- * Visualizza statistiche approfondite, dati anagrafici e permette la navigazione contestuale.
- * Utilizza il PlayerDetailViewModel per il recupero dei dati tramite ID.
+ * @description Vista di dettaglio del singolo calciatore.
+ * * **Features:**
+ * - **Contextual Navigation:** Permette di scorrere tra i giocatori (Prev/Next) mantenendo il filtro della lista precedente.
+ * - **Deep Linking:** Gestisce l'accesso diretto via URL o la navigazione dalla lista.
+ * - **Cross-Navigation:** Permette di saltare alla squadra o alla ricerca nazione cliccando sui metadati.
  */
 import React from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
@@ -363,14 +351,14 @@ export default function PlayerDetailView() {
   const location = useLocation();
   const navigate = useNavigate();
 &nbsp;
-  // Estrae dati dallo state della navigazione (Router)
+  // Recupero stato di navigazione (per pulsante "Indietro" intelligente e liste contesto)
   const initialPlayer = location.state?.player || null;
   const contextList = location.state?.contextList || []; 
   const returnPath = location.state?.from || '/'; 
 &nbsp;
   const { player, prevPlayer, nextPlayer, loading, error } = usePlayerDetailViewModel(id, initialPlayer, contextList);
 &nbsp;
-  // Funzione di navigazione
+  /** Naviga al giocatore adiacente preservando il contesto */
   const goToPlayer = <span class="fstat-no" title="function not covered" >(t</span>argetPlayer) =&gt; {
 <span class="cstat-no" title="statement not covered" >    navigate(`/giocatori/${targetPlayer.id}`, { </span>
       state: { 
@@ -380,15 +368,17 @@ export default function PlayerDetailView() {
       } 
     });
   };
+&nbsp;
+  /** Naviga alla lista giocatori della squadra */
   const handleTeamClick = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (player.teamId) {</span>
-      // Naviga alla lista giocatori di quella squadra
 <span class="cstat-no" title="statement not covered" >      navigate(`/squadre/${player.teamId}/giocatori`);</span>
     }
   };
+&nbsp;
+  /** Cerca la nazione globalmente */
   const handleNationalityClick = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (player.nationality) {</span>
-      // Cerca la nazione tramite la ricerca globale per trovare sia il paese che la nazionale
 <span class="cstat-no" title="statement not covered" >      navigate(`/ricerca?q=${encodeURIComponent(player.nationality)}`);</span>
     }
   };
@@ -412,14 +402,13 @@ export default function PlayerDetailView() {
 &nbsp;
   return (
     &lt;div className={styles.container}&gt;
-    
       &lt;div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}&gt;
         &lt;button onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >n</span>avigate(returnPath)} c</span>lassName={styles.backBtn}&gt;
           ← Torna alla lista
         &lt;/button&gt;
       &lt;/div&gt;
       
-      {/* FRECCE DI NAVIGAZIONE */}
+      {/* Controlli di navigazione contesto (Prev/Next) */}
       {prevPlayer &amp;&amp; (
 <span class="branch-1 cbranch-no" title="branch not covered" >        &lt;button </span>
           className={`${styles.navArrow} ${styles.navArrowLeft}`}
@@ -440,15 +429,13 @@ export default function PlayerDetailView() {
         &lt;/button&gt;
       )}
 &nbsp;
-      {/* CARD DETTAGLIO */}
- &lt;div className={styles.detailCard}&gt;
+      &lt;div className={styles.detailCard}&gt;
         &lt;div className={styles.header}&gt;
           &lt;img src={player.photo} alt={player.name} className={styles.mainPhoto} /&gt;
           &lt;h1&gt;{player.name}&lt;/h1&gt;
         &lt;/div&gt;
         
         &lt;div className={styles.infoGrid}&gt;
-          {/* SQUADRA CLICCABILE*/}
           &lt;div className={styles.infoItem}&gt;
             &lt;strong&gt;Squadra&lt;/strong&gt; 
             &lt;span 
@@ -460,7 +447,6 @@ export default function PlayerDetailView() {
             &lt;/span&gt;
           &lt;/div&gt;
 &nbsp;
-          {/* NAZIONALITÀ CLICCABILE  */}
           &lt;div className={styles.infoItem}&gt;
             &lt;strong&gt;Nazionalità&lt;/strong&gt; 
             &lt;span 
@@ -472,19 +458,12 @@ export default function PlayerDetailView() {
             &lt;/span&gt;
           &lt;/div&gt;
 &nbsp;
+          &lt;div className={styles.infoItem}&gt;&lt;strong&gt;Età&lt;/strong&gt; &lt;span&gt;{player.age}&lt;/span&gt;&lt;/div&gt;
           &lt;div className={styles.infoItem}&gt;
-            &lt;strong&gt;Età&lt;/strong&gt; &lt;span&gt;{player.age}&lt;/span&gt;
+            &lt;strong&gt;Rating&lt;/strong&gt; &lt;span className={styles.rating}&gt;{formattedRating}&lt;/span&gt;
           &lt;/div&gt;
-          &lt;div className={styles.infoItem}&gt;
-            &lt;strong&gt;Rating&lt;/strong&gt; 
-            &lt;span className={styles.rating}&gt;{formattedRating}&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div className={styles.infoItem}&gt;
-            &lt;strong&gt;Gol Stagionali&lt;/strong&gt; &lt;span&gt;{player.goals}&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div className={styles.infoItem}&gt;
-            &lt;strong&gt;Ruolo&lt;/strong&gt; &lt;span&gt;{player.position}&lt;/span&gt;
-          &lt;/div&gt;
+          &lt;div className={styles.infoItem}&gt;&lt;strong&gt;Gol Stagionali&lt;/strong&gt; &lt;span&gt;{player.goals}&lt;/span&gt;&lt;/div&gt;
+          &lt;div className={styles.infoItem}&gt;&lt;strong&gt;Ruolo&lt;/strong&gt; &lt;span&gt;{player.position}&lt;/span&gt;&lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -496,7 +475,7 @@ export default function PlayerDetailView() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-05T09:24:29.787Z
+                at 2026-02-05T15:16:18.596Z
             </div>
         <script src="../prettify.js"></script>
         <script>

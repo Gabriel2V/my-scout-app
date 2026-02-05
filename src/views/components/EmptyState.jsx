@@ -1,6 +1,9 @@
-/** 
- * @component EmptyState 
- * @description Visualizzazione di fallback quando non ci sono dati o risultati. 
+/** * @component EmptyState 
+ * @description Componente di UI per la visualizzazione di stati vuoti o errori "soft".
+ * Usato nelle liste quando non ci sono risultati da mostrare.
+ * @param {Object} props
+ * @param {string} props.message - Messaggio esplicativo per l'utente.
+ * @param {string} [props.icon="📂"] - Emoji o icona opzionale.
 */
 import React from 'react';
 
@@ -13,7 +16,7 @@ export default function EmptyState({ message, icon = "📂" }) {
       justifyContent: 'center',
       padding: '3rem',
       textAlign: 'center',
-      color: '#6b7280', // Grigio neutro
+      color: '#6b7280', 
       backgroundColor: 'var(--card-bg)',
       borderRadius: 'var(--radius-md)',
       marginTop: '2rem',

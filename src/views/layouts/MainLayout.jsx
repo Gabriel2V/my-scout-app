@@ -1,7 +1,9 @@
 /**
  * @component MainLayout
- * @description Struttura portante dell'applicazione.
- * Contiene l'Header con la ricerca globale "Search-on-Enter" e il Footer informativo.
+ * @description Layout principale (Shell) dell'applicazione.
+ * * **Struttura:** Header (Logo + Nav + Search) -> Outlet (Contenuto Pagina) -> Footer.
+ * * **Global Search:** Gestisce l'input di ricerca nella navbar che reindirizza a `/ricerca`.
+ * * **ApiCounter:** Integra il widget di monitoraggio API globale.
  */
 import { Outlet, useNavigate, useLocation, useSearchParams, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -14,15 +16,14 @@ export default function MainLayout() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   
-  // Stato locale per l'input (quello che l'utente scrive)
+  // Sincronizza l'input della navbar con i query params URL
   const [localInput, setLocalInput] = useState(searchParams.get('q') || '');
 
-  // Sincronizza l'input locale se l'URL cambia (es. navigazione indietro)
   useEffect(() => {
     setLocalInput(searchParams.get('q') || '');
   }, [searchParams]);
 
-  // Funzione che avvia effettivamente la ricerca nell'app
+  /** Avvia la navigazione verso la pagina dei risultati */
   const triggerSearch = () => {
     const value = localInput.trim();
     if (value.length >= 1) {
@@ -33,18 +34,14 @@ export default function MainLayout() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      triggerSearch();
-    }
+    if (e.key === 'Enter') triggerSearch();
   };
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <div className={styles.logo} onClick={() => navigate('/')}>
-            My Scout App
-          </div>
+          <div className={styles.logo} onClick={() => navigate('/')}>My Scout App</div>
           <nav className={styles.nav}>
             <NavLink to="/" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>HOME</NavLink>
             <NavLink to="/info" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>INFO</NavLink>

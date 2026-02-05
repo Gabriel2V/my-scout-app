@@ -31,8 +31,6 @@
         
             
         
-            
-        
     
 </header>
 
@@ -40,84 +38,13 @@
     <div class="container-overview">
     
         
-            <div class="description">Gestisce il caricamento e il caching delle federazioni nazionali.</div>
+            <div class="description">ViewModel per il recupero della lista delle nazioni supportate.
+* Gestisce la cache persistente per evitare chiamate ripetute a dati che cambiano raramente.
+* **Strategia di Cache:**
+- Salva la lista completa in `localStorage` ('cache_nations').
+- Al caricamento, controlla prima la cache. Se valida, evita la chiamata API.
+- In caso di cache corrotta o vuota, forza il refresh dall'API.</div>
         
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="viewmodels_useNationalTeamsViewModel.js.html">viewmodels/useNationalTeamsViewModel.js</a>, <a href="viewmodels_useNationalTeamsViewModel.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         
             
@@ -214,44 +141,24 @@
     
 
     
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        
-            
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">ViewModel per il recupero della lista delle nazioni.
-Gestisce il caching statico delle federazioni per minimizzare il consumo di API.</div>
-        
+        <h3 class="subsection-title">Methods</h3>
 
         
             
 
+    
 
+    
+    <h4 class="name" id="~useNationsViewModel"><span class="type-signature">(inner) </span>useNationsViewModel<span class="signature">()</span><span class="type-signature"> &rarr; {Object|Array.&lt;{name: string, flag: string}>|boolean|string|null}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Hook per il recupero delle nazioni.
+</div>
 
 
 
@@ -294,7 +201,7 @@ Gestisce il caching statico delle federazioni per minimizzare il consumo di API.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="viewmodels_useNationalTeamsViewModel.js.html">viewmodels/useNationalTeamsViewModel.js</a>, <a href="viewmodels_useNationalTeamsViewModel.js.html#line1">line 1</a>
+        <a href="viewmodels_useNationsViewModel.js.html">viewmodels/useNationsViewModel.js</a>, <a href="viewmodels_useNationsViewModel.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -319,105 +226,97 @@ Gestisce il caching statico delle federazioni per minimizzare il consumo di API.
 
 
 
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    Stato delle nazioni.
+</div>
 
 
 
-
-
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
         
-            
+<span class="param-type">Object</span>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="viewmodels_useNationsViewModel.js.html">viewmodels/useNationsViewModel.js</a>, <a href="viewmodels_useNationsViewModel.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
+    </dd>
 </dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.nations - Lista di nazioni con nome e bandiera.
+</div>
 
 
 
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;{name: string, flag: string}></span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.loading - Flag di caricamento.
+</div>
 
 
 
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.error - Eventuale messaggio di errore.
+</div>
 
 
 
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
 
 
-
-
-
-
+    </dd>
+</dl>
+</li>
+    </ul>
 
 
 
 
 
         
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
 
     
@@ -433,13 +332,13 @@ Gestisce il caching statico delle federazioni per minimizzare il consumo di API.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

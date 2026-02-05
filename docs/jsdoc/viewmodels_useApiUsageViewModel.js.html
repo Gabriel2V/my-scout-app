@@ -29,7 +29,9 @@
             <pre class="prettyprint source linenums"><code>/**
  * @module ViewModels/useApiUsageViewModel
  * @description ViewModel per la dashboard di monitoraggio API.
- * Fornisce dati in tempo reale sull'utilizzo dei crediti e funzioni di manutenzione del database locale.
+ * Gestisce la sincronizzazione in tempo reale (polling) dei consumi tra client e server.
+ * * @param {number} [refreshRate=2000] - Intervallo in millisecondi per l'aggiornamento locale dell'UI.
+ * @returns {Object} Stato e metodi di gestione API.
  */
 import { useState, useEffect, useCallback } from 'react';
 import PlayerService from '../services/PlayerService';
@@ -37,25 +39,49 @@ import PlayerService from '../services/PlayerService';
 export function useApiUsageViewModel(refreshRate = 2000) {
   const [usage, setUsage] = useState(null);
   const [config] = useState(PlayerService.getApiConfig());
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const updateUsage = useCallback(() => {
-    const data = PlayerService.getApiUsage();
+  /**
+   * Aggiorna i dati di utilizzo.
+   * @param {boolean} [forceSync=false] - Se true, forza una chiamata al server (/status).
+   */
+  const updateUsage = useCallback(async (forceSync = false) => {
+    if (forceSync) setIsSyncing(true);
+    
+    // syncUsageWithApi implementa la logica: aggiorna solo se server > locale
+    const data = forceSync 
+      ? await PlayerService.syncUsageWithApi() 
+      : PlayerService.getApiUsage();
+    
     setUsage(data);
+    if (forceSync) setIsSyncing(false);
   }, []);
 
   useEffect(() => {
-    updateUsage();
-    if (refreshRate > 0) {
-      const interval = setInterval(updateUsage, refreshRate);
-      return () => clearInterval(interval);
-    }
+    // Sincronizzazione iniziale al mount
+    updateUsage(true);
+
+    // Refresh locale veloce per la UI (contatore interno)
+    const localInterval = setInterval(() => updateUsage(false), refreshRate);
+
+    // Refresh dal server ogni 30 secondi per sincronizzare eventuali aumenti esterni
+    const serverInterval = setInterval(() => updateUsage(true), 30000);
+
+    return () => {
+      clearInterval(localInterval);
+      clearInterval(serverInterval);
+    };
   }, [refreshRate, updateUsage]);
 
+  /** Resetta il contatore locale e aggiorna la UI */
   const resetCounter = () => {
     PlayerService.resetApiCounter();
-    updateUsage();
+    updateUsage(false);
   };
 
+  /** * Rimuove tutte le chiavi di cache relative ai giocatori.
+   * @returns {number} Numero di chiavi rimosse.
+   */
   const clearCache = () => {
     const keysToRemove = [];
     for (let i = 0; i &lt; localStorage.length; i++) {
@@ -68,7 +94,7 @@ export function useApiUsageViewModel(refreshRate = 2000) {
     return keysToRemove.length;
   };
 
-  return { usage, config, resetCounter, clearCache, refreshUsage: updateUsage };
+  return { usage, config, isSyncing, resetCounter, clearCache, syncWithServer: () => updateUsage(true) };
 }</code></pre>
         </article>
     </section>
@@ -79,13 +105,13 @@ export function useApiUsageViewModel(refreshRate = 2000) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

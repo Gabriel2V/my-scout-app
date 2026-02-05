@@ -1,6 +1,7 @@
-/** 
- * @component SearchResults 
- * @description Pagina dei risultati della ricerca globale. 
+/** * @component SearchResults 
+ * @description Vista per i risultati della ricerca globale.
+ * Aggrega e visualizza tre categorie di risultati: Nazioni, Squadre e Giocatori.
+ * Utilizza la query string `?q=` per mantenere lo stato ricaricabile.
 */
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSearchViewModel } from '../../viewmodels/useSearchViewModel';
@@ -10,12 +11,13 @@ import styles from '../../styles/SearchResults.module.css';
 
 export default function SearchResults() {
   const [searchParams] = useSearchParams();
-  const searchTerm = searchParams.get('q') || ''; // Legge dalla query string ?q=...
+  const searchTerm = searchParams.get('q') || ''; 
   const { players, teams, nations, loading } = useSearchViewModel(searchTerm);
   const navigate = useNavigate();
 
   if (loading) return <div className="loading">Ricerca in corso...</div>;
 
+  // Empty State preventivo per ricerche troppo brevi
   if (!searchTerm || searchTerm.trim().length < 3) {
     return (
       <div style={{textAlign: 'center', padding: '3rem'}}>
@@ -33,6 +35,7 @@ export default function SearchResults() {
       
       {!hasResults && <div className={styles.noResults}><p>Nessun risultato trovato.</p></div>}
 
+      {/* Sezione Nazioni */}
       {nations.length > 0 && (
         <div className={styles.section}>
           <h3 className={`${styles.sectionTitle} ${styles.nationsBorder}`}>🏳️ Nazioni ({nations.length})</h3>
@@ -45,6 +48,7 @@ export default function SearchResults() {
         </div>
       )}
 
+      {/* Sezione Squadre */}
       {teams.length > 0 && (
         <div className={styles.section}>
           <h3 className={`${styles.sectionTitle} ${styles.teamsBorder}`}>🛡️ Squadre ({teams.length})</h3>
@@ -58,6 +62,7 @@ export default function SearchResults() {
         </div>
       )}
 
+      {/* Sezione Giocatori */}
       {players.length > 0 && (
         <div className={styles.section}>
           <h3 className={`${styles.sectionTitle} ${styles.playersBorder}`}>⚽ Giocatori ({players.length})</h3>

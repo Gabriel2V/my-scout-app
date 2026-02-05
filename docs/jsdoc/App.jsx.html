@@ -28,8 +28,12 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * @module App
- * @description Configurazione delle rotte dell'applicazione tramite React Router.
- * Definisce la gerarchia degli URL e l'integrazione tra Layout e Pagine.
+ * @description Componente Root che definisce l'albero di routing dell'applicazione.
+ * * **Tecnologia:** Utilizza `HashRouter` per garantire la compatibilità con hosting statici (es. GitHub Pages).
+ * * **Struttura:**
+ * - Definisce `MainLayout` come wrapper principale per tutte le rotte.
+ * - Gestisce le rotte nidificate per la navigazione gerarchica (Nazioni -> Serie -> Squadre).
+ * - Mappa la rotta `*` (wildcard) al componente `NotFound`.
  */
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './views/layouts/MainLayout';
@@ -50,18 +54,29 @@ function App() {
     &lt;Router>
       &lt;Routes>
         &lt;Route path="/" element={&lt;MainLayout />}>
+          {/* Dashboard */}
           &lt;Route index element={&lt;Home />} />
+          
+          {/* Flusso Gerarchico: Nazioni -> Serie -> Squadre */}
           &lt;Route path="nazioni" element={&lt;Nations />} />
-          &lt;Route path="ricerca" element={&lt;SearchResults />} />
-          &lt;Route path="giocatori" element={&lt;Players />} />
           &lt;Route path="nazioni/:nazioneId" element={&lt;Series />} />
-          &lt;Route path="nazionali" element={&lt;NationalTeams />} />
-          &lt;Route path="info" element={&lt;Info />} />
           &lt;Route path="nazioni/:nazioneId/serie/:serieId/squadre" element={&lt;Teams />} />
+          
+          {/* Liste Giocatori (Contestuali) */}
           &lt;Route path="nazioni/:nazioneId/serie/:serieId/giocatori" element={&lt;Players />} />
           &lt;Route path="squadre/:squadraId/giocatori" element={&lt;Players />} />
+          &lt;Route path="nazionali" element={&lt;NationalTeams />} />
+          
+          {/* Ricerca e Dettaglio */}
+          &lt;Route path="ricerca" element={&lt;SearchResults />} />
+          &lt;Route path="giocatori" element={&lt;Players />} /> {/* Global Top Players */}
           &lt;Route path="giocatori/:id" element={&lt;PlayerDetailView />} /> 
+          
+          {/* Pagine Statiche / Utility */}
+          &lt;Route path="info" element={&lt;Info />} />
           &lt;Route path="api-debug" element={&lt;ApiDebug />} />
+          
+          {/* Fallback 404 */}
           &lt;Route path="*" element={&lt;NotFound />} />
         &lt;/Route>
       &lt;/Routes>
@@ -79,13 +94,13 @@ export default App;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

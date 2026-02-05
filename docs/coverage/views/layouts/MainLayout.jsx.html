@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.9% </span>
+                <span class="strong">65% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/21</span>
+                <span class='fraction'>13/20</span>
             </div>
         
             
@@ -156,10 +156,7 @@
 <a name='L91'></a><a href='#L91'>91</a>
 <a name='L92'></a><a href='#L92'>92</a>
 <a name='L93'></a><a href='#L93'>93</a>
-<a name='L94'></a><a href='#L94'>94</a>
-<a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a>
-<a name='L97'></a><a href='#L97'>97</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L94'></a><a href='#L94'>94</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -171,13 +168,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -195,8 +193,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -204,8 +200,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -257,8 +251,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @component MainLayout
- * @description Struttura portante dell'applicazione.
- * Contiene l'Header con la ricerca globale "Search-on-Enter" e il Footer informativo.
+ * @description Layout principale (Shell) dell'applicazione.
+ * * **Struttura:** Header (Logo + Nav + Search) -&gt; Outlet (Contenuto Pagina) -&gt; Footer.
+ * * **Global Search:** Gestisce l'input di ricerca nella navbar che reindirizza a `/ricerca`.
+ * * **ApiCounter:** Integra il widget di monitoraggio API globale.
  */
 import { Outlet, useNavigate, useLocation, useSearchParams, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -271,15 +267,14 @@ export default function MainLayout() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   
-  // Stato locale per l'input (quello che l'utente scrive)
+  // Sincronizza l'input della navbar con i query params URL
   const [localInput, setLocalInput] = useState(searchParams.get('q') || '');
 &nbsp;
-  // Sincronizza l'input locale se l'URL cambia (es. navigazione indietro)
   useEffect(() =&gt; {
     setLocalInput(searchParams.get('q') || '');
   }, [searchParams]);
 &nbsp;
-  // Funzione che avvia effettivamente la ricerca nell'app
+  /** Avvia la navigazione verso la pagina dei risultati */
   const triggerSearch = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
     const value = <span class="cstat-no" title="statement not covered" >localInput.trim();</span>
 <span class="cstat-no" title="statement not covered" >    if (value.length &gt;= 1) {</span>
@@ -290,18 +285,14 @@ export default function MainLayout() {
   };
 &nbsp;
   const handleKeyDown = <span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >    if (e.key === 'Enter') {</span>
-<span class="cstat-no" title="statement not covered" >      triggerSearch();</span>
-    }
+<span class="cstat-no" title="statement not covered" >    if (e.key === 'Enter') <span class="cstat-no" title="statement not covered" >triggerSearch();</span></span>
   };
 &nbsp;
   return (
     &lt;div className={styles.container}&gt;
       &lt;header className={styles.header}&gt;
         &lt;div className={styles.headerLeft}&gt;
-          &lt;div className={styles.logo} onClick={() =&gt; navigate('/')}&gt;
-            My Scout App
-          &lt;/div&gt;
+          &lt;div className={styles.logo} onClick={() =&gt; navigate('/')}&gt;My Scout App&lt;/div&gt;
           &lt;nav className={styles.nav}&gt;
             &lt;NavLink to="/" className={({isActive}) =&gt; isActive ? styles.activeLink : <span class="branch-1 cbranch-no" title="branch not covered" >styles.navLink}&gt;H</span>OME&lt;/NavLink&gt;
             &lt;NavLink to="/info" className={({isActive}) =&gt; isActive ? <span class="branch-0 cbranch-no" title="branch not covered" >styles.activeLink : s</span>tyles.navLink}&gt;INFO&lt;/NavLink&gt;
@@ -358,7 +349,7 @@ export default function MainLayout() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-05T09:24:29.787Z
+                at 2026-02-05T15:16:18.596Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

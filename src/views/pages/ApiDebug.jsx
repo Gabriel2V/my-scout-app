@@ -1,13 +1,18 @@
 /**
  * @component ApiDebug
- * @description Dashboard tecnica per sviluppatori.
- * Visualizza endpoint, chiavi API e statistiche di traffico.
+ * @description Dashboard tecnica per il monitoraggio delle chiamate API.
+ * * **Features:**
+ * - Visualizza le statistiche di utilizzo (usate/rimanenti) in tempo reale.
+ * - Mostra lo stato della configurazione (Endpoint, API Key).
+ * - Fornisce strumenti di amministrazione per resettare il contatore locale o pulire la cache.
+ * * Utilizza `useApiUsageViewModel` per la logica di business.
  */
 import React from 'react';
 import { useApiUsageViewModel } from '../../viewmodels/useApiUsageViewModel';
 import styles from '../../styles/ApiDebug.module.css';
 
 export default function ApiDebug() {
+  // Refresh rate accelerato (1000ms) per monitoraggio real-time
   const { usage, config, resetCounter, clearCache } = useApiUsageViewModel(1000);
 
   const handleReset = () => {
@@ -28,6 +33,8 @@ export default function ApiDebug() {
   return (
     <div className={styles.container}>
       <h2 className="pageTitle">🛠️ API Monitor & Debug</h2>
+      
+      {/* Pannello Configurazione */}
       <div className={styles.debugCard} style={{marginBottom: '2rem', borderLeft: '4px solid var(--primary)'}}>
         <h3 className={styles.cardTitle}>Configurazione di Sistema</h3>
         <div className={styles.infoBox}>
@@ -42,6 +49,7 @@ export default function ApiDebug() {
         </div>
       </div>
 
+      {/* Pannello Statistiche */}
       <div className={styles.debugCard}>
         <div className={styles.cardHeader}>
           <h3 className={styles.cardTitle}>API Usage Monitor</h3>
@@ -50,7 +58,6 @@ export default function ApiDebug() {
           </span>
         </div>
 
-        {/* Statistiche Principali */}
         <div className={styles.statsGrid}>
           <div className={`${styles.statBox} ${styles.statBoxGreen}`}>
             <div className={styles.statValue}>{usage.used}</div>
@@ -66,7 +73,6 @@ export default function ApiDebug() {
           </div>
         </div>
 
-        {/* Barra di Progresso */}
         <div className={styles.progressSection}>
           <div className={styles.progressTrack}>
             <div 
@@ -82,9 +88,8 @@ export default function ApiDebug() {
         </div>
       </div>
 
-      {/* Pulsanti di Controllo */}
+      {/* Controlli Manuali */}
       <div className={styles.controlsGrid}>
-
         <button onClick={handleClearCache} className={`${styles.btn} ${styles.btnClear}`}>
           🗑️ Pulisci Cache
         </button>

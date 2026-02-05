@@ -38,14 +38,128 @@
     <div class="container-overview">
     
         
-            <div class="description">ViewModel per la ricerca globale.
-Implementa una strategia "Cache-First": cerca nazioni e giocatori prima in locale e poi interroga le API in parallelo.</div>
+            <div class="description">ViewModel per la gestione della ricerca globale nell'applicazione.
+* Implementa una strategia di **Ricerca Ibrida (Local + Remote)**:
+1. **Scansione Locale:** Cerca immediatamente corrispondenze nel localStorage (dati già visitati).
+2. **Session Cache:** Memorizza i risultati della ricerca corrente in sessionStorage per navigazione "Instant Back".
+3. **API Fetch:** Esegue chiamate remote in parallelo solo se necessario.
+* Gestisce l'aggregazione di Nazioni, Squadre e Giocatori in un unico result set.</div>
         
 
         
             
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="viewmodels_useSearchViewModel.js.html">viewmodels/useSearchViewModel.js</a>, <a href="viewmodels_useSearchViewModel.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".useSearchViewModel"><span class="type-signature">(static) </span>useSearchViewModel<span class="signature">(searchTerm)</span><span class="type-signature"> &rarr; {Object|Array.&lt;Player>|Array.&lt;Object>|Array.&lt;Object>|boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Hook per la logica di ricerca.
+* @function useSearchViewModel
+</div>
 
 
 
@@ -137,7 +251,7 @@ Implementa una strategia "Cache-First": cerca nazioni e giocatori prima in local
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="viewmodels_useSearchViewModel.js.html">viewmodels/useSearchViewModel.js</a>, <a href="viewmodels_useSearchViewModel.js.html#line1">line 1</a>
+        <a href="viewmodels_useSearchViewModel.js.html">viewmodels/useSearchViewModel.js</a>, <a href="viewmodels_useSearchViewModel.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -162,29 +276,114 @@ Implementa una strategia "Cache-First": cerca nazioni e giocatori prima in local
 
 
 
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    Risultati della ricerca.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.players - Lista giocatori trovati (istanze Player).
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Player></span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.teams - Lista squadre trovate.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.nations - Lista nazioni trovate.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.loading - Flag di caricamento.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
 
 
 
 
 
         
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
 
     
@@ -200,13 +399,13 @@ Implementa una strategia "Cache-First": cerca nazioni e giocatori prima in local
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

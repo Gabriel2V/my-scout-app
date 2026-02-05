@@ -1,7 +1,7 @@
 /**
  * @component Nations
- * @description Pagina di primo livello dell'esplorazione gerarchica. 
- * Mostra le nazioni disponibili recuperate tramite useNationsViewModel.
+ * @description Vista "Level 1" della navigazione gerarchica.
+ * Visualizza la griglia delle nazioni supportate recuperate dal ViewModel.
  */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';

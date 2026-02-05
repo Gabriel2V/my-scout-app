@@ -1,23 +1,38 @@
 /**
  * @module ViewModels/useSearchViewModel
- * @description ViewModel per la ricerca globale.
- * Implementa una strategia "Cache-First": cerca nazioni e giocatori prima in locale e poi interroga le API in parallelo.
- * @param {string} searchTerm - Il termine di ricerca inserito dall'utente.
+ * @description ViewModel per la gestione della ricerca globale nell'applicazione.
+ * * Implementa una strategia di **Ricerca Ibrida (Local + Remote)**:
+ * 1. **Scansione Locale:** Cerca immediatamente corrispondenze nel localStorage (dati già visitati).
+ * 2. **Session Cache:** Memorizza i risultati della ricerca corrente in sessionStorage per navigazione "Instant Back".
+ * 3. **API Fetch:** Esegue chiamate remote in parallelo solo se necessario.
+ * * Gestisce l'aggregazione di Nazioni, Squadre e Giocatori in un unico result set.
  */
 import { useState, useEffect, useRef } from 'react';
 import PlayerService from '../services/PlayerService';
 import { Player } from '../models/Player';
 
+/**
+ * Hook per la logica di ricerca.
+ * * @function useSearchViewModel
+ * @param {string} searchTerm - Il termine di ricerca inserito dall'utente.
+ * @returns {Object} Risultati della ricerca.
+ * @returns {Array<Player>} return.players - Lista giocatori trovati (istanze Player).
+ * @returns {Array<Object>} return.teams - Lista squadre trovate.
+ * @returns {Array<Object>} return.nations - Lista nazioni trovate.
+ * @returns {boolean} return.loading - Flag di caricamento.
+ */
 export function useSearchViewModel(searchTerm) {
   const [players, setPlayers] = useState([]);
   const [teams, setTeams] = useState([]);
   const [nations, setNations] = useState([]); 
   const [loading, setLoading] = useState(false);
+  
   const lastSearchRef = useRef("");
 
   useEffect(() => {
     const term = searchTerm?.trim() || "";
     
+    // Minimo 3 caratteri per attivare la ricerca
     if (term.length < 3) {
       setPlayers([]);
       setTeams([]);
@@ -27,7 +42,7 @@ export function useSearchViewModel(searchTerm) {
       return;
     }
 
-    // Se stiamo cercando la stessa cosa e abbiamo già risultati (nel componente vivo), non ripetere l'API
+    // Debounce/Check: se stiamo cercando la stessa cosa e abbiamo già risultati
     if (lastSearchRef.current === term && (players.length > 0 || teams.length > 0)) {
       setLoading(false);
       return;
@@ -36,8 +51,8 @@ export function useSearchViewModel(searchTerm) {
     const performSearch = async () => {
       setLoading(true);
 
-      // CONTROLLO CACHE DI SESSIONE 
-      // Se abbiamo già cercato questo termine in questa sessione browser, carichiamo tutto da qui.
+      // --- CONTROLLO CACHE DI SESSIONE ---
+      // Se abbiamo già cercato questo termine in questa sessione browser, recuperiamo lo stato.
       const sessionKey = `search_sess_${term.toLowerCase()}`;
       const cachedSession = sessionStorage.getItem(sessionKey);
 
@@ -48,13 +63,13 @@ export function useSearchViewModel(searchTerm) {
         setTeams(data.teams || []);
         setPlayers((data.players || []).map(p => new Player(p)));
         
-        lastSearchRef.current = term; // Allineiamo il ref
+        lastSearchRef.current = term; 
         setLoading(false);
-        return; // Ci fermiamo qui, niente calcoli locali o API
+        return; 
       }
 
       try {
-        // RICERCA LOCALE (localStorage) 
+        // --- 1. RICERCA LOCALE (localStorage) ---
         let foundNations = [];
         const nationsData = localStorage.getItem('all_nations') || localStorage.getItem('cache_nations');
         if (nationsData) {
@@ -64,32 +79,33 @@ export function useSearchViewModel(searchTerm) {
           setNations(foundNations);
         }
 
+        // Scansiona tutte le chiavi 'players_' nel localStorage
         let localMatches = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
           if (key && key.startsWith('players_')) {
             const cachedData = JSON.parse(localStorage.getItem(key));
             if (Array.isArray(cachedData)) {
-              // Gestisce sia struttura diretta che wrapper { player: ... }
+              // Filtra per nome
               const matches = cachedData.filter(p => {
                 const name = p.name || p.player?.name;
                 return name?.toLowerCase().includes(term.toLowerCase());
               });
-              // Normalizza struttura dati per il costruttore Player
               localMatches = [...localMatches, ...matches];
             }
           }
         }
         
-        // Deduplicazione locale
+        // Deduplicazione locale e istanziazione Model
         const uniqueLocal = Array.from(new Map(localMatches.map(m => [m.player?.id || m.id, m])).values());
         let currentPlayers = uniqueLocal.map(item => new Player(item));
         setPlayers(currentPlayers);
 
-        // RICERCA API 
+        // --- 2. RICERCA REMOTA API ---
         if (lastSearchRef.current !== term) {
           lastSearchRef.current = term;
           
+          // Chiamate parallele per Giocatori e Squadre
           const [apiPlayersData, apiTeamsData] = await Promise.all([
             PlayerService.searchPlayers(term).catch(() => []),
             PlayerService.searchTeams(term).catch(() => [])
@@ -98,7 +114,7 @@ export function useSearchViewModel(searchTerm) {
           let finalPlayers = currentPlayers;
           let finalTeams = [];
 
-          // Merge Giocatori
+          // Merge risultati Giocatori
           if (apiPlayersData.length > 0) {
             const newPlayers = apiPlayersData.map(item => new Player(item));
             const combined = [...currentPlayers, ...newPlayers];
@@ -107,7 +123,7 @@ export function useSearchViewModel(searchTerm) {
             setPlayers(finalPlayers);
           }
 
-          // Setup Squadre
+          // Merge risultati Squadre
           if (apiTeamsData.length > 0) {
             finalTeams = apiTeamsData.map(item => ({
               id: item.team.id,
@@ -119,7 +135,7 @@ export function useSearchViewModel(searchTerm) {
             setTeams(finalTeams);
           }
 
-          // Salva il risultato finale combinato
+          // Persistenza Sessione
           sessionStorage.setItem(sessionKey, JSON.stringify({
             nations: foundNations,
             players: finalPlayers,

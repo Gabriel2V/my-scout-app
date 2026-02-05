@@ -26,34 +26,91 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** 
- * @module ViewModels/useTeamsViewModel 
- * @description Gestisce l'elenco dei club per un determinato campionato.
+            <pre class="prettyprint source linenums"><code>/**
+ * @module ViewModels/useTeamsViewModel
+ * @description ViewModel React Hook per la gestione delle squadre (club) di un campionato.
+ * 
+ * Recupera l'elenco dei team partecipanti a una competizione specifica,
+ * con caching persistente e deduplicazione richieste.
+ * 
+ * **Pattern implementati:**
+ * - Cache-First Loading
+ * - Request Deduplication via useRef
+ * - URL-Driven State
  */
+
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerService from '../services/PlayerService';
 
+/**
+ * Hook per il recupero delle squadre di un campionato.
+ * 
+ * **Flusso:**
+ * 1. Estrae `serieId` da URL params
+ * 2. Verifica ref `lastRequestKey` per deduplicazione
+ * 3. Controlla cache localStorage (`cache_teams_{serieId}`)
+ * 4. Se assente, chiama API e persiste risultato
+ * 
+ * @function useTeamsViewModel
+ * @returns {Object} Stato delle squadre
+ * @returns {Array&lt;Object>} return.teams - Squadre del campionato
+ * @returns {number} return.teams[].team.id - ID univoco squadra
+ * @returns {string} return.teams[].team.name - Nome squadra
+ * @returns {string} return.teams[].team.logo - URL logo
+ * @returns {boolean} return.loading - Flag di caricamento
+ * 
+ * @example
+ * const { teams, loading } = useTeamsViewModel();
+ * // teams: [{ team: { id: 505, name: "Inter", logo: "..." }, venue: {...} }]
+ */
 export function useTeamsViewModel() {
+  /**
+   * ID del campionato estratto dai parametri URL.
+   * @type {string}
+   */
   const { serieId } = useParams();
+
+  /**
+   * Array delle squadre caricate.
+   * @type {Array}
+   */
   const [teams, setTeams] = useState([]);
+
+  /**
+   * Flag di caricamento.
+   * @type {Array}
+   */
   const [loading, setLoading] = useState(true);
+
+  /**
+   * Ref per tracciare l'ultima richiesta e prevenire duplicati.
+   */
   const lastRequestKey = useRef("");
 
   useEffect(() => {
+    /**
+     * Carica le squadre con Cache-First strategy.
+     * 
+     * @async
+     * @private
+     */
     const loadTeams = async () => {
+      // Deduplicazione richieste
       if (lastRequestKey.current === serieId) return;
       lastRequestKey.current = serieId;
 
       const cacheKey = `cache_teams_${serieId}`;
       const cachedData = localStorage.getItem(cacheKey);
 
+      // Caricamento da cache
       if (cachedData) {
         setTeams(JSON.parse(cachedData));
         setLoading(false);
         return;
       }
 
+      // Caricamento da API
       try {
         setLoading(true);
         const data = await PlayerService.getTeams(serieId);
@@ -65,6 +122,7 @@ export function useTeamsViewModel() {
         setLoading(false);
       }
     };
+    
     loadTeams();
   }, [serieId]);
 
@@ -79,13 +137,13 @@ export function useTeamsViewModel() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

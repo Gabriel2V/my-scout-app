@@ -38,8 +38,20 @@
     <div class="container-overview">
     
         
-            <div class="description">ViewModel per la vista di dettaglio. 
-Gestisce il caricamento dei dati di un singolo giocatore tramite ID e la navigazione contestuale tra giocatori simili.</div>
+            <div class="description">ViewModel React Hook per la vista di dettaglio di un singolo giocatore.
+
+Implementa il pattern **"Zero-Network Navigation"**: se il giocatore è già disponibile
+tramite stato passato (navigation state), non effettua chiamate API.
+
+**Responsabilità principali:**
+1. Gestione dual-source: dati passati via state OR fetch remoto
+2. Calcolo navigazione contestuale (prev/next player)
+3. Re-idratazione oggetti Player da context list
+
+**Pattern implementati:**
+- Zero-Network Navigation: priorità ai dati passati via Router
+- Contextual Navigation: prev/next calcolati da lista origine
+- Lazy Remote Fetch: API solo per accesso diretto URL</div>
         
 
         
@@ -137,6 +149,405 @@ Gestisce il caricamento dei dati di un singolo giocatore tramite ID e la navigaz
     
 
     
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~usePlayerDetailViewModel"><span class="type-signature">(inner) </span>usePlayerDetailViewModel<span class="signature">(id, initialPlayer<span class="signature-attributes">opt</span>, contextList<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object|Player|null|Player|null|Player|null|boolean|string|null}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Hook per la gestione del dettaglio giocatore con navigazione contestuale.
+
+**Modalità di funzionamento:**
+
+**Caso A - Navigation State presente (Zero-Network):**
+- `initialPlayer` contiene il giocatore
+- Nessuna chiamata API
+- Loading = false immediatamente
+
+**Caso B - Accesso diretto URL (Remote Fetch):**
+- `initialPlayer` è null/undefined
+- Effettua chiamata API tramite PlayerService
+- Loading = true fino a completamento
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">ID del giocatore da visualizzare</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>initialPlayer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Giocatore passato via navigation state</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contextList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last">Lista di giocatori per navigazione prev/next</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="viewmodels_usePlayerDetailViewModel.js.html">viewmodels/usePlayerDetailViewModel.js</a>, <a href="viewmodels_usePlayerDetailViewModel.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    Stato del dettaglio giocatore
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.player - Giocatore corrente (istanza normalizzata)
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Player</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.prevPlayer - Giocatore precedente nella lista o null
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Player</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.nextPlayer - Giocatore successivo nella lista o null
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Player</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.loading - True durante fetch remoto
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return.error - Messaggio errore o null
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Con navigation state (zero latency)
+const { player, loading } = usePlayerDetailViewModel(
+  276,
+  { id: 276, name: "Lautaro Martinez", ... },
+  []
+);
+// loading: false (immediato)
+// player: Player { id: 276, name: "Lautaro Martinez", ... }</code></pre>
+
+    <pre class="prettyprint"><code>// Accesso diretto URL (fetch remoto)
+const { player, loading, error } = usePlayerDetailViewModel(276);
+// loading: true → false dopo fetch
+// player: null → Player { ... } dopo fetch</code></pre>
+
+
+
+        
+    
 
     
 
@@ -151,13 +562,13 @@ Gestisce il caricamento dei dati di un singolo giocatore tramite ID e la navigaz
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player-Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Index.html">Index</a></li><li><a href="module-Models_Player.html">Models/Player</a></li><li><a href="module-Services_PlayerService.html">Services/PlayerService</a></li><li><a href="module-ViewModels_useApiUsageViewModel.html">ViewModels/useApiUsageViewModel</a></li><li><a href="module-ViewModels_useNationalTeamsViewModel.html">ViewModels/useNationalTeamsViewModel</a></li><li><a href="module-ViewModels_useNationsViewModel.html">ViewModels/useNationsViewModel</a></li><li><a href="module-ViewModels_usePlayerDetailViewModel.html">ViewModels/usePlayerDetailViewModel</a></li><li><a href="module-ViewModels_usePlayersViewModel.html">ViewModels/usePlayersViewModel</a></li><li><a href="module-ViewModels_useSearchViewModel.html">ViewModels/useSearchViewModel</a></li><li><a href="module-ViewModels_useSeriesViewModel.html">ViewModels/useSeriesViewModel</a></li><li><a href="module-ViewModels_useTeamsViewModel.html">ViewModels/useTeamsViewModel</a></li></ul><h3>Classes</h3><ul><li><a href="module-Models_Player.Player.html">Player</a></li><li><a href="module-Services_PlayerService-PlayerService.html">PlayerService</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 10:24:20 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

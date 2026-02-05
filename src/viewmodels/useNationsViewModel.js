@@ -1,10 +1,23 @@
 /**
  * @module ViewModels/useNationsViewModel
- * @description ViewModel per il recupero della lista delle nazioni.
+ * @description ViewModel per il recupero della lista delle nazioni supportate.
+ * * Gestisce la cache persistente per evitare chiamate ripetute a dati che cambiano raramente.
+ * * **Strategia di Cache:**
+ * - Salva la lista completa in `localStorage` ('cache_nations').
+ * - Al caricamento, controlla prima la cache. Se valida, evita la chiamata API.
+ * - In caso di cache corrotta o vuota, forza il refresh dall'API.
  */
-import { useState, useEffect } from 'react'; // Rimosso useRef non necessario
+import { useState, useEffect } from 'react'; 
 import PlayerService from '../services/PlayerService';
 
+/**
+ * Hook per il recupero delle nazioni.
+ * @function useNationsViewModel
+ * @returns {Object} Stato delle nazioni.
+ * @returns {Array<{name: string, flag: string}>} return.nations - Lista di nazioni con nome e bandiera.
+ * @returns {boolean} return.loading - Flag di caricamento.
+ * @returns {string|null} return.error - Eventuale messaggio di errore.
+ */
 export function useNationsViewModel() {
   const [nations, setNations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +28,8 @@ export function useNationsViewModel() {
       const cacheKey = 'cache_nations';
       const cachedData = localStorage.getItem(cacheKey);
       
-if (cachedData) {
+      // Controllo validità Cache
+      if (cachedData) {
         try {
             const parsed = JSON.parse(cachedData);
             if (Array.isArray(parsed) && parsed.length > 0) {
@@ -29,19 +43,17 @@ if (cachedData) {
         }
       }
 
+      //  Fetch API se cache assente/invalida
       try {
         setLoading(true);
-        console.log("Richiesta API Nazioni avviata...");
-        
         const data = await PlayerService.getCountries();
-        
-        console.log("Dati ricevuti:", data);
 
         if (!data || data.length === 0) {
             throw new Error("L'API ha restituito una lista vuota.");
         }
 
         setNations(data);
+        // Salva sia come cache specifica che come fallback globale
         localStorage.setItem(cacheKey, JSON.stringify(data));
         localStorage.setItem('all_nations', JSON.stringify(data));
       } catch (err) {

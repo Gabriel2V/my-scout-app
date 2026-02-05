@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.9% </span>
+                <span class="strong">72.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/11</span>
+                <span class='fraction'>8/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">42.85% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/14</span>
+                <span class='fraction'>6/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>8/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -158,7 +158,10 @@
 <a name='L93'></a><a href='#L93'>93</a>
 <a name='L94'></a><a href='#L94'>94</a>
 <a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,26 +171,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,19 +261,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @component ApiDebug
- * @description Dashboard tecnica per sviluppatori.
- * Visualizza endpoint, chiavi API e statistiche di traffico.
+ * @description Dashboard tecnica per il monitoraggio delle chiamate API.
+ * * **Features:**
+ * - Visualizza le statistiche di utilizzo (usate/rimanenti) in tempo reale.
+ * - Mostra lo stato della configurazione (Endpoint, API Key).
+ * - Fornisce strumenti di amministrazione per resettare il contatore locale o pulire la cache.
+ * * Utilizza `useApiUsageViewModel` per la logica di business.
  */
 import React from 'react';
 import { useApiUsageViewModel } from '../../viewmodels/useApiUsageViewModel';
 import styles from '../../styles/ApiDebug.module.css';
 &nbsp;
 export default function ApiDebug() {
+  // Refresh rate accelerato (1000ms) per monitoraggio real-time
   const { usage, config, resetCounter, clearCache } = useApiUsageViewModel(1000);
 &nbsp;
-  const handleReset = () =&gt; {
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (window.confirm('Vuoi davvero resettare il contatore API?')) {
-      resetCounter();
+  const handleReset = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (window.confirm('Vuoi davvero resettare il contatore API?')) {</span>
+<span class="cstat-no" title="statement not covered" >      resetCounter();</span>
     }
   };
 &nbsp;
@@ -283,6 +294,8 @@ export default function ApiDebug() {
   return (
     &lt;div className={styles.container}&gt;
       &lt;h2 className="pageTitle"&gt;🛠️ API Monitor &amp; Debug&lt;/h2&gt;
+      
+      {/* Pannello Configurazione */}
       &lt;div className={styles.debugCard} style={{marginBottom: '2rem', borderLeft: '4px solid var(--primary)'}}&gt;
         &lt;h3 className={styles.cardTitle}&gt;Configurazione di Sistema&lt;/h3&gt;
         &lt;div className={styles.infoBox}&gt;
@@ -297,6 +310,7 @@ export default function ApiDebug() {
         &lt;/div&gt;
       &lt;/div&gt;
 &nbsp;
+      {/* Pannello Statistiche */}
       &lt;div className={styles.debugCard}&gt;
         &lt;div className={styles.cardHeader}&gt;
           &lt;h3 className={styles.cardTitle}&gt;API Usage Monitor&lt;/h3&gt;
@@ -305,7 +319,6 @@ export default function ApiDebug() {
           &lt;/span&gt;
         &lt;/div&gt;
 &nbsp;
-        {/* Statistiche Principali */}
         &lt;div className={styles.statsGrid}&gt;
           &lt;div className={`${styles.statBox} ${styles.statBoxGreen}`}&gt;
             &lt;div className={styles.statValue}&gt;{usage.used}&lt;/div&gt;
@@ -321,7 +334,6 @@ export default function ApiDebug() {
           &lt;/div&gt;
         &lt;/div&gt;
 &nbsp;
-        {/* Barra di Progresso */}
         &lt;div className={styles.progressSection}&gt;
           &lt;div className={styles.progressTrack}&gt;
             &lt;div 
@@ -337,11 +349,8 @@ export default function ApiDebug() {
         &lt;/div&gt;
       &lt;/div&gt;
 &nbsp;
-      {/* Pulsanti di Controllo */}
+      {/* Controlli Manuali */}
       &lt;div className={styles.controlsGrid}&gt;
-        &lt;button onClick={handleReset} className={`${styles.btn} ${styles.btnReset}`}&gt;
-          🔄 Reset Contatore
-        &lt;/button&gt;
         &lt;button onClick={handleClearCache} className={`${styles.btn} ${styles.btnClear}`}&gt;
           🗑️ Pulisci Cache
         &lt;/button&gt;
@@ -355,7 +364,7 @@ export default function ApiDebug() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-05T09:24:29.787Z
+                at 2026-02-05T15:16:18.596Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
