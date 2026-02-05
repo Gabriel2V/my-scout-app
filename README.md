@@ -206,15 +206,21 @@ Oltre ai test funzionali, è possibile generare un report della copertura del co
 - **Eseguire i test:** `npm test`
 - **Generare report coverage:** `npm run coverage` (oppure `npx vitest run --coverage`)
 
-Il report dettagliato sarà disponibile in formato HTML nella cartella `/coverage/index.html`.
+### Generazione automatica dei report
+Per rigenerare contemporaneamente sia la documentazione JSDoc che il report di coverage nella cartella `/docs`, è disponibile il comando:
+
+```bash
+npm run full-report
+
+```
 
 ## Documentazione e Coverage Report online
 
 Per preservare il limite di 100 chiamate giornaliere dell'API gratuita, l'applicazione live è protetta. 
 È possibile consultare online la documentazione tecnica e i report di copertura:
 
-- [📚 Documentazione Tecnica (JSDoc)](https://tuo-utente.github.io/my-scout-app/docs/index.html)
-- [📊 Report Copertura Test (Coverage)](https://tuo-utente.github.io/my-scout-app/coverage/index.html)
+- [📚 Documentazione Tecnica (JSDoc)](https://Gabriel2V.github.io/my-scout-app/jsdoc/index.html)
+- [📊 Report Copertura Test (Coverage)](https://Gabriel2V.github.io/my-scout-app/coverage/index.html)
 
 *Nota: La versione live dell'app non dispone di chiavi API caricate. Per testare l'app con i dati reali, clonare il repository e utilizzare il proprio file .env.*
 
