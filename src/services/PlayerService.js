@@ -9,7 +9,7 @@ class PlayerService {
  * @class PlayerService
  * @description Singleton che incapsula tutte le chiamate HTTP verso il fornitore di dati calcistici.
  */
-  constructor() {
+constructor() {
     this.apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
     this.baseUrl = 'https://v3.football.api-sports.io';
     this.dailyLimit = 100;
@@ -20,8 +20,43 @@ class PlayerService {
       { id: 78, name: 'Bundesliga' },
       { id: 61, name: 'Ligue 1' }
     ];
-    // FIX: Mappa per gestire le richieste in corso ed evitare duplicati
     this.pendingRequests = new Map();
+  }
+
+  /**
+   * Sincronizza il contatore locale con i dati del server (Chiamata GRATUITA).
+   * Applica una logica conservativa: aggiorna solo se il server riporta un consumo maggiore del locale.
+   */
+  async syncUsageWithApi() {
+    try {
+      if (!this.apiKey) return this.getApiUsage();
+
+      const response = await fetch(`${this.baseUrl}/status`, {
+        method: 'GET',
+        headers: {
+          'x-apisports-key': this.apiKey,
+          'x-rapidapi-host': 'v3.football.api-sports.io'
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.response && data.response.requests) {
+        const serverUsed = data.response.requests.current;
+        const localCounter = this._getApiCounter();
+        if (serverUsed > localCounter.count) {
+          const usageData = {
+            count: serverUsed,
+            date: new Date().toDateString()
+          };
+          localStorage.setItem('api_counter', JSON.stringify(usageData));
+        }
+        return this.getApiUsage();
+      }
+    } catch (error) {
+      console.error("Errore sincronizzazione API Status:", error);
+    }
+    return this.getApiUsage();
   }
 
   _getApiCounter() {
@@ -40,11 +75,6 @@ class PlayerService {
   }
 
   getApiUsage() {
-    /**
-    * @method getApiUsage
-    * @description Calcola l'utilizzo attuale delle API basandosi sul contatore locale.
-    * @returns {Object} Oggetto contenente chiamate usate, rimanenti e percentuale di utilizzo.
-    */
     const counter = this._getApiCounter();
     return {
       used: counter.count,
@@ -54,16 +84,15 @@ class PlayerService {
       date: counter.date
     };
   }
+
   getApiConfig() {
-    /** @method getApiConfig @returns {Object} Dettagli tecnici (URL, Key mascherata). */
     return {
       baseUrl: this.baseUrl,
       isConfigured: !!this.apiKey
     };
   }
 
-  async _apiCall(endpoint) {
-    // FIX: Se c'è già una richiesta identica in corso, restituisci la sua promise
+async _apiCall(endpoint) {
     if (this.pendingRequests.has(endpoint)) {
       return this.pendingRequests.get(endpoint);
     }
@@ -71,20 +100,34 @@ class PlayerService {
     const requestPromise = (async () => {
       try {
         const counter = this._getApiCounter();
-        if (counter.count >= this.dailyLimit) throw new Error(`Limite API raggiunto.`);
+        // Controllo preventivo locale
+        if (counter.count >= this.dailyLimit) throw new Error(`Limite API giornaliero raggiunto (Locale).`);
 
         const response = await fetch(`${this.baseUrl}/${endpoint}`, {
           method: 'GET',
-          headers: { 'x-apisports-key': this.apiKey }
+          headers: { 
+            'x-apisports-key': this.apiKey,
+            'x-rapidapi-host': 'v3.football.api-sports.io' 
+          }
         });
         
         if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
+        
         const data = await response.json();
+
+        if (data.errors && Object.keys(data.errors).length > 0) {
+
+            const msg = Object.values(data.errors)[0]; 
+            throw new Error(`API Error: ${msg}`);
+        }
+        
+        if (!data.response) {
+            return [];
+        }
         
         this._incrementApiCounter();
         return data.response;
       } finally {
-        // Pulizia: rimuovi la richiesta dalla mappa una volta completata (successo o errore)
         this.pendingRequests.delete(endpoint);
       }
     })();
@@ -96,22 +139,14 @@ class PlayerService {
   getCountries() { return this._apiCall('countries'); }
   getLeagues(countryId) { return this._apiCall(`leagues?country=${countryId}`); }
   getTeams(leagueId, season = 2024) { return this._apiCall(`teams?league=${leagueId}&season=${season}`); }
-
-  getPlayersByTeam(teamId, season = 2024, page = 1) { 
-    return this._apiCall(`players?team=${teamId}&season=${season}&page=${page}`);
-  }
-  
-  getPlayersByLeague(leagueId, season = 2024, page = 1) { 
-    return this._apiCall(`players?league=${leagueId}&season=${season}&page=${page}`); 
-  }
-
+  getPlayersByTeam(teamId, season = 2024, page = 1) { return this._apiCall(`players?team=${teamId}&season=${season}&page=${page}`); }
+  getPlayersByLeague(leagueId, season = 2024, page = 1) { return this._apiCall(`players?league=${leagueId}&season=${season}&page=${page}`); }
   async getTopPlayersBatch(batchIndex, season = 2024) {
     if (batchIndex >= this.topLeagues.length) return [];
     const league = this.topLeagues[batchIndex];
     const data = await this._apiCall(`players/topscorers?league=${league.id}&season=${season}`);
     return data.slice(0, 20);
   }
-
   searchPlayers(searchTerm) { return this._apiCall(`players?search=${encodeURIComponent(searchTerm)}`); }
   searchTeams(searchTerm) { return this._apiCall(`teams?search=${encodeURIComponent(searchTerm)}`); }
   resetApiCounter() { localStorage.removeItem('api_counter'); }

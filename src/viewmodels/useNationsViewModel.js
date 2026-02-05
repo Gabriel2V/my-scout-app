@@ -1,39 +1,51 @@
 /**
  * @module ViewModels/useNationsViewModel
  * @description ViewModel per il recupero della lista delle nazioni.
- * Gestisce il caching statico delle federazioni per minimizzare il consumo di API.
  */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react'; // Rimosso useRef non necessario
 import PlayerService from '../services/PlayerService';
 
 export function useNationsViewModel() {
   const [nations, setNations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const lastRequestKey = useRef("");
 
   useEffect(() => {
     const loadNations = async () => {
-      // Guardia atomica per prevenire doppie chiamate
-      if (lastRequestKey.current === "nations_init") return;
-      lastRequestKey.current = "nations_init";
-
       const cacheKey = 'cache_nations';
       const cachedData = localStorage.getItem(cacheKey);
       
-      if (cachedData) {
-        setNations(JSON.parse(cachedData));
-        setLoading(false);
-        return;
+if (cachedData) {
+        try {
+            const parsed = JSON.parse(cachedData);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+                setNations(parsed);
+                setLoading(false);
+                return;
+            }
+        } catch (e) {
+            console.warn("Cache corrotta, ricaricamento...");
+            localStorage.removeItem(cacheKey);
+        }
       }
 
       try {
         setLoading(true);
+        console.log("Richiesta API Nazioni avviata...");
+        
         const data = await PlayerService.getCountries();
+        
+        console.log("Dati ricevuti:", data);
+
+        if (!data || data.length === 0) {
+            throw new Error("L'API ha restituito una lista vuota.");
+        }
+
         setNations(data);
         localStorage.setItem(cacheKey, JSON.stringify(data));
         localStorage.setItem('all_nations', JSON.stringify(data));
       } catch (err) {
+        console.error("Errore Nazioni:", err);
         setError(err.message);
       } finally {
         setLoading(false);

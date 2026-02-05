@@ -48,15 +48,7 @@ describe('ApiDebug Page', () => {
     expect(screen.getByText('https://v3.football.api')).toBeInTheDocument();
   });
 
-  test('Il click su Reset deve attivare la funzione del ViewModel', () => {
-    render(<ApiDebug />);
-    const resetBtn = screen.getByText(/Reset Contatore/i);
-    
-    fireEvent.click(resetBtn);
-    
-    expect(window.confirm).toHaveBeenCalled();
-    expect(mockReset).toHaveBeenCalled();
-  });
+
 
   test('Il click su Pulisci Cache deve attivare la funzione del ViewModel', () => {
     render(<ApiDebug />);

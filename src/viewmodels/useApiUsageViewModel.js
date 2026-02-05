@@ -1,7 +1,6 @@
 /**
  * @module ViewModels/useApiUsageViewModel
- * @description ViewModel per la dashboard di monitoraggio API.
- * Fornisce dati in tempo reale sull'utilizzo dei crediti e funzioni di manutenzione del database locale.
+ * @description ViewModel per la dashboard di monitoraggio API con sincronizzazione real-time.
  */
 import { useState, useEffect, useCallback } from 'react';
 import PlayerService from '../services/PlayerService';
@@ -9,23 +8,39 @@ import PlayerService from '../services/PlayerService';
 export function useApiUsageViewModel(refreshRate = 2000) {
   const [usage, setUsage] = useState(null);
   const [config] = useState(PlayerService.getApiConfig());
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const updateUsage = useCallback(() => {
-    const data = PlayerService.getApiUsage();
+  const updateUsage = useCallback(async (forceSync = false) => {
+    if (forceSync) setIsSyncing(true);
+    
+    // syncUsageWithApi implementa la logica: aggiorna solo se server > locale
+    const data = forceSync 
+      ? await PlayerService.syncUsageWithApi() 
+      : PlayerService.getApiUsage();
+    
     setUsage(data);
+    if (forceSync) setIsSyncing(false);
   }, []);
 
   useEffect(() => {
-    updateUsage();
-    if (refreshRate > 0) {
-      const interval = setInterval(updateUsage, refreshRate);
-      return () => clearInterval(interval);
-    }
+    // Sincronizzazione iniziale al mount
+    updateUsage(true);
+
+    // Refresh locale veloce per la UI (contatore interno)
+    const localInterval = setInterval(() => updateUsage(false), refreshRate);
+
+    // Refresh dal server ogni 30 secondi per sincronizzare eventuali aumenti esterni
+    const serverInterval = setInterval(() => updateUsage(true), 30000);
+
+    return () => {
+      clearInterval(localInterval);
+      clearInterval(serverInterval);
+    };
   }, [refreshRate, updateUsage]);
 
   const resetCounter = () => {
     PlayerService.resetApiCounter();
-    updateUsage();
+    updateUsage(false);
   };
 
   const clearCache = () => {
@@ -40,5 +55,5 @@ export function useApiUsageViewModel(refreshRate = 2000) {
     return keysToRemove.length;
   };
 
-  return { usage, config, resetCounter, clearCache, refreshUsage: updateUsage };
+  return { usage, config, isSyncing, resetCounter, clearCache, syncWithServer: () => updateUsage(true) };
 }

@@ -84,9 +84,7 @@ export default function ApiDebug() {
 
       {/* Pulsanti di Controllo */}
       <div className={styles.controlsGrid}>
-        <button onClick={handleReset} className={`${styles.btn} ${styles.btnReset}`}>
-          🔄 Reset Contatore
-        </button>
+
         <button onClick={handleClearCache} className={`${styles.btn} ${styles.btnClear}`}>
           🗑️ Pulisci Cache
         </button>
