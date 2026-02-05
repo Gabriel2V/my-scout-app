@@ -1,7 +1,6 @@
-/**
- * TEST: ApiDebug Page
- * Verifica le interazioni della dashboard di debug.
- * Controlla che i bottoni di Reset e Pulizia Cache invochino correttamente i metodi del ViewModel.
+/** 
+ * @file ApiDebug.test.jsx 
+ * @description Test per la dashboard tecnica, verifica la visualizzazione delle statistiche e il funzionamento dei tasti di manutenzione. 
  */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
@@ -10,23 +9,27 @@ import React from 'react';
 import ApiDebug from '../ApiDebug';
 import { useApiUsageViewModel } from '../../../viewmodels/useApiUsageViewModel';
 
-vi.mock('../../../viewmodels/useApiUsageViewModel');
+vi.mock('../../../viewmodels/useApiUsageViewModel', () => ({
+  useApiUsageViewModel: vi.fn()
+}));
 
 describe('ApiDebug Page', () => {
   const mockReset = vi.fn();
   const mockClearCache = vi.fn();
 
   const mockUsage = {
-    used: 90,
+    used: 45,
     limit: 100,
-    remaining: 10,
-    percentage: 90
+    remaining: 55,
+    percentage: 45,
+    date: '01/01/2026'
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useApiUsageViewModel).mockReturnValue({
       usage: mockUsage,
+      config: { baseUrl: 'https://v3.football.api', isConfigured: true },
       resetCounter: mockReset,
       clearCache: mockClearCache
     });
@@ -38,9 +41,11 @@ describe('ApiDebug Page', () => {
 
   test('Deve renderizzare le statistiche correttamente', () => {
     render(<ApiDebug />);
-    expect(screen.getByText('90')).toBeInTheDocument(); // Used
-    expect(screen.getByText('10')).toBeInTheDocument(); // Remaining
-    expect(screen.getByText('90%')).toBeInTheDocument(); // Percentage bar text
+    expect(screen.getByText('45')).toBeInTheDocument(); // Used
+    expect(screen.getByText('55')).toBeInTheDocument(); // Remaining
+    const percentageTexts = screen.getAllByText(/45%/i);
+    expect(percentageTexts.length).toBeGreaterThan(0);// Percentage bar text
+    expect(screen.getByText('https://v3.football.api')).toBeInTheDocument();
   });
 
   test('Il click su Reset deve attivare la funzione del ViewModel', () => {

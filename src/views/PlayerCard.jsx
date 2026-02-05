@@ -1,7 +1,7 @@
 /**
- * COMPONENT: PlayerCard.jsx
- * Card semplice per la visualizzazione dell'anteprima di un giocatore
- * Utilizzata nelle griglie di risultati
+ * @component PlayerCard
+ * @description Componente specializzato per la visualizzazione sintetica di un calciatore.
+ * Mostra l'avatar, il ruolo, la valutazione e i gol, fornendo un punto d'accesso rapido al dettaglio.
  */
 import { Link } from 'react-router-dom';
 import styles from '../styles/PlayerCard.module.css';

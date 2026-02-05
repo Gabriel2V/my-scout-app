@@ -1,7 +1,7 @@
 /**
- * PAGE: Home.jsx
- * Pagina iniziale dell'applicazione (Dashboard)
- * Offre un accesso rapido alle sezioni principali: Campionati, Nazionali e Giocatori Mondiali
+ * @component Home
+ * @description Pagina di atterraggio (Landing Page) dell'applicazione.
+ * Presenta una panoramica dei top player mondiali e introduce l'utente all'esplorazione gerarchica del database.
  */
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/HomePage.module.css';

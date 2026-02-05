@@ -1,8 +1,7 @@
-/**
- * PAGE: SearchResults.jsx
- * Pagina dei risultati della ricerca globale
- * Mostra risultati aggregati divisi per categorie: Nazioni, Squadre e Giocatori
- */
+/** 
+ * @component SearchResults 
+ * @description Pagina dei risultati della ricerca globale. 
+*/
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSearchViewModel } from '../../viewmodels/useSearchViewModel';
 import { PlayerCard } from '../PlayerCard';

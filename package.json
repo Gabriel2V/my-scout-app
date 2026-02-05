@@ -15,7 +15,8 @@
     "build": "vite build",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "eslintConfig": {
     "extends": [
@@ -40,7 +41,9 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.18",
     "gh-pages": "^6.3.0",
+    "jsdoc": "^4.0.5",
     "jsdom": "^27.4.0",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"

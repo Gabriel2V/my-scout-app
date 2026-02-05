@@ -1,7 +1,7 @@
 /**
- * PAGE: NotFound.jsx
- * Pagina di errore 404 personalizzata.
- * Viene visualizzata quando l'utente naviga su una rotta inesistente.
+ * @component NotFound
+ * @description Pagina di fallback (404).
+ * Gestisce i tentativi di accesso a rotte non definite, fornendo un link di ritorno alla Home.
  */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';

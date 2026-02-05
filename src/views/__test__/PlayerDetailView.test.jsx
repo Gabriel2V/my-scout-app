@@ -1,7 +1,6 @@
-/**
- * TEST: PlayerDetailView.js
- * Suite di test per la pagina di dettaglio del giocatore
- * Verifica che lo stato di caricamento iniziale appaia e che, una volta ricevuti i dati dal mock del service, vengano mostrate le informazioni corrette (nome, squadra, statistiche)
+/** 
+ * @file PlayerDetailView.test.jsx 
+ * @description Test per la vista di dettaglio, verifica il caricamento dei dati approfonditi e la navigazione tra giocatori. 
  */
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';

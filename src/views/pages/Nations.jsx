@@ -1,7 +1,7 @@
 /**
- * PAGE: Nations.jsx
- * Visualizza la griglia di tutte le nazioni disponibili.
- * Permette all'utente di selezionare una nazione per esplorarne i campionati.
+ * @component Nations
+ * @description Pagina di primo livello dell'esplorazione gerarchica. 
+ * Mostra le nazioni disponibili recuperate tramite useNationsViewModel.
  */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';

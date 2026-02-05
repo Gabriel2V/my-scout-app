@@ -1,7 +1,7 @@
-/**
- * COMPONENT: EmptyState.jsx
- * Componente riutilizzabile per mostrare un messaggio amichevole quando non ci sono dati.
- */
+/** 
+ * @component EmptyState 
+ * @description Visualizzazione di fallback quando non ci sono dati o risultati. 
+*/
 import React from 'react';
 
 export default function EmptyState({ message, icon = "📂" }) {

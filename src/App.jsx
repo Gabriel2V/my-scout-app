@@ -1,7 +1,7 @@
 /**
- * MAIN: App.jsx
- * Configurazione principale del routing (React Router)
- * Definisce la struttura di navigazione, il layout principale e tutte le rotte nidificate dell'applicazione
+ * @module App
+ * @description Configurazione delle rotte dell'applicazione tramite React Router.
+ * Definisce la gerarchia degli URL e l'integrazione tra Layout e Pagine.
  */
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './views/layouts/MainLayout';

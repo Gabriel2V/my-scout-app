@@ -1,8 +1,7 @@
-/**
- * TEST: useTeamsViewModel
- * Verifica il recupero delle squadre di una specifica lega.
- * Controlla l'interazione con il service e la gestione dello stato di caricamento.
- */
+/** 
+ * @file useTeamsViewModel.test.js 
+ * @description Test per il recupero della lista squadre di un campionato e gestione della cache specifica. 
+*/
 import { renderHook, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, test, expect, vi } from 'vitest';

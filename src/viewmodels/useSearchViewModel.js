@@ -1,7 +1,8 @@
 /**
- * VIEWMODEL: useSearchViewModel.js
- * Custom Hook per la gestione della ricerca globale
- * Aggrega risultati da nazioni, squadre e giocatori gestendo il debounce dell'input e la priorità della cache
+ * @module ViewModels/useSearchViewModel
+ * @description ViewModel per la ricerca globale.
+ * Implementa una strategia "Cache-First": cerca nazioni e giocatori prima in locale e poi interroga le API in parallelo.
+ * @param {string} searchTerm - Il termine di ricerca inserito dall'utente.
  */
 import { useState, useEffect, useRef } from 'react';
 import PlayerService from '../services/PlayerService';

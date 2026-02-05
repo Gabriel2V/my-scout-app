@@ -1,8 +1,7 @@
-/**
- * TEST: ApiCounter Component
- * Test unitario per il widget di monitoraggio API.
- * Verifica la corretta visualizzazione dei dati passati dal ViewModel e l'espansione/chiusura del widget.
- */
+/** 
+ * @file ApiCounter.test.jsx 
+ * @description Test per il widget dei consumi, verifica il cambio di colore e icone in base alla percentuale di utilizzo. 
+*/
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import '@testing-library/jest-dom';

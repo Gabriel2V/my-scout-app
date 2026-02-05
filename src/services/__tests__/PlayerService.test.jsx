@@ -1,7 +1,6 @@
-/**
- * TEST: PlayerService.test.js
- * Descrizione: Verifica le chiamate asincrone verso l'API esterna
- * Utilizza il mocking di fetch per simulare le risposte del server e testare la gestione degli errori
+/** 
+ * @file PlayerService.test.jsx 
+ * @description Test per il layer di comunicazione, verifica il mocking delle fetch, gli endpoint generati e la gestione del daily limit. 
  */
 import { describe, test, expect, beforeEach, vi } from 'vitest';
 import PlayerService from '../PlayerService';

@@ -1,8 +1,7 @@
-/**
- * TEST: Nations.test.js
- * Verifica il comportamento della pagina Nazioni
- * Controlla che la chiamata API per ottenere le nazioni venga effettuata e che i risultati (bandiere e nomi) siano renderizzati correttamente
- */
+/** 
+ * @file Nations.test.jsx
+ * @description Test per la selezione geografica, verifica il rendering delle card nazione e la gestione degli errori API.
+*/
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, test, expect, vi } from 'vitest';

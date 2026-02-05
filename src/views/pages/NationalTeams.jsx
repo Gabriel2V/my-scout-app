@@ -1,7 +1,8 @@
 /**
- * PAGE: NationalTeams.jsx
- * Pagina dedicata alle squadre nazionali maggiori (es. Italia, Argentina).
- * Navigazione diretta alle rose dei convocati saltando la selezione del campionato.
+ * @component NationalTeams
+ * @description Vista dedicata alle squadre nazionali.
+ * Permette di esplorare le rose delle selezioni nazionali caricate nel sistema.
+ * Utilizza il ViewModel useNationalTeamsViewModel per la gestione dei dati.
  */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

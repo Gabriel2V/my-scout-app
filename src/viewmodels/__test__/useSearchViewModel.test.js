@@ -1,7 +1,7 @@
-/**
- * TEST: useSearchViewModel
- * Verifica il flusso di ricerca globale, il debounce dell'input e l'aggregazione dei risultati
- */
+/** 
+ * @file useSearchViewModel.test.js 
+ * @description Test per la logica di ricerca globale, verificando la corretta integrazione tra risultati locali (cache) e remoti (API). 
+*/
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { useSearchViewModel } from '../useSearchViewModel';

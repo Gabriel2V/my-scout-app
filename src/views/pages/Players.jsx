@@ -1,7 +1,7 @@
 /**
- * PAGE: Players.jsx
- * Visualizza la lista dei giocatori con supporto per Infinite Scroll
- * Integra la barra dei filtri (ruolo, rating) e gestisce la navigazione al dettaglio
+ * @component Players
+ * @description Pagina principale di visualizzazione talenti.
+ * Supporta l'Infinite Scroll e il filtraggio avanzato tramite FilterBar.
  */
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';

@@ -183,7 +183,15 @@ L'app sarà disponibile all'indirizzo http://localhost:3000.
 
 ---
 
-## Testing
+## Documentazione Tecnica
+
+Il progetto utilizza **JSDoc** per la generazione automatica della documentazione tecnica. I commenti nel codice seguono lo standard JSDoc per descrivere parametri, tipi di ritorno e logica dei moduli.
+
+Per generare e visualizzare la documentazione:
+1. Eseguire il comando: `npm run docs`
+2. Aprire il file `docs/gen/index.html` nel browser.
+
+## Testing e Coverage
 
 Il progetto include una suite di test completa basata su **Vitest** e **React Testing Library**.
 La copertura include:
@@ -192,12 +200,23 @@ La copertura include:
 * **Integration Test dei ViewModel:** Verifica della logica di business, gestione del loading state e integrazione con il `localStorage` (mockato) senza dover renderizzare l'intera UI.
 * **Component Testing:** Verifica del rendering dei componenti (es. `PlayerCard`, `ApiCounter`) e delle interazioni utente.
 * **Page Testing:** Verifica del routing e dei flussi completi (es. `PlayerDetailView` che mostra il loading e poi i dati).
-Per eseguire i test tramite Vitest:
 
-```bash
-npm test
+Oltre ai test funzionali, è possibile generare un report della copertura del codice (Code Coverage).
 
-```
+- **Eseguire i test:** `npm test`
+- **Generare report coverage:** `npm run coverage` (oppure `npx vitest run --coverage`)
+
+Il report dettagliato sarà disponibile in formato HTML nella cartella `/coverage/index.html`.
+
+## Documentazione e Coverage Report online
+
+Per preservare il limite di 100 chiamate giornaliere dell'API gratuita, l'applicazione live è protetta. 
+È possibile consultare online la documentazione tecnica e i report di copertura:
+
+- [📚 Documentazione Tecnica (JSDoc)](https://tuo-utente.github.io/my-scout-app/docs/index.html)
+- [📊 Report Copertura Test (Coverage)](https://tuo-utente.github.io/my-scout-app/coverage/index.html)
+
+*Nota: La versione live dell'app non dispone di chiavi API caricate. Per testare l'app con i dati reali, clonare il repository e utilizzare il proprio file .env.*
 
 ## Sicurezza e Deployment
 

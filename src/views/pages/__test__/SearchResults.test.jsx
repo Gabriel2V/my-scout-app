@@ -1,7 +1,7 @@
-/**
- * TEST: SearchResults Page
- * Verifica il rendering delle diverse sezioni di risultati e la gestione degli stati vuoti o di caricamento
- */
+/** 
+ * @file SearchResults.test.jsx 
+ * @description Test per la pagina di ricerca, verifica la visualizzazione categorizzata di nazioni, squadre e giocatori. 
+*/
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, test, expect, vi } from 'vitest';

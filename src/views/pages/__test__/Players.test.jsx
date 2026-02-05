@@ -1,6 +1,6 @@
-/**
- * TEST: Players Page
- * Verifica l'applicazione corretta dei filtri (Rating, Ruolo) sulla lista giocatori
+/** 
+ * @file Players.test.jsx 
+ * @description Test funzionali per la lista giocatori, inclusi filtri, ordinamento e infinite scroll.
  */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';

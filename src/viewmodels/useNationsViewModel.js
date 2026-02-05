@@ -1,4 +1,8 @@
-/** ViewModel per la gestione delle nazioni. Recupera i dati dal service e gestisce il caching locale. */
+/**
+ * @module ViewModels/useNationsViewModel
+ * @description ViewModel per il recupero della lista delle nazioni.
+ * Gestisce il caching statico delle federazioni per minimizzare il consumo di API.
+ */
 import { useState, useEffect, useRef } from 'react';
 import PlayerService from '../services/PlayerService';
 

@@ -1,6 +1,6 @@
-/**
- * TEST: MainLayout
- * Verifica la struttura base, la presenza dell'Header/Footer e il comportamento della barra di ricerca
+/** 
+ * @file MainLayout.test.jsx 
+ * @description Test per la struttura globale (Header/Footer), verifica la barra di ricerca e la navigazione principale.
  */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';

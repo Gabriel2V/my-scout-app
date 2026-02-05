@@ -1,4 +1,7 @@
-/** ViewModel per la gestione dei campionati (Serie). Recupera le leghe disponibili per una specifica nazione. */
+/** 
+ * @module ViewModels/useSeriesViewModel 
+ * @description Gestisce i campionati filtrati per nazioneId. 
+*/
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerService from '../services/PlayerService';

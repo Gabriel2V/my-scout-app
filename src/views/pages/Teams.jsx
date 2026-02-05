@@ -1,7 +1,7 @@
 /**
- * PAGE: Teams.jsx
- * Elenca le squadre appartenenti a un determinato campionato.
- * Comunica esclusivamente con il TeamsViewModel seguendo il pattern MVVM.
+ * @component Teams
+ * @description Visualizza i club appartenenti a un campionato selezionato.
+ * Si interfaccia con useTeamsViewModel per i dati.
  */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';

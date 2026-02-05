@@ -1,6 +1,8 @@
 /**
- * VIEW: PlayerDetailView.jsx
- * Pagina di dettaglio. Delega logica e navigazione interamente al ViewModel.
+ * @component PlayerDetailView
+ * @description Vista dettagliata di un calciatore.
+ * Visualizza statistiche approfondite, dati anagrafici e permette la navigazione contestuale.
+ * Utilizza il PlayerDetailViewModel per il recupero dei dati tramite ID.
  */
 import React from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';

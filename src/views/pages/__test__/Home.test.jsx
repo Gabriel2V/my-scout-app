@@ -1,6 +1,6 @@
-/**
- * TEST: HomePage
- * Verifica il rendering correttodella dashboard iniziale e dei link di navigazione
+/** 
+ * @file Home.test.jsx 
+ * @description Test UI per la landing page, verifica il rendering dei top player e la navigazione iniziale.
  */
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';

@@ -1,8 +1,7 @@
-/**
- * VIEWMODEL: useNationalTeamsViewModel.js
- * Gestisce il recupero parallelo delle principali squadre nazionali mondiali.
- * Implementa la logica di caching per evitare chiamate ripetute alle stesse federazioni.
- */
+/** 
+ * @module ViewModels/useNationsViewModel 
+ * @description Gestisce il caricamento e il caching delle federazioni nazionali.
+ **/
 import { useState, useEffect } from 'react';
 import PlayerService from '../services/PlayerService';
 

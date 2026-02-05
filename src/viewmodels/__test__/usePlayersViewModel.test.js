@@ -1,6 +1,6 @@
-/**
- * TEST: usePlayersViewModel
- * Verifica la logica di stato, il recupero dati condizionale e l'integrazione con il service
+/** 
+ * @file usePlayersViewModel.test.js 
+ * @description Test d'integrazione per la logica di caricamento giocatori, lazy loading e caching per squadra/lega.
  */
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, test, expect, beforeEach, vi } from 'vitest';

@@ -1,7 +1,6 @@
-/**
- * TEST: useApiUsageViewModel
- * Verifica la logica di business del monitoraggio API.
- * Controlla il polling automatico, il reset dei contatori e la logica di pulizia selettiva della cache.
+/** 
+ * @file useApiUsageViewModel.test.js
+ * @description Test per il monitoraggio dei consumi API, verificando il corretto aggiornamento dei contatori e le funzioni di reset.
  */
 import { renderHook, act } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -11,6 +10,7 @@ import PlayerService from '../../services/PlayerService';
 vi.mock('../../services/PlayerService', () => ({
   default: {
     getApiUsage: vi.fn(),
+    getApiConfig: vi.fn(() => ({ baseUrl: 'https://api.test', isConfigured: true })),
     resetApiCounter: vi.fn()
   }
 }));

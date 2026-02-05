@@ -1,6 +1,9 @@
 /**
- * VIEWMODEL: usePlayersViewModel.js
- * Gestisce la logica di business per le liste di giocatori.
+ * @module ViewModels/usePlayersViewModel
+ * @description ViewModel per la gestione delle liste di giocatori.
+ * Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il caching per contesto (squadra/lega).
+ * @param {string} [externalSearchTerm=""] - Termine di ricerca opzionale per filtrare la lista.
+ * @returns {Object} Esporta la lista dei giocatori, lo stato di caricamento e la funzione loadMore.
  */
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';

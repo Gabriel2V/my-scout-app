@@ -1,13 +1,7 @@
 /**
- * VIEWMODEL: usePlayerDetailViewModel.js
- * Gestisce il recupero dei dati per il dettaglio di un giocatore.
- * MVVM COMPLIANT: Gestisce internamente la logica di navigazione (prev/next) e la priorità dei dati locali.
- */
-/**
- * VIEWMODEL: usePlayerDetailViewModel.js
- * Gestisce il dettaglio giocatore.
- * MVVM COMPLIANT: Gestisce internamente la logica di navigazione (prev/next) e la priorità dei dati locali.
- * FIX: Aggiunti controlli di sicurezza su ID null/undefined per evitare crash durante findIndex.
+ * @module ViewModels/usePlayerDetailViewModel
+ * @description ViewModel per la vista di dettaglio. 
+ * Gestisce il caricamento dei dati di un singolo giocatore tramite ID e la navigazione contestuale tra giocatori simili.
  */
 import { useState, useEffect, useMemo } from 'react';
 import PlayerService from '../services/PlayerService';

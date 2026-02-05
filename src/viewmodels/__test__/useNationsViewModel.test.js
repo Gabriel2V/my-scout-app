@@ -1,7 +1,7 @@
-/**
- * TEST: useNationsViewModel
- * Verifica il recupero della lista nazioni e il salvataggio in cache.
- */
+/** 
+ * @file useNationsViewModel.test.js 
+ * @description Test per il caricamento delle nazioni e verifica del salvataggio persistente dei dati geografici. 
+*/
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { useNationsViewModel } from '../useNationsViewModel';

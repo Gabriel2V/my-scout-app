@@ -1,7 +1,6 @@
-/**
- * TEST: Teams Page
- * Integration test per la pagina Squadre.
- * Verifica il caricamento, la gestione della cache e il rendering della griglia o del messaggio di errore.
+/** 
+ * @file Teams.test.jsx 
+ * @description Test per la lista dei club, verifica il messaggio di "Nessun risultato" e la navigazione verso la rosa. 
  */
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';

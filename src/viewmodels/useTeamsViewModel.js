@@ -1,4 +1,7 @@
-/** ViewModel per la gestione delle squadre. Fornisce l'elenco dei club appartenenti a una lega selezionata. */
+/** 
+ * @module ViewModels/useTeamsViewModel 
+ * @description Gestisce l'elenco dei club per un determinato campionato.
+ */
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerService from '../services/PlayerService';

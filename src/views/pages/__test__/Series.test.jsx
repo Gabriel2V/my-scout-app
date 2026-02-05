@@ -1,8 +1,7 @@
-/**
- * TEST: Series.test.js
- * Verifica la visualizzazione dei campionati (Series) per una nazione
- * Controlla che vengano mostrati i bottoni di navigazione verso "Squadre" e "Giocatori" per ogni lega trovata
- */
+/** 
+ * @file Series.test.jsx 
+ * @description Test per la pagina dei campionati, verifica la visualizzazione delle leghe e i link alle squadre/giocatori. 
+*/
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { describe, test, expect, vi } from 'vitest';

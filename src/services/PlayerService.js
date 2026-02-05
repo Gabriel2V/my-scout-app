@@ -1,9 +1,14 @@
 /**
- * SERVICE: PlayerService.js
- * Gestisce tutte le comunicazioni con l'API esterna (API-Sports)
- * Implementa rate-limit, caching e deduplicazione delle richieste.
+ * @module Services/PlayerService
+ * @description Servizio core per l'integrazione con l'API esterna (API-Sports).
+ * Gestisce la logica di fetching, il monitoraggio dei limiti di chiamata (rate-limiting),
+ * il caching delle risposte e la normalizzazione degli endpoint.
  */
 class PlayerService {
+/**
+ * @class PlayerService
+ * @description Singleton che incapsula tutte le chiamate HTTP verso il fornitore di dati calcistici.
+ */
   constructor() {
     this.apiKey = import.meta.env.VITE_FOOTBALL_API_KEY;
     this.baseUrl = 'https://v3.football.api-sports.io';
@@ -35,6 +40,11 @@ class PlayerService {
   }
 
   getApiUsage() {
+    /**
+    * @method getApiUsage
+    * @description Calcola l'utilizzo attuale delle API basandosi sul contatore locale.
+    * @returns {Object} Oggetto contenente chiamate usate, rimanenti e percentuale di utilizzo.
+    */
     const counter = this._getApiCounter();
     return {
       used: counter.count,
@@ -42,6 +52,13 @@ class PlayerService {
       remaining: Math.max(0, this.dailyLimit - counter.count),
       percentage: Math.round((counter.count / this.dailyLimit) * 100),
       date: counter.date
+    };
+  }
+  getApiConfig() {
+    /** @method getApiConfig @returns {Object} Dettagli tecnici (URL, Key mascherata). */
+    return {
+      baseUrl: this.baseUrl,
+      isConfigured: !!this.apiKey
     };
   }
 

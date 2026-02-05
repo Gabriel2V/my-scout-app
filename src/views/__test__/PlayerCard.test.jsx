@@ -1,8 +1,7 @@
-/**
- * TEST: PlayerCard.test.js
- * Unit test per il componente PlayerCard
- * Si assicura che le props (nome, foto, rating) siano visualizzate nel DOM e che il link di navigazione ("Dettaglio") punti all'URL corretto
- */
+/** 
+ * @file PlayerCard.test.jsx 
+ * @description Unit test per la card del giocatore, verifica il corretto passaggio delle props dal modello Player alla UI. 
+*/
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, test, expect } from 'vitest';

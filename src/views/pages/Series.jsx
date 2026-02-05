@@ -1,8 +1,7 @@
-/**
- * PAGE: Series.jsx
- * Mostra i campionati (leghe) disponibili per una specifica nazione selezionata
- * Permette la navigazione verso le squadre o i giocatori di quel campionato
- */
+/** 
+ * @component Series 
+ * @description Vista dei campionati disponibili per la nazione selezionata. 
+*/
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSeriesViewModel } from '../../viewmodels/useSeries.ViewModel';

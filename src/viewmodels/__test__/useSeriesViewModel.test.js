@@ -1,8 +1,7 @@
-/**
- * TEST: useSeriesViewModel
- * Verifica il recupero dei campionati per una specifica nazione.
- * Controlla che i dati vengano caricati e lo stato di loading gestito correttamente.
- */
+/** 
+ * @file useSeriesViewModel.test.js 
+ * @description Test per la gestione dei campionati filtrati per nazione e relativi stati di caricamento. 
+*/
 import { renderHook, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, test, expect, vi, beforeEach } from 'vitest';

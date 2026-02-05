@@ -1,7 +1,6 @@
-/**
- * TEST: Player.test.js
- * Descrizione: Verifica la corretta instanziazione del modello Player e la logica di business associata
- * Questo file testa che i dati grezzi dell'API siano mappati correttamente e che le funzioni di calcolo operino come previsto
+/** 
+ * @file Player.test.jsx 
+ * @description Unit test per il modello Player, verifica la corretta normalizzazione dei dati complessi provenienti dall'API. 
  */
 import { describe, test, expect } from 'vitest';
 import { Player } from '../Player';

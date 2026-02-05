@@ -1,7 +1,6 @@
 /**
- * COMPONENT: FilterBar.jsx
- * Barra dei filtri per la lista giocatori
- * Contiene i controlli per filtrare per Rating (slider) e Ruolo (select)
+ * @component FilterBar
+ * @description Barra degli strumenti per il filtraggio e l'ordinamento dinamico delle liste.
  */
 import React from 'react';
 import styles from '../../styles/FilterBar.module.css';

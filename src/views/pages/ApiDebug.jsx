@@ -1,13 +1,14 @@
 /**
- * PAGE: ApiDebug.jsx
- * Dashboard di servizio per il monitoraggio delle chiamate API
- * Permette di visualizzare il consumo giornaliero e forzare la pulizia della cache o dei contatori
+ * @component ApiDebug
+ * @description Dashboard tecnica per sviluppatori.
+ * Visualizza endpoint, chiavi API e statistiche di traffico.
  */
+import React from 'react';
 import { useApiUsageViewModel } from '../../viewmodels/useApiUsageViewModel';
 import styles from '../../styles/ApiDebug.module.css';
 
 export default function ApiDebug() {
-  const { usage, resetCounter, clearCache } = useApiUsageViewModel(1000);
+  const { usage, config, resetCounter, clearCache } = useApiUsageViewModel(1000);
 
   const handleReset = () => {
     if (window.confirm('Vuoi davvero resettare il contatore API?')) {
@@ -24,44 +25,56 @@ export default function ApiDebug() {
 
   if (!usage) return <div className="loading">Caricamento monitoraggio...</div>;
 
-  const getStatusEmoji = () => {
-    if (usage.percentage >= 100) return '🚫';
-    if (usage.percentage >= 80) return '⚠️';
-    return '✅';
-  };
-
-  const getProgressColor = () => {
-    if (usage.percentage >= 100) return '#ef4444';
-    if (usage.percentage >= 80) return '#f59e0b';
-    return '#10b981';
-  };
-
   return (
     <div className={styles.container}>
-      <h2 className="pageTitle">🛠️ API Debug Dashboard</h2>
+      <h2 className="pageTitle">🛠️ API Monitor & Debug</h2>
+      <div className={styles.debugCard} style={{marginBottom: '2rem', borderLeft: '4px solid var(--primary)'}}>
+        <h3 className={styles.cardTitle}>Configurazione di Sistema</h3>
+        <div className={styles.infoBox}>
+          <p><strong>Endpoint Base:</strong> <code>{config.baseUrl}</code></p>
+          <p><strong>Stato:</strong> 
+            <span style={{color: config.isConfigured ? '#10b981' : '#ef4444', marginLeft: '5px'}}>
+              {config.isConfigured ? '● Collegato' : '● Errore Configurazione'}
+            </span>
+          </p>
+          <p><strong>Limite giornaliero di chiamate:</strong> 100</p>
+          <p><strong>Limite di chiamate al minuto:</strong> 10</p>
+        </div>
+      </div>
 
       <div className={styles.debugCard}>
         <div className={styles.cardHeader}>
           <h3 className={styles.cardTitle}>API Usage Monitor</h3>
-          <span className={styles.statusIcon}>{getStatusEmoji()}</span>
+          <span className={styles.statusIcon}>
+            {usage.percentage >= 80 ? '⚠️' : '✅'}
+          </span>
         </div>
 
+        {/* Statistiche Principali */}
         <div className={styles.statsGrid}>
           <div className={`${styles.statBox} ${styles.statBoxGreen}`}>
-            <div className={`${styles.statValue} ${styles.textGreen}`}>{usage.used}</div>
-            <div className={styles.statLabel}>Chiamate Usate</div>
+            <div className={styles.statValue}>{usage.used}</div>
+            <div className={styles.statLabel}>Usate</div>
           </div>
           <div className={`${styles.statBox} ${styles.statBoxYellow}`}>
-            <div className={`${styles.statValue} ${styles.textYellow}`}>{usage.remaining}</div>
+            <div className={styles.statValue}>{usage.remaining}</div>
             <div className={styles.statLabel}>Rimanenti</div>
+          </div>
+          <div className={`${styles.statBox} ${styles.statBoxBlue}`}>
+            <div className={styles.statValue}>{usage.percentage}%</div>
+            <div className={styles.statLabel}>Utilizzo</div>
           </div>
         </div>
 
+        {/* Barra di Progresso */}
         <div className={styles.progressSection}>
           <div className={styles.progressTrack}>
             <div 
               className={styles.progressFill}
-              style={{ width: `${usage.percentage}%`, background: getProgressColor() }}
+              style={{
+                width: `${usage.percentage}%`,
+                background: usage.percentage >= 80 ? '#f59e0b' : '#10b981'
+              }}
             >
               {usage.percentage}%
             </div>
@@ -69,6 +82,7 @@ export default function ApiDebug() {
         </div>
       </div>
 
+      {/* Pulsanti di Controllo */}
       <div className={styles.controlsGrid}>
         <button onClick={handleReset} className={`${styles.btn} ${styles.btnReset}`}>
           🔄 Reset Contatore

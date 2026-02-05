@@ -1,7 +1,10 @@
 /**
- * COMPONENT: GenericCard.jsx
- * Componente riutilizzabile per visualizzare entità generiche (Nazioni, Squadre, Leghe)
- * Supporta varianti di stile (es. immagine circolare o quadrata)
+ * @component GenericCard
+ * @description Componente UI riutilizzabile per visualizzare elementi in griglia (nazioni, squadre, giocatori).
+ * @param {string} title - Titolo principale della card.
+ * @param {string} image - URL dell'immagine o logo.
+ * @param {string} [variant="default"] - Variante stilistica ("circle" per giocatori).
+ * @param {Function} onClick - Handler per l'interazione.
  */
 import React from 'react';
 import styles from '../../styles/Card.module.css';
