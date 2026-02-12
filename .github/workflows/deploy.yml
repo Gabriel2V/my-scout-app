@@ -1,7 +1,10 @@
-name: Deploy to GitHub Pages
+name: CI/CD Pipeline
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -9,34 +12,163 @@ permissions:
   contents: write 
 
 jobs:
-  build-and-deploy:
+  # JOB 1: TESTING
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Node.js 
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - name: Install Dependencies 
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Build 
+      - name: Run Unit Tests
+        run: npm run test -- run
+
+  # JOB 2: COVERAGE
+  coverage:
+    name: Generate Coverage Report
+    runs-on: ubuntu-latest
+    needs: test 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Generate Coverage
+        run: npm run coverage
+
+      - name: Upload Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: docs/coverage/
+          retention-days: 7
+
+  # JOB 3: DOCUMENTATION
+  documentation:
+    name: Generate JSDoc
+    runs-on: ubuntu-latest
+    needs: test  
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Generate JSDoc
+        run: npm run docs
+
+      - name: Upload JSDoc Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jsdoc-report
+          path: docs/jsdoc/
+          retention-days: 7
+
+  # JOB 4: BUILD
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: test 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build React App
         run: npm run build
         env:
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
 
-      # cartella temporanea per il deploy 
-      - name: Prepare deployment folder
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: dist/
+          retention-days: 7
+
+  # JOB 5: DEPLOY
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [test, coverage, documentation, build] 
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'  # Solo su push a main
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Coverage Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-temp/
+
+      - name: Download JSDoc Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: jsdoc-report
+          path: jsdoc-temp/
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build
+          path: build-temp/
+
+      - name: Prepare Deployment Structure
         run: |
           mkdir -p deploy-temp/app
-          cp -r dist/* deploy-temp/app/
+          mkdir -p deploy-temp/docs/coverage
+          mkdir -p deploy-temp/docs/jsdoc
+          
+          # Copia l'app
+          cp -r build-temp/* deploy-temp/app/
+          
+          # Copia l'hub
           cp index.html deploy-temp/
-          cp -r docs deploy-temp/
+          
+          # Copia docs
+          cp -r coverage-temp/* deploy-temp/docs/coverage/
+          cp -r jsdoc-temp/* deploy-temp/docs/jsdoc/
+          
+          # Verifica struttura
+          echo " Struttura deploy-temp:"
+          tree -L 2 deploy-temp/ || ls -laR deploy-temp/
 
-      - name: Deploy 
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: deploy-temp
+          clean: true
+          single-commit: true
