@@ -14,7 +14,6 @@ ScoutMaster 2026 è una Single Page Application (SPA) sviluppata con React proge
 Il progetto pone una forte enfasi sull'ottimizzazione delle risorse, implementando strategie avanzate di caching locale, lazy loading dei dati e monitoraggio attivo delle chiamate API per rispettare i limiti del fornitore esterno.
 
 ---
----
 
 ## 🚀 Demo e Documentazione
 

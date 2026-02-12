@@ -109,7 +109,7 @@ jobs:
       - name: Build React App
         run: npm run build
         env:
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_FOOTBALL_API_KEY: ${{ secrets.VITE_FOOTBALL_API_KEY }}
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -162,7 +162,7 @@ jobs:
           cp hub.html deploy-temp/index.html
           
           # Debug: verifica che i file siano diversi
-          echo "📦 Confronto index.html:"
+          echo " Confronto index.html:"
           echo "HUB (root):"
           head -5 deploy-temp/index.html
           echo ""
