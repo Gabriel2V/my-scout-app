@@ -158,10 +158,8 @@ jobs:
           # Copia docs
           cp -r coverage-temp/* deploy-temp/docs/coverage/
           cp -r jsdoc-temp/* deploy-temp/docs/jsdoc/
-          
-          # Copia l'HUB nella ROOT (questo sovrascrive eventuali index.html)
-          # IMPORTANTE: questo deve essere l'ULTIMO step!
-          cp index.html deploy-temp/index.html
+
+          cp hub.html deploy-temp/index.html
           
           # Debug: verifica che i file siano diversi
           echo "📦 Confronto index.html:"
