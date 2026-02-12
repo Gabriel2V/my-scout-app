@@ -25,11 +25,16 @@ describe('PlayerService API Calls', () => {
   });
 
   test('syncUsageWithApi deve aggiornare il contatore locale con i dati del server', async () => {
+    const today = new Date().toDateString(); 
     const mockStatusResponse = {
       response: {
         requests: { current: 45, limit_day: 100 }
       }
     };
+    localStorage.setItem('api_counter', JSON.stringify({ 
+    count: 0, 
+    date: today  
+    }));
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockStatusResponse,
@@ -42,7 +47,7 @@ describe('PlayerService API Calls', () => {
   });
 
   test('Deve lanciare un errore se la risposta HTTP non è ok', async () => {
-    fetch.mockResolvedValueOnce({ ok: false, status: 403 });
+    fetch.mockResolvedValueOnce({ ok: false, status: 403, json: async () => ({}) });
     await expect(PlayerService.getCountries()).rejects.toThrow('Errore HTTP: 403');
   });
   test('syncUsageWithApi NON deve aggiornare se il server riporta un valore inferiore al locale', async () => {
