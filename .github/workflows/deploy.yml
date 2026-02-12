@@ -28,7 +28,15 @@ jobs:
         env:
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
 
+      # cartella temporanea per il deploy 
+      - name: Prepare deployment folder
+        run: |
+          mkdir -p deploy-temp/app
+          cp -r dist/* deploy-temp/app/
+          cp index.html deploy-temp/
+          cp -r docs deploy-temp/
+
       - name: Deploy 
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist 
+          folder: deploy-temp

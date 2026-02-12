@@ -1,25 +1,160 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta
-      name="description"
-      content="My Scout App - Piattaforma moderna di scouting calcistico professionale"
-    />
-    <link rel="apple-touch-icon" href="/logo192.png" />
-    
-    <link rel="manifest" href="/manifest.json" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScoutMaster 2026 - Hub Documentazione</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --dark: #202124;
+            --bg: #f8f9fa;
+            --text: #3c4043;
+        }
 
-    <title>My Scout App</title>
-  </head>
-  <body>
-    <noscript>È necessario abilitare JavaScript per far funzionare questa applicazione.</noscript>
-    
-    <div id="root"></div>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    <script type="module" src="/src/index.jsx"></script>
-  </body>
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .student-info {
+            font-size: 1.1rem;
+            color: #70757a;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            background: #e8f0fe;
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            color: var(--dark);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #5f6368;
+            margin: 0;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: #9aa0a6;
+        }
+
+        /* Colori Varianti */
+        .jsdoc { border-top: 4px solid var(--primary); }
+        .coverage { border-top: 4px solid var(--secondary); }
+        .github { border-top: 4px solid #24292e; }
+        .live { border-top: 4px solid #ea4335; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚽ ScoutMaster 2026</h1>
+            <div class="student-info">
+                Progetto di Applicazioni Web – <strong>Gabriele Vizzi</strong> <br>
+                <span class="badge">Matricola: 933539</span>
+            </div>
+            <p>Dashboard centralizzata per il monitoraggio della qualità del codice e della documentazione tecnica.</p>
+        </header>
+
+        <div class="grid">
+            <a href="./docs/jsdoc/index.html" class="card jsdoc">
+                <div class="icon">📚</div>
+                <h3>Documentazione</h3>
+                <p>Analisi delle classi, ViewModel e Service (JSDoc).</p>
+            </a>
+
+            <a href="./docs/coverage/index.html" class="card coverage">
+                <div class="icon">📊</div>
+                <h3>Test Coverage</h3>
+                <p>Report dettagliato della copertura Vitest.</p>
+            </a>
+
+            <a href="https://github.com/Gabriel2V/my-scout-app" target="_blank" class="card github">
+                <div class="icon">💻</div>
+                <h3>Codice Sorgente</h3>
+                <p>Esplora la repository su GitHub.</p>
+            </a>
+
+            <a href="./app/" target="_blank" class="card live">
+                <div class="icon">🚀</div>
+                <h3>Live Demo</h3>
+                <p>Prova l'applicazione online.</p>
+            </a>
+        </div>
+
+        <div class="footer">
+            Corso di Laurea in Informatica – Università degli Studi di Milano-Bicocca <br>
+            © 2026 ScoutMaster Project
+        </div>
+    </div>
+</body>
 </html>
