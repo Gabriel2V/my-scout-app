@@ -20,10 +20,11 @@ Il progetto pone una forte enfasi sull'ottimizzazione delle risorse, implementan
 
 L'applicazione è deployata e accessibile online. Per garantire la sicurezza e il rispetto dei limiti dell'API gratuita, la chiave API in produzione è **limitata al dominio di GitHub Pages**.
 
-- **Live App:** [ScoutMaster 2026 Live](https://Gabriel2V.github.io/my-scout-app)
-- **Hub Documentazione:** [Hub Documentazione](https://Gabriel2V.github.io/my-scout-app)
-- **Documentazione Tecnica (JSDoc):** [Vedi Documentazione](https://Gabriel2V.github.io/my-scout-app/jsdoc/index.html)
-- **Report Copertura Test:** [Vedi Coverage](https://Gabriel2V.github.io/my-scout-app/coverage/index.html)
+- **Hub Documentazione:** [Dashboard Centrale](https://Gabriel2V.github.io/my-scout-app/)
+- **Live App:** [ScoutMaster 2026 Live](https://Gabriel2V.github.io/my-scout-app/app/)
+- **Documentazione Tecnica (JSDoc):** [Vedi Documentazione](https://Gabriel2V.github.io/my-scout-app/docs/jsdoc/)
+- **Report Copertura Test:** [Vedi Coverage](https://Gabriel2V.github.io/my-scout-app/docs/coverage/)
+
 
 ---
 

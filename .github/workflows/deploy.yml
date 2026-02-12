@@ -36,7 +36,7 @@ jobs:
   coverage:
     name: Generate Coverage Report
     runs-on: ubuntu-latest
-    needs: test 
+    needs: test  
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -64,7 +64,7 @@ jobs:
   documentation:
     name: Generate JSDoc
     runs-on: ubuntu-latest
-    needs: test  
+    needs: test 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -122,8 +122,8 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    needs: [test, coverage, documentation, build] 
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'  # Solo su push a main
+    needs: [test, coverage, documentation, build]  
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -152,23 +152,34 @@ jobs:
           mkdir -p deploy-temp/docs/coverage
           mkdir -p deploy-temp/docs/jsdoc
           
-          # Copia l'app
+          # Copia l'intera build dell'app
           cp -r build-temp/* deploy-temp/app/
-          
-          # Copia l'hub
-          cp index.html deploy-temp/
           
           # Copia docs
           cp -r coverage-temp/* deploy-temp/docs/coverage/
           cp -r jsdoc-temp/* deploy-temp/docs/jsdoc/
           
-          # Verifica struttura
-          echo " Struttura deploy-temp:"
-          tree -L 2 deploy-temp/ || ls -laR deploy-temp/
+          # Copia l'HUB nella ROOT (questo sovrascrive eventuali index.html)
+          # IMPORTANTE: questo deve essere l'ULTIMO step!
+          cp index.html deploy-temp/index.html
+          
+          # Debug: verifica che i file siano diversi
+          echo "📦 Confronto index.html:"
+          echo "HUB (root):"
+          head -5 deploy-temp/index.html
+          echo ""
+          echo "APP (app/):"
+          head -5 deploy-temp/app/index.html 2>/dev/null || echo "Nessun index.html in app/"
+          echo ""
+          echo "=== Struttura finale ==="
+          ls -la deploy-temp/
+          ls -la deploy-temp/app/ | head -10
+          ls -la deploy-temp/docs/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          branch: gh-pages  
           folder: deploy-temp
           clean: true
           single-commit: true
