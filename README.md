@@ -286,10 +286,15 @@ npm run full-report
 
 ---
 
-## Sicurezza e Deployment
+## Sicurezza, Automazione e Deployment (CI/CD)
 
-* **Variabili d'ambiente:** La chiave API non è inclusa nel codice sorgente per motivi di sicurezza, ma viene gestita in sicurezza tramite variabili d'ambiente e caricate tramite import.meta.env.
-* **Deployment:** Configurato per hosting statici tramite HashRouter e gh-pages.
+* **Variabili d'ambiente:** La chiave API non è inclusa nel codice sorgente per motivi di sicurezza, ma viene gestita in sicurezza tramite variabili d'ambiente e caricate tramite `import.meta.env`.
+* **Pipeline CI/CD (GitHub Actions):** Il progetto integra una pipeline di Continuous Integration e Continuous Deployment completamente automatizzata. Ad ogni push o pull request sul branch `main`, il workflow dedicato (`deploy.yml`) si occupa di:
+  1. **Testing:** Eseguire preventivamente l'intera suite di unit e integration test (Vitest).
+  2. **Coverage & Docs:** Generare i report aggiornati di copertura del codice e la documentazione tecnica JSDoc.
+  3. **Build:** Compilare e ottimizzare l'applicazione React tramite Vite.
+  4. **Deploy:** Assemblare la build dell'app, la documentazione e i report in un'unica struttura a directory e pubblicarla automaticamente in hosting su **GitHub Pages**.
+* **Routing:** L'applicazione utilizza `HashRouter` per garantire la piena compatibilità con l'hosting statico di GitHub Pages, prevenendo errori 404 durante il ricaricamento diretto degli URL.
 
 ---
 
