@@ -279,11 +279,19 @@ npm run full-report
 - [📚 Documentazione Tecnica (JSDoc)](https://Gabriel2V.github.io/my-scout-app/jsdoc/index.html)
 - [📊 Report Copertura Test (Coverage)](https://Gabriel2V.github.io/my-scout-app/coverage/index.html)
 
+---
 
 ## Sicurezza e Deployment
 
 * **Variabili d'ambiente:** La chiave API non è inclusa nel codice sorgente per motivi di sicurezza, ma viene gestita in sicurezza tramite variabili prefissate con VITE_ e caricate tramite import.meta.env.
 * **Deployment:** Configurato per hosting statici tramite HashRouter e gh-pages.
+
+---
+
+## Sviluppi Futuri
+Il progetto ha diversi possibili sviluppi futuri, in particolare si ritiene utili:
+* **Autenticazione Firebase:** introduzione di un'area riservata per permettere agli "scout" di salvare i giocatori preferiti in una Watchlist persistente sul cloud.
+* **Backend Proxy:** sostituire la chiamata diretta all'API-Sports con un server Node.js intermediario per proteggere totalmente la chiave API e implementare un caching distribuito (Redis), slegando i limiti dell'API dal singolo client.
 
 ---
 
