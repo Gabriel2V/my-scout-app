@@ -38,7 +38,8 @@ Il progetto utilizza uno stack basato sull'ecosistema React:
 * **Architettura:** MVVM (Model-View-ViewModel);
 * **Styling:** CSS Modules per stili locali e variabili CSS globali per il tema;
 * **Data Fetching:** Fetch API con gestione errori centralizzata;
-* **Testing:** Vitest e React Testing Library per unit e integration test.
+* **Testing:** Vitest e React Testing Library per unit e integration test;
+* **Servizio Dati Esterno:** [API-Football](https://www.api-football.com/) (API-Sports v3), utilizzato per il fetch in tempo reale di tutte le entità e statistiche calcistiche.
 
 ---
 
