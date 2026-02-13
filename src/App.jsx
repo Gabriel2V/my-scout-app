@@ -6,7 +6,7 @@
  * Struttura:
  * - Definisce `MainLayout` come wrapper principale per tutte le rotte.
  * - Gestisce le rotte nidificate per la navigazione gerarchica (Nazioni -> Serie -> Squadre).
- * - Mappa la rotta `*` (wildcard) al componente `NotFound`.
+ * - Mappa la rotta `*` al componente `NotFound`.
  */
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './views/layouts/MainLayout';

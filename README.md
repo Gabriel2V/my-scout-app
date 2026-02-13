@@ -31,20 +31,20 @@ L'applicazione è deployata e accessibile online. Per garantire la sicurezza e i
 
 Il progetto utilizza uno stack basato sull'ecosistema React:
 
-* **Core:** React.js (v18+)
-* **Build Tool:** Vite, scelto per la rapidità di compilazione e l'efficienza nello sviluppo.
-* **Routing:** React Router DOM (con HashRouter)
-* **State Management:** Custom Hooks e React Context
-* **Architettura:** MVVM (Model-View-ViewModel)
-* **Styling:** CSS Modules per stili locali e variabili CSS globali per il tema
-* **Data Fetching:** Fetch API con gestione errori centralizzata
+* **Core:** React.js (v18+);
+* **Build Tool:** Vite;
+* **Routing:** React Router DOM (con HashRouter);
+* **State Management:** Custom Hooks e React Context;
+* **Architettura:** MVVM (Model-View-ViewModel);
+* **Styling:** CSS Modules per stili locali e variabili CSS globali per il tema;
+* **Data Fetching:** Fetch API con gestione errori centralizzata;
 * **Testing:** Vitest e React Testing Library per unit e integration test.
 
 ---
 
 ## Architettura del Software (Pattern MVVM)
 
-Il codice è strutturato seguendo rigorosamente il pattern Model-View-ViewModel per garantire la separazione delle responsabilità e la manutenibilità del codice.
+Il codice è strutturato seguendo il pattern Model-View-ViewModel per garantire la separazione delle responsabilità e la manutenibilità del codice.
 
 ### 1. Model (`src/models/`)
 Definisce la struttura dei dati e la logica di dominio.
@@ -76,7 +76,7 @@ Il progetto segue una struttura modulare che rispecchia la separazione dei compi
 my-scout-app/
 ├── public/           
 ├── src/
-│   ├── assets/              # Risorse statiche (Loghi, immagini)
+│   ├── assets/              # Risorse statiche (Logo Universitario)
 │   ├── models/              # Business Logic & Data Normalization
 │   │   └── Player.js        # Classe per la normalizzazione dei dati atleta
 │   ├── services/            # Data Access Layer
@@ -106,11 +106,15 @@ my-scout-app/
 
 ### Navigazione Gerarchica e Ricerca
 L'applicazione permette due flussi di navigazione:
-1. **Esplorazione Guidata:** Dalle Nazioni ai Campionati, fino alle Squadre e ai Giocatori.
+1. **Esplorazione Guidata:** Dalle Nazioni ai Campionati, fino alle Squadre e ai Giocatori, o attraverso le top nazionali, o tramite top players.
 2. **Ricerca Globale "a Imbuto" basata su URL:** Un sistema di ricerca a doppia barra persistente nell'header, gestito tramite parametri URL combinati (?q=squadra&p=giocatore). L'interfaccia si adatta dinamicamente: mostra inizialmente una singola barra per cercare Nazioni o Squadre e, una volta compilata, rivela una seconda barra opzionale per cercare un giocatore specifico all'interno di quei risultati. Questo approccio garantisce che il tasto "Indietro" del browser funzioni sempre e che gli stati di ricerca complessi non vadano persi.
 
 ### Squadre Nazionali
-Una sezione dedicata accessibile dalla Dashboard permette di visualizzare direttamente le principali **Squadre Nazionali** mondiali. A differenza della navigazione per Nazione (geografica), questa vista permette di accedere direttamente alle rose dei convocati delle federazioni (es. Nazionale Italiana, Argentina, ecc.).
+Una sezione dedicata accessibile dalla Dashboard permette di visualizzare direttamente le principali **Squadre Nazionali** mondiali. A differenza della navigazione per Nazione (geografica), questa vista permette di accedere direttamente alle rose dei convocati delle federazioni (Nazionali di esempio come Italiana, Argentina, ecc. chiamate manualmente, poichè l'API non supporta top team nazionali).
+
+### Top Players
+Una sezione dedicata accessibile dalla Dashboard permette di visualizzare direttamente i **Top Players** mondiali, richiesti da API come top player per lega (delle pricipali: Seria A, Ligue 1, Bundesliga, La Liga, Premier League); di seguito carica tutti i giocatori già scaricati attraverso altre pagine presenti in cache, per consentire un infinite scroll maggiore.
+
 
 ### Ottimizzazione e Performance (Lazy Loading)
 Per gestire grandi moli di dati e limiti API ristretti:
@@ -121,7 +125,7 @@ Per gestire grandi moli di dati e limiti API ristretti:
 Il progetto implementa una strategia di caching a più livelli per minimizzare le chiamate di rete e migliorare la reattività:
 
 1.  **LocalStorage (Persistente):** Utilizzato per dati che cambiano raramente (lista nazioni, dettagli squadre, rose giocatori). Permette all'app di funzionare quasi offline per le risorse già visitate.
-2.  **SessionStorage (Volatile):** Implementato nel `useSearchViewModel`. Memorizza i risultati dell'ultima ricerca effettuata. Questo garantisce che, tornando indietro da una pagina di dettaglio, i risultati della ricerca riaiano istantaneamente senza ricaricare l'API ("Instant Back-Navigation").
+2.  **SessionStorage (Volatile):** Implementato nel `useSearchViewModel`. Memorizza i risultati dell'ultima ricerca effettuata. Questo garantisce che, tornando indietro da una pagina di dettaglio, i risultati della ricerca ricarichino istantaneamente senza ricaricare l'API ("Instant Back-Navigation").
 3.  **Data Re-hydration:** Il Model `Player.js` è progettato per gestire sia dati grezzi (dall'API) che dati "re-idratati" (dallo stato della navigazione), permettendo di passare oggetti complessi tra le viste senza doverli riscaricare.
 
 ### Filtraggio Avanzato e Ordinamento
@@ -135,8 +139,8 @@ La vista di dettaglio (`PlayerDetailView`) mantiene il contesto della lista di p
 
 ### Ricerca Ibrida Intelligente
 Il sistema di ricerca (`useSearchViewModel`) adotta un approccio "Local-First":
-1.  All'input dell'utente, scansiona istantaneamente il `localStorage` per trovare giocatori, squadre o nazioni già visitati.
-2.  Esegue una chiamata API (debounced) solo se il termine di ricerca è nuovo.
+1.  All'input dell'utente, scansiona istantaneamente il `localStorage` per trovare giocatori, squadre o nazioni già visitati;
+2.  Esegue una chiamata API solo se il termine di ricerca è nuovo;
 3.  Aggrega i risultati locali e remoti rimuovendo i duplicati, garantendo un feedback immediato all'utente e risparmiando chiamate API.
 
 A causa di una rigorosa limitazione strutturale dell'API esterna (API-Sports), non è possibile cercare globalmente un giocatore per nome senza specificare l'ID della sua squadra o lega di appartenenza. Per aggirare questo blocco e garantire un'ottima User Experience, il sistema di ricerca (`useSearchViewModel`) adotta un approccio "Local-First" combinato a una logica "a imbuto":
@@ -162,7 +166,7 @@ Poiché l'API utilizzata impone restrizioni severe sul piano gratuito (max 100 c
 
 * **Pagination Hard-Limit:** I ViewModel interrompono automaticamente le richieste oltre la pagina 3 per prevenire errori 403/429 e spreco di quota.
 * **Concurrency Semaphore:** Utilizzo di `useRef` ("isFetching") nei ViewModel per prevenire *Race Conditions* e doppie chiamate involontarie durante lo scroll veloce (Infinite Scroll).
-* **Deduplicazione nel Service:** Il `PlayerService` traccia le richieste in volo (`pendingRequests`) e restituisce la stessa Promise a chiamate parallele identiche, evitando il problema del "Double Fetch" di React in Strict Mode.
+* **Deduplicazione nel Service:** Il `PlayerService` traccia le richieste avviate(`pendingRequests`) e restituisce la stessa Promise a chiamate parallele identiche, evitando il problema del "Double Fetch" di React in Strict Mode.
 
 ---
 
@@ -174,7 +178,7 @@ L'applicazione adotta una gestione rigorosa del ciclo di vita dei componenti e d
 La ricerca globale è gestita tramite l'hook `useSearchParams`. Questo separa la **Ricerca Globale** (che identifica nuove entità) dal **Filtraggio Locale** (che agisce sui dati già caricati). In questo modo, navigando verso la pagina di una squadra, il termine di ricerca nell'header non entra in conflitto con la visualizzazione della rosa completa, ma rimane disponibile per tornare ai risultati precedenti.
 
 ### 2. Gestione dello Stato di Caricamento (Loading)
-Per garantire una User Experience fluida, è stata implementata una gestione esplicita dello stato di caricamento tramite l'hook `useState`. Lo stato `loading` viene inizializzato a `true` e aggiornato a `false` solo al termine delle operazioni asincrone (`finally`), garantendo che l'interfaccia mostri sempre un feedback coerente (skeleton o spinner) durante l'attesa.
+Per garantire una User Experience fluida, è stata implementata una gestione esplicita dello stato di caricamento tramite l'hook `useState`. Lo stato `loading` viene inizializzato a `true` e aggiornato a `false` solo al termine delle operazioni asincrone (`finally`), garantendo che l'interfaccia mostri sempre un feedback coerente durante l'attesa.
 
 ### 3. Gestione degli Errori e Pagina 404
 La strategia di gestione degli errori avviene su due livelli:
@@ -196,7 +200,7 @@ Il `MainLayout` utilizza un sistema a griglia per il Footer, garantendo che il l
 ### 3. Navigazione Ibrida
 La navigazione avviene attraverso due modalità:
 - **Dichiarativa:** Tramite il componente `Link` (es. nelle `PlayerCard`) per una navigazione semantica e accessibile.
-- **Programmatica:** Tramite l'hook `useNavigate` (es. nelle `GenericCard` o nella logica di ricerca) per gestire cambi di rotta in risposta a eventi complessi o click su elementi non-ancora.
+- **Programmatica:** Tramite l'hook `useNavigate` (es. nelle `GenericCard` o nella logica di ricerca) per gestire cambi di rotta in risposta a eventi complessi.
 
 ---
 
@@ -283,14 +287,14 @@ npm run full-report
 
 ## Sicurezza e Deployment
 
-* **Variabili d'ambiente:** La chiave API non è inclusa nel codice sorgente per motivi di sicurezza, ma viene gestita in sicurezza tramite variabili prefissate con VITE_ e caricate tramite import.meta.env.
+* **Variabili d'ambiente:** La chiave API non è inclusa nel codice sorgente per motivi di sicurezza, ma viene gestita in sicurezza tramite variabili d'ambiente e caricate tramite import.meta.env.
 * **Deployment:** Configurato per hosting statici tramite HashRouter e gh-pages.
 
 ---
 
 ## Sviluppi Futuri
 Il progetto ha diversi possibili sviluppi futuri, in particolare si ritiene utili:
-* **Autenticazione Firebase:** introduzione di un'area riservata per permettere agli "scout" di salvare i giocatori preferiti in una Watchlist persistente sul cloud.
+* **Autenticazione Firebase:** introduzione di un'area riservata per permettere agli "scout" di salvare i giocatori preferiti in una Watchlist persistente sul cloud;
 * **Backend Proxy:** sostituire la chiamata diretta all'API-Sports con un server Node.js intermediario per proteggere totalmente la chiave API e implementare un caching distribuito (Redis), slegando i limiti dell'API dal singolo client.
 
 ---

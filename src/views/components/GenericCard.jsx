@@ -3,7 +3,7 @@
  * @description Componente UI polimorfico e riutilizzabile per la visualizzazione di entità in griglia.
  * Utilizzato per rappresentare Nazioni, Campionati e Squadre (e talvolta Giocatori in liste semplici).
  * Supporta l'iniezione di contenuto extra tramite `children` (es. bottoni d'azione).
- * * @param {Object} props - Proprietà del componente.
+ * @param {Object} props - Proprietà del componente:
  * @param {string} props.title - Il titolo principale della card (es. Nome Squadra).
  * @param {string} props.image - URL della risorsa grafica (Logo, Bandiera o Foto).
  * @param {string} [props.subtitle] - Testo secondario opzionale visualizzato sotto il titolo.

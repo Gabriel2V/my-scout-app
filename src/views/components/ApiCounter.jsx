@@ -1,7 +1,7 @@
 /**
  * @component ApiCounter
- * @description Widget flottante ("Sticky") che monitora il consumo delle chiamate API in tempo reale.
- * * **Funzionalità:**
+ * @description Widget fluttuante che monitora il consumo delle chiamate API in tempo reale.
+ * Funzionalità:
  * - Visualizza un badge compatto con il conteggio corrente.
  * - Si espande al click per mostrare statistiche dettagliate e barre di progresso.
  * - Cambia colore dinamicamente (Verde -> Giallo -> Rosso) in base alla percentuale di utilizzo.

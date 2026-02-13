@@ -160,7 +160,7 @@
 
 .searchBar input {
   width: 100%;
-  padding: 0.8rem 3.5rem 0.8rem 1.5rem; /* Spazio a destra per il bottone */
+  padding: 0.8rem 3.5rem 0.8rem 1.5rem;
   background-color: var(--bg-body);
   border: 2px solid var(--border-color);
   border-radius: 99px;

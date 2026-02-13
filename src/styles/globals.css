@@ -5,19 +5,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Palette Colori - Modern Scouting */
-  --bg-body: #f1f5f9;       /* Grigio chiarissimo/bluastro per lo sfondo */
-  --bg-surface: #ffffff;    /* Bianco puro per le card */
+  --bg-body: #f1f5f9;       
+  --bg-surface: #ffffff;
   
-  --primary: #0f172a;       /* Blu notte profondo (Testi principali, Navbar items) */
-  --primary-light: #334155; /* Blu grigio per testi secondari */
+  --primary: #0f172a;     
+  --primary-light: #334155; 
   
-  --accent: #16a34a;        /* Verde calcio elegante (Bottoni, Link attivi) */
+  --accent: #16a34a;      
   --accent-hover: #15803d;  
   
-  --border-color: #e2e8f0;  /* Bordi sottili e delicati */
+  --border-color: #e2e8f0;  
   
-  /* Ombreggiature moderne (Soft Shadows) */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
@@ -37,21 +35,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Grid System Responsivo */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Card leggermente più larghe */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
   padding: 1rem 0;
 }
 
 /* Titoli Pagine */
 .pageTitle {
-  font-size: 1.875rem; /* 30px */
+  font-size: 1.875rem; 
   font-weight: 700;
   color: var(--primary);
   margin-bottom: 2rem;
-  letter-spacing: -0.025em; /* Tight tracking per look moderno */
+  letter-spacing: -0.025em; 
 }
 
 /* Loading */

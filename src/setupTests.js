@@ -25,7 +25,7 @@ class MockIntersectionObserver {
 
 globalThis.IntersectionObserver = MockIntersectionObserver;
 
-// Stub per scrollTo (JSDOM non lo implementa)
+// per scrollTo (JSDOM non lo implementa)
 globalThis.scrollTo = vi.fn();
 // Anche su window per sicurezza
 if (typeof window !== 'undefined') {

@@ -18,7 +18,7 @@
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-color: var(--border-color); /* Qui manteniamo il bordo neutro o accent */
+  border-color: var(--border-color);
 }
 
 .photo {
@@ -26,8 +26,8 @@
   height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid white; /* Bordo bianco interno */
-  box-shadow: 0 0 0 1px var(--border-color); /* Bordo sottile esterno */
+  border: 3px solid white; 
+  box-shadow: 0 0 0 1px var(--border-color);
   margin-bottom: 1rem;
   background-color: var(--bg-body);
 }

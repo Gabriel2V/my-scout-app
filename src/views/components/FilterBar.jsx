@@ -2,7 +2,7 @@
  * @component FilterBar
  * @description Barra degli strumenti per il filtraggio e l'ordinamento dinamico delle liste di giocatori.
  * Fornisce controlli per rating, ruolo, nazionalità e criterio di ordinamento.
- * * @param {Object} props
+ * @param {Object} props
  * @param {number} props.minRating - Valore corrente del filtro rating minimo (0-10).
  * @param {Function} props.setMinRating - Setter per il rating minimo.
  * @param {string} props.roleFilter - Valore corrente del filtro ruolo (es. 'Midfielder', 'All').

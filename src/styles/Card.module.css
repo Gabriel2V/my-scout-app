@@ -2,7 +2,6 @@
  * STYLES: Cards
  * Stili per le card generiche e gli effetti interattivi
  */
-/* STYLES: Cards */
 .card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);

@@ -1,7 +1,7 @@
 /**
  * @component ApiDebug
  * @description Dashboard tecnica per il monitoraggio delle chiamate API.
- * * **Features:**
+ * Features:
  * - Visualizza le statistiche di utilizzo (usate/rimanenti) in tempo reale.
  * - Mostra lo stato della configurazione (Endpoint, API Key).
  * - Fornisce strumenti di amministrazione per resettare il contatore locale o pulire la cache.
@@ -12,7 +12,7 @@ import { useApiUsageViewModel } from '../../viewmodels/useApiUsageViewModel';
 import styles from '../../styles/ApiDebug.module.css';
 
 export default function ApiDebug() {
-  // Refresh rate accelerato (1000ms) per monitoraggio real-time
+  // Refresh rate (1000ms) per monitoraggio real-time
   const { usage, config, resetCounter, clearCache } = useApiUsageViewModel(1000);
 
   const handleReset = () => {

@@ -1,6 +1,7 @@
-/** * @component Series 
+/** * 
+ * @component Series 
  * @description Vista "Level 2". Visualizza i campionati (Leghe) disponibili per la nazione selezionata.
- * Fornisce due azioni per ogni lega: vedere le Squadre o vedere direttamente i Giocatori (Top Scorers).
+ * Fornisce due azioni per ogni lega: vedere le Squadre o vedere direttamente i top Giocatori .
 */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';

@@ -29,8 +29,9 @@ class PlayerService {
       { id: 61, name: 'Ligue 1' }
     ];
     
-    /** * Mappa per tracciare le richieste in corso (Promise).
-     * Evita il "double fetch" tipico di React StrictMode o componenti multipli.
+    /**
+     * Mappa per tracciare le richieste in corso (Promise).
+     * Evita il "double fetch".
      * @type {Map<string, Promise>} 
      */
     this.pendingRequests = new Map();
@@ -38,7 +39,7 @@ class PlayerService {
 
   /**
    * Sincronizza il contatore locale con i dati effettivi del server.
-   * Effettua una chiamata all'endpoint `/status` (che è GRATUITO).
+   * Effettua una chiamata all'endpoint `/status` (gratuito).
    * Logica Conservativa: Aggiorna il contatore locale solo se il server riporta 
    * un utilizzo maggiore rispetto a quello tracciato localmente.
    * @returns {Promise<Object>} Oggetto usage aggiornato.
@@ -91,7 +92,6 @@ class PlayerService {
 
   /**
    * Incrementa il contatore locale dopo una chiamata riuscita.
-   * @private
    */
   _incrementApiCounter() {
     const counter = this._getApiCounter();
@@ -125,7 +125,6 @@ class PlayerService {
   /**
    * Esegue la chiamata HTTP effettiva verso l'API.
    * Gestisce il caching delle Promise in volo e gli errori API specifici.
-   * * @private
    * @param {string} endpoint - Il percorso relativo dell'API (es. "players?id=...").
    * @returns {Promise<any>} Il payload `response` dell'API.
    * @throws {Error} Se il limite API è raggiunto o se c'è un errore HTTP.
@@ -164,7 +163,7 @@ class PlayerService {
             return [];
         }
         
-        // 3. Incremento contatore solo a successo
+        // Incrementa contatore solo a successo
         this._incrementApiCounter();
         return data.response;
       } finally {
@@ -176,8 +175,6 @@ class PlayerService {
     this.pendingRequests.set(endpoint, requestPromise);
     return requestPromise;
   }
-
-  // --- Metodi Pubblici di Fetch ---
 
   getCountries() { return this._apiCall('countries'); }
   getLeagues(countryId) { return this._apiCall(`leagues?country=${countryId}`); }
@@ -192,7 +189,7 @@ class PlayerService {
     if (batchIndex >= this.topLeagues.length) return [];
     const league = this.topLeagues[batchIndex];
     const data = await this._apiCall(`players/topscorers?league=${league.id}&season=${season}`);
-    return data.slice(0, 20); // Limita per performance
+    return data.slice(0, 20);
   }
   
   searchPlayers(searchTerm) { return this._apiCall(`players?search=${encodeURIComponent(searchTerm)}`); }

@@ -33,7 +33,6 @@
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-color);
   overflow: hidden;
-  /* Importante per z-index */
   position: relative;
   z-index: 10; 
 }
@@ -118,7 +117,7 @@
   cursor: pointer;
   box-shadow: var(--shadow-md);
   transition: all 0.2s;
-  z-index: 5; /* Sotto la card se schermo piccolo, sopra se grande */
+  z-index: 5; 
 }
 
 .navArrow:hover {
@@ -128,17 +127,16 @@
 }
 
 .navArrowLeft {
-  left: -10px; /* Posizione rispetto al container */
+  left: -10px; 
 }
 
 .navArrowRight {
   right: -10px;
 }
 
-/* Nascondi frecce su mobile o spostale */
 @media (max-width: 768px) {
   .navArrow {
-    top: 20%; /* Sposta in alto vicino alla foto su mobile */
+    top: 20%; 
     width: 40px;
     height: 40px;
     font-size: 1.2rem;

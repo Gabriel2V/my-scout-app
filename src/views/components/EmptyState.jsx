@@ -1,9 +1,10 @@
-/** * @component EmptyState 
+/** 
+ * @component EmptyState 
  * @description Componente di UI per la visualizzazione di stati vuoti o errori "soft".
  * Usato nelle liste quando non ci sono risultati da mostrare.
  * @param {Object} props
  * @param {string} props.message - Messaggio esplicativo per l'utente.
- * @param {string} [props.icon="📂"] - Emoji o icona opzionale.
+ * @param {string} [props.icon="📂"] -emonji cartella
 */
 import React from 'react';
 

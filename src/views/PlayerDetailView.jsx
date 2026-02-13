@@ -1,10 +1,10 @@
 /**
  * @component PlayerDetailView
  * @description Vista di dettaglio del singolo calciatore.
- * * **Features:**
- * - **Contextual Navigation:** Permette di scorrere tra i giocatori (Prev/Next) mantenendo il filtro della lista precedente.
- * - **Deep Linking:** Gestisce l'accesso diretto via URL o la navigazione dalla lista.
- * - **Cross-Navigation:** Permette di saltare alla squadra o alla ricerca nazione cliccando sui metadati.
+ * Features:
+ * - Contextual Navigation: Permette di scorrere tra i giocatori (Prev/Next) mantenendo il filtro della lista precedente.
+ * - Deep Linking: Gestisce l'accesso diretto via URL o la navigazione dalla lista.
+ * - Cross-Navigation: Permette di saltare alla squadra o alla ricerca nazione cliccando sui metadati.
  */
 import React from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';

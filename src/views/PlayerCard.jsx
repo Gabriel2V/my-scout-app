@@ -2,9 +2,8 @@
  * @component PlayerCard
  * @description Componente di presentazione dedicato alla visualizzazione sintetica di un calciatore.
  * Utilizzato principalmente nelle liste dei risultati di ricerca globale.
- * * **Interazione:** Fornisce un `Link` diretto alla vista di dettaglio, passando l'oggetto `player` nello state
+ * Interazione: Fornisce un `Link` diretto alla vista di dettaglio, passando l'oggetto `player` nello state
  * per evitare chiamate API ridondanti al caricamento del dettaglio.
- * * @param {Object} props
  * @param {Object} props.player - Oggetto Modello Player (istanza di models/Player).
  */
 import { Link } from 'react-router-dom';

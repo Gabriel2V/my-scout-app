@@ -1,11 +1,11 @@
 /**
  * @component Players
  * @description Pagina principale per la visualizzazione e il filtraggio della rosa giocatori.
- * * **Features:**
- * - **Infinite Scroll:** Implementato tramite `IntersectionObserver` per caricare dati on-demand.
- * - **Client-Side Filtering:** Filtra i dati caricati per Nome, Ruolo, Rating e Nazionalità senza ricaricare l'API.
- * - **Dynamic Sorting:** Ordinamento in memoria (Rating, Goal, Nome).
- * - **Context Preservation:** Passa l'intera lista filtrata al dettaglio per la navigazione "Next/Prev".
+ * Features:
+ * - Infinite Scroll: Implementato tramite `IntersectionObserver` per caricare dati on-demand.
+ * - Client-Side Filtering: Filtra i dati caricati per Nome, Ruolo, Rating e Nazionalità senza ricaricare l'API.
+ * - Dynamic Sorting: Ordinamento in memoria (Rating, Goal, Nome).
+ * - Context Preservation: Passa l'intera lista filtrata al dettaglio per la navigazione "Next/Prev".
  */
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';

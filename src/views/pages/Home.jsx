@@ -1,7 +1,7 @@
 /**
  * @component Home
  * @description Landing Page dell'applicazione.
- * * **Funzionalità:**
+ * Funzionalità:
  * - Fornisce il punto d'ingresso principale alla navigazione.
  * - Presenta tre macro-sezioni (Nazioni, Nazionali, Top Players) tramite card interattive.
  * - Utilizza `useNavigate` per indirizzare l'utente alle rotte specifiche.
