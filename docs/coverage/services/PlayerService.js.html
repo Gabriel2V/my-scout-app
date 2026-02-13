@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.65% </span>
+                <span class="strong">67.64% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/67</span>
+                <span class='fraction'>46/68</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.94% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/17</span>
+                <span class='fraction'>9/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.13% </span>
+                <span class="strong">70.96% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>44/61</span>
+                <span class='fraction'>44/62</span>
             </div>
         
             
@@ -265,7 +265,9 @@
 <a name='L200'></a><a href='#L200'>200</a>
 <a name='L201'></a><a href='#L201'>201</a>
 <a name='L202'></a><a href='#L202'>202</a>
-<a name='L203'></a><a href='#L203'>203</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -342,7 +344,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -351,10 +352,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -452,6 +453,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -470,7 +474,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @module Services/PlayerService
  * @description Servizio core per l'integrazione con l'API esterna (API-Sports).
- * * **Responsabilità:**
+ * Responsabilità:
  * - Gestione centralizzata delle chiamate HTTP (fetch).
  * - Monitoraggio proattivo dei limiti API (Rate Limiting) tramite conteggio locale.
  * - Deduplicazione delle richieste in volo (Request Deduplication) per evitare chiamate ridondanti.
@@ -508,9 +512,9 @@ class PlayerService {
   /**
    * Sincronizza il contatore locale con i dati effettivi del server.
    * Effettua una chiamata all'endpoint `/status` (che è GRATUITO).
-   * * **Logica Conservativa:** Aggiorna il contatore locale solo se il server riporta 
+   * Logica Conservativa: Aggiorna il contatore locale solo se il server riporta 
    * un utilizzo maggiore rispetto a quello tracciato localmente.
-   * * @returns {Promise&lt;Object&gt;} Oggetto usage aggiornato.
+   * @returns {Promise&lt;Object&gt;} Oggetto usage aggiornato.
    */
   async syncUsageWithApi() {
     try {
@@ -548,7 +552,6 @@ class PlayerService {
 &nbsp;
   /**
    * Recupera il conteggio attuale dal localStorage.
-   * @private
    */
   _getApiCounter() {
     const stored = localStorage.getItem('api_counter');
@@ -654,6 +657,9 @@ class PlayerService {
 <span class="fstat-no" title="function not covered" >  getTeams(</span>leagueId, season = <span class="branch-0 cbranch-no" title="branch not covered" >2024)</span> { <span class="cstat-no" title="statement not covered" >return this._apiCall(`teams?league=${leagueId}&amp;season=${season}`); </span>}
 <span class="fstat-no" title="function not covered" >  getPlayersByTeam(</span>teamId, season = <span class="branch-0 cbranch-no" title="branch not covered" >2024,</span> page = <span class="branch-0 cbranch-no" title="branch not covered" >1)</span> { <span class="cstat-no" title="statement not covered" >return this._apiCall(`players?team=${teamId}&amp;season=${season}&amp;page=${page}`); </span>}
 <span class="fstat-no" title="function not covered" >  getPlayersByLeague(</span>leagueId, season = <span class="branch-0 cbranch-no" title="branch not covered" >2024,</span> page = <span class="branch-0 cbranch-no" title="branch not covered" >1)</span> { <span class="cstat-no" title="statement not covered" >return this._apiCall(`players?league=${leagueId}&amp;season=${season}&amp;page=${page}`); </span>}
+<span class="fstat-no" title="function not covered" >  searchPlayerInTeam(</span>searchTerm, teamId) { 
+<span class="cstat-no" title="statement not covered" >    return this._apiCall(`players?search=${encodeURIComponent(searchTerm)}&amp;team=${teamId}`); </span>
+  }
   
   async <span class="fstat-no" title="function not covered" >getTopPlayersBatch(</span>batchIndex, season = <span class="branch-0 cbranch-no" title="branch not covered" >2024)</span> {
 <span class="cstat-no" title="statement not covered" >    if (batchIndex &gt;= this.topLeagues.length) <span class="cstat-no" title="statement not covered" >return [];</span></span>
@@ -676,7 +682,7 @@ export default new PlayerService();</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-05T15:16:18.596Z
+                at 2026-02-13T10:58:17.513Z
             </div>
         <script src="../prettify.js"></script>
         <script>

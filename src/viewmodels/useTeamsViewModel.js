@@ -5,7 +5,7 @@
  * Recupera l'elenco dei team partecipanti a una competizione specifica,
  * con caching persistente e deduplicazione richieste.
  * 
- * **Pattern implementati:**
+ * Pattern implementati:
  * - Cache-First Loading
  * - Request Deduplication via useRef
  * - URL-Driven State
@@ -18,7 +18,7 @@ import PlayerService from '../services/PlayerService';
 /**
  * Hook per il recupero delle squadre di un campionato.
  * 
- * **Flusso:**
+ * Flusso:
  * 1. Estrae `serieId` da URL params
  * 2. Verifica ref `lastRequestKey` per deduplicazione
  * 3. Controlla cache localStorage (`cache_teams_{serieId}`)
@@ -31,10 +31,6 @@ import PlayerService from '../services/PlayerService';
  * @returns {string} return.teams[].team.name - Nome squadra
  * @returns {string} return.teams[].team.logo - URL logo
  * @returns {boolean} return.loading - Flag di caricamento
- * 
- * @example
- * const { teams, loading } = useTeamsViewModel();
- * // teams: [{ team: { id: 505, name: "Inter", logo: "..." }, venue: {...} }]
  */
 export function useTeamsViewModel() {
   /**

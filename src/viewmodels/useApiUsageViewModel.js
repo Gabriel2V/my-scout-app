@@ -2,7 +2,7 @@
  * @module ViewModels/useApiUsageViewModel
  * @description ViewModel per la dashboard di monitoraggio API.
  * Gestisce la sincronizzazione in tempo reale (polling) dei consumi tra client e server.
- * * @param {number} [refreshRate=2000] - Intervallo in millisecondi per l'aggiornamento locale dell'UI.
+ * @param {number} [refreshRate=2000] - Intervallo in millisecondi per l'aggiornamento locale dell'UI.
  * @returns {Object} Stato e metodi di gestione API.
  */
 import { useState, useEffect, useCallback } from 'react';

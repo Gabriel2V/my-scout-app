@@ -1,7 +1,7 @@
 /**
  * @module Index
  * @description Punto di ingresso (Entry Point) dell'applicazione React.
- * * **Responsabilità:**
+ * Responsabilità:
  * - Iniezione dell'applicazione nel DOM (`root` element).
  * - Importazione degli stili globali (`index.css` e `globals.css`).
  * - Attivazione di `React.StrictMode` per controlli aggiuntivi in fase di sviluppo (es. rilevamento doppi render).

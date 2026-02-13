@@ -1,8 +1,9 @@
 /**
  * @module App
  * @description Componente Root che definisce l'albero di routing dell'applicazione.
- * * **Tecnologia:** Utilizza `HashRouter` per garantire la compatibilità con hosting statici (es. GitHub Pages).
- * * **Struttura:**
+ * Tecnologia:
+ * - Utilizza `HashRouter` per garantire la compatibilità con hosting statici (es. GitHub Pages).
+ * Struttura:
  * - Definisce `MainLayout` come wrapper principale per tutte le rotte.
  * - Gestisce le rotte nidificate per la navigazione gerarchica (Nazioni -> Serie -> Squadre).
  * - Mappa la rotta `*` (wildcard) al componente `NotFound`.

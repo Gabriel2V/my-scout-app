@@ -1,10 +1,10 @@
 /**
  * @module Models/Player
  * @description Modello di dominio (Domain Entity) per il Calciatore.
- * * **Pattern Adapter/Normalizer:** Il costruttore agisce da adattatore, trasformando la struttura 
+ * Pattern Adapter/Normalizer: Il costruttore agisce da adattatore, trasformando la struttura 
  * complessa e nidificata dell'API (response -> player -> statistics) in un oggetto piatto 
  * e facile da consumare per le View.
- * * Gestisce anche la "reidratazione" da oggetti JSON salvati in cache/storage.
+ * Gestisce anche la "reidratazione" da oggetti JSON salvati in cache/storage.
  */
 export class Player {
   /**

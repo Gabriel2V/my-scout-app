@@ -1,12 +1,12 @@
 /**
  * @module ViewModels/usePlayersViewModel
  * @description ViewModel React Hook per la gestione delle liste di giocatori.
- * * Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il caching per contesto.
+ * Gestisce il caricamento paginato (Lazy Loading), la deduplicazione dei dati e il caching per contesto.
  * Supporta tre modalità di funzionamento in base ai parametri URL:
- * 1. **Per Squadra:** Carica la rosa di un club specifico.
- * 2. **Per Lega:** Carica i giocatori di un campionato.
- * 3. **Top Players (Global):** Se nessun ID è fornito, carica i top scorer dei maggiori campionati europei.
- * * **Pattern implementati:**
+ * 1. Per Squadra: Carica la rosa di un club specifico.
+ * 2. Per Lega: Carica i giocatori di un campionato.
+ * 3. Top Players (Global): Se nessun ID è fornito, carica i top scorer dei maggiori campionati europei.
+ * Pattern implementati:
  * - Infinite Scroll (gestione paginazione progressiva)
  * - Request Throttling (semaforo `isFetching`)
  * - Context-Aware Caching (chiavi di cache differenziate per contesto)

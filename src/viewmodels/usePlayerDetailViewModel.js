@@ -2,15 +2,15 @@
  * @module ViewModels/usePlayerDetailViewModel
  * @description ViewModel React Hook per la vista di dettaglio di un singolo giocatore.
  * 
- * Implementa il pattern **"Zero-Network Navigation"**: se il giocatore è già disponibile
+ * Implementa il pattern "Zero-Network Navigation": se il giocatore è già disponibile
  * tramite stato passato (navigation state), non effettua chiamate API.
  * 
- * **Responsabilità principali:**
+ * Responsabilità principali:
  * 1. Gestione dual-source: dati passati via state OR fetch remoto
  * 2. Calcolo navigazione contestuale (prev/next player)
  * 3. Re-idratazione oggetti Player da context list
  * 
- * **Pattern implementati:**
+ * Pattern implementati:
  * - Zero-Network Navigation: priorità ai dati passati via Router
  * - Contextual Navigation: prev/next calcolati da lista origine
  * - Lazy Remote Fetch: API solo per accesso diretto URL
@@ -24,17 +24,17 @@ import { Player } from '../models/Player';
 /**
  * Hook per la gestione del dettaglio giocatore con navigazione contestuale.
  * 
- * **Modalità di funzionamento:**
+ * Modalità di funzionamento:
  * 
- * **Caso A - Navigation State presente (Zero-Network):**
- * - `initialPlayer` contiene il giocatore
- * - Nessuna chiamata API
- * - Loading = false immediatamente
+ * Caso A - Navigation State presente (Zero-Network):
+ * - `initialPlayer` contiene il giocatore;
+ * - Nessuna chiamata API;
+ * - Loading = false immediatamente.
  * 
- * **Caso B - Accesso diretto URL (Remote Fetch):**
- * - `initialPlayer` è null/undefined
- * - Effettua chiamata API tramite PlayerService
- * - Loading = true fino a completamento
+ * Caso B - Accesso diretto URL (Remote Fetch):
+ * - `initialPlayer` è null/undefined;
+ * - Effettua chiamata API tramite PlayerService;
+ * - Loading = true fino a completamento.
  * 
  * @function usePlayerDetailViewModel
  * @param {string|number} id - ID del giocatore da visualizzare
@@ -46,22 +46,6 @@ import { Player } from '../models/Player';
  * @returns {Player|null} return.nextPlayer - Giocatore successivo nella lista o null
  * @returns {boolean} return.loading - True durante fetch remoto
  * @returns {string|null} return.error - Messaggio errore o null
- * 
- * @example
- * // Con navigation state (zero latency)
- * const { player, loading } = usePlayerDetailViewModel(
- *   276,
- *   { id: 276, name: "Lautaro Martinez", ... },
- *   []
- * );
- * // loading: false (immediato)
- * // player: Player { id: 276, name: "Lautaro Martinez", ... }
- * 
- * @example
- * // Accesso diretto URL (fetch remoto)
- * const { player, loading, error } = usePlayerDetailViewModel(276);
- * // loading: true → false dopo fetch
- * // player: null → Player { ... } dopo fetch
  */
 export function usePlayerDetailViewModel(id, initialPlayer, contextList = []) {
   /**

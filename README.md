@@ -15,7 +15,7 @@ Il progetto pone una forte enfasi sull'ottimizzazione delle risorse, implementan
 
 ---
 
-## 🚀 Demo e Documentazione
+##  Demo e Documentazione
 
 L'applicazione è deployata e accessibile online. Per garantire la sicurezza e il rispetto dei limiti dell'API gratuita, la chiave API in produzione è **limitata al dominio di GitHub Pages**.
 
@@ -29,16 +29,16 @@ L'applicazione è deployata e accessibile online. Per garantire la sicurezza e i
 
 ## Stack Tecnologico
 
-Il progetto utilizza uno stack moderno basato sull'ecosistema React:
+Il progetto utilizza uno stack basato sull'ecosistema React:
 
 * **Core:** React.js (v18+)
 * **Build Tool:** Vite, scelto per la rapidità di compilazione e l'efficienza nello sviluppo.
-* **Routing:** React Router DOM (HashRouter per compatibilità deployment statico)
+* **Routing:** React Router DOM (con HashRouter)
 * **State Management:** Custom Hooks e React Context
 * **Architettura:** MVVM (Model-View-ViewModel)
 * **Styling:** CSS Modules per stili locali e variabili CSS globali per il tema
 * **Data Fetching:** Fetch API con gestione errori centralizzata
-* **Testing:** Vitest e React Testing Library per unit e integration test, garantendo uno stack moderno e veloce.
+* **Testing:** Vitest e React Testing Library per unit e integration test.
 
 ---
 
@@ -59,7 +59,7 @@ Custom Hooks che fungono da ponte tra il Model e la View, gestendo la logica di 
 * **usePlayerDetailViewModel.js:** Gestisce il recupero del singolo giocatore, con logica di fallback per recuperare i dati sia dalla navigazione precedente che tramite chiamata diretta.
 
 ### 3. View (`src/views/`)
-Componenti React puri che si occupano solo del rendering dell'interfaccia utente.
+Componenti React che si occupano solo del rendering dell'interfaccia utente.
 * **Pages:** `Home`, `Nations`, `Series`, `Teams`, `Players`, `SearchResults`, `NationalTeams`, `NotFound`.
 * **Dettaglio:** `PlayerDetailView` per la scheda singola.
 * **Componenti UI:** `GenericCard`, `PlayerCard`, `FilterBar`, `ApiCounter`.
@@ -74,27 +74,29 @@ Il progetto segue una struttura modulare che rispecchia la separazione dei compi
 
 ```text
 my-scout-app/
-├── public/                 # Assets statici pubblici
+├── public/           
 ├── src/
-│   ├── assets/             # Risorse statiche (Loghi, immagini)
-│   ├── models/             # Business Logic & Data Normalization
-│   │   └── Player.js       # Classe per la normalizzazione dei dati atleta
-│   ├── services/           # Data Access Layer
+│   ├── assets/              # Risorse statiche (Loghi, immagini)
+│   ├── models/              # Business Logic & Data Normalization
+│   │   └── Player.js        # Classe per la normalizzazione dei dati atleta
+│   ├── services/            # Data Access Layer
 │   │   └── PlayerService.js # Gestione chiamate API, caching e rate-limit
-│   ├── viewmodels/         # Logica applicativa (Custom Hooks)
+│   ├── viewmodels/          # Logica applicativa (Custom Hooks)
 │   │   ├── usePlayersViewModel.js
 │   │   ├── useSearchViewModel.js
 │   │   └── ...
-│   ├── views/              # Presentation Layer (UI)
-│   │   ├── components/     # Widget riutilizzabili (Card, FilterBar, ApiCounter)
-│   │   ├── layouts/        # Struttura comune (Navbar, Footer)
-│   │   └── pages/          # Pagine principali (Home, Teams, PlayerDetail)
-│   ├── styles/             # Fogli di stile (CSS Modules & Global)
-│   ├── App.jsx             # Routing e composizione principale
-│   └── setupTests.js       # Configurazione ambiente di test
-├── index.html              # Entry point applicazione
-├── package.json            # Dipendenze e script
-└── vite.config.js          # Configurazione Build e Test runner
+│   ├── views/               # Presentation Layer (UI)
+│   │   ├── components/      # Widget riutilizzabili (Card, FilterBar, ApiCounter)
+│   │   ├── layouts/         # Struttura comune (Navbar, Footer)
+│   │   └── pages/           # Pagine principali (Home, Teams, PlayerDetail)
+│   ├── styles/              # Fogli di stile (CSS Modules & Global)
+│   ├── App.jsx              # Routing e composizione principale
+│   ├── index.jsx            # Entry point applicazione
+│   └── setupTests.js        # Configurazione ambiente di test
+├── index.html               # Entry point html
+├── hub.html                 # Hub documentazione, test, codice e applicazione
+├── package.json             # Dipendenze e script
+└── vite.config.js           # Configurazione Build e Test runner
 ```
 
 ---
@@ -105,7 +107,7 @@ my-scout-app/
 ### Navigazione Gerarchica e Ricerca
 L'applicazione permette due flussi di navigazione:
 1. **Esplorazione Guidata:** Dalle Nazioni ai Campionati, fino alle Squadre e ai Giocatori.
-2. **Ricerca Globale Basata su URL:** Una barra di ricerca persistente nell'header che utilizza i parametri di ricerca nell'URL (`?q=searchTerm`). Questo approccio garantisce che il tasto "Indietro" del browser funzioni correttamente e che i risultati della ricerca non vadano persi durante la navigazione.
+2. **Ricerca Globale "a Imbuto" basata su URL:** Un sistema di ricerca a doppia barra persistente nell'header, gestito tramite parametri URL combinati (?q=squadra&p=giocatore). L'interfaccia si adatta dinamicamente: mostra inizialmente una singola barra per cercare Nazioni o Squadre e, una volta compilata, rivela una seconda barra opzionale per cercare un giocatore specifico all'interno di quei risultati. Questo approccio garantisce che il tasto "Indietro" del browser funzioni sempre e che gli stati di ricerca complessi non vadano persi.
 
 ### Squadre Nazionali
 Una sezione dedicata accessibile dalla Dashboard permette di visualizzare direttamente le principali **Squadre Nazionali** mondiali. A differenza della navigazione per Nazione (geografica), questa vista permette di accedere direttamente alle rose dei convocati delle federazioni (es. Nazionale Italiana, Argentina, ecc.).
@@ -136,6 +138,18 @@ Il sistema di ricerca (`useSearchViewModel`) adotta un approccio "Local-First":
 1.  All'input dell'utente, scansiona istantaneamente il `localStorage` per trovare giocatori, squadre o nazioni già visitati.
 2.  Esegue una chiamata API (debounced) solo se il termine di ricerca è nuovo.
 3.  Aggrega i risultati locali e remoti rimuovendo i duplicati, garantendo un feedback immediato all'utente e risparmiando chiamate API.
+
+A causa di una rigorosa limitazione strutturale dell'API esterna (API-Sports), non è possibile cercare globalmente un giocatore per nome senza specificare l'ID della sua squadra o lega di appartenenza. Per aggirare questo blocco e garantire un'ottima User Experience, il sistema di ricerca (`useSearchViewModel`) adotta un approccio "Local-First" combinato a una logica "a imbuto":
+
+**Scansione Immediata** (Local-First): All'input dell'utente, scansiona istantaneamente il `localStorage` per trovare giocatori, squadre o nazioni già visitati in precedenza. Questo permette di trovare giocatori "globalmente" se sono già salvati in cache.
+
+**Ricerca API a imbuto, se il termine è nuovo:**
+
+1. (Barra 1): Cerca globalmente le Squadre corrispondenti al termine inserito.
+
+2. (Barra 2): Se l'utente compila anche la seconda barra (Giocatore), il ViewModel preleva gli ID delle migliori squadre trovate allo Step 1 e lancia chiamate API parallele (Promise.all) per cercare il giocatore all'interno di quelle specifiche squadre, aggirando il blocco dell'API.
+
+**Aggregazione e Pulizia Visiva:** Aggrega i risultati locali e remoti rimuovendo i duplicati. Se l'utente sta cercando esplicitamente un giocatore (usando entrambe le barre), l'interfaccia nasconde i risultati di Nazioni e Squadre, mostrando solo gli atleti.
 
 ### Monitoraggio API e Debug
 L'applicazione include un sistema robusto per la gestione dei limiti del tier gratuito di API-Sports (100 chiamate/giorno):

@@ -5,7 +5,7 @@
  * Recupera l'elenco delle competizioni calcistiche disponibili per una nazione,
  * con strategia Cache-First e deduplicazione richieste tramite ref tracking.
  * 
- * **Pattern implementati:**
+ * Pattern implementati:
  * - Cache-First Loading
  * - Request Deduplication via useRef
  * - URL-Driven State (parametri React Router)
@@ -19,7 +19,7 @@ import PlayerService from '../services/PlayerService';
 /**
  * Hook per il recupero dei campionati di una nazione.
  * 
- * **Flusso:**
+ * Flusso:
  * 1. Estrae `nazioneId` da URL params
  * 2. Verifica ref `lastRequestKey` per evitare richieste duplicate
  * 3. Controlla cache localStorage
@@ -30,11 +30,6 @@ import PlayerService from '../services/PlayerService';
  * @returns {Array<Object>} return.leagues - Campionati della nazione
  * @returns {boolean} return.loading - Flag di caricamento
  * @returns {string} return.nazioneId - Nome nazione da URL
- * 
- * @example
- * const { leagues, loading, nazioneId } = useSeriesViewModel();
- * // nazioneId: "Italy"
- * // leagues: [{ league: { id: 135, name: "Serie A", ... }, ... }]
  */
 export function useSeriesViewModel() {
   /**

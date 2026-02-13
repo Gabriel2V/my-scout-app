@@ -5,7 +5,7 @@
  * Recupera le federazioni nazionali delle 8 nazioni più importanti tramite
  * ricerca parallela e deduplicazione risultati.
  * 
- * **Pattern implementati:**
+ * Pattern implementati:
  * - Parallel Fetching: `Promise.all` per ottimizzare i tempi
  * - Cache-First Loading
  * - Deduplication: rimozione squadre duplicate per ID
@@ -17,13 +17,13 @@ import PlayerService from '../services/PlayerService';
 /**
  * Hook per il recupero delle squadre nazionali.
  * 
- * **Flusso:**
+ * Flusso:
  * 1. Verifica cache localStorage (`cache_national_teams`)
  * 2. Se assente, esegue 8 ricerche parallele (una per nazione)
  * 3. Filtra solo squadre con `team.national === true`
  * 4. Deduplica per ID e persiste risultato
  * 
- * **Nazioni caricate:**
+ * Nazioni caricate:
  * Italy, France, Argentina, Brazil, Spain, Germany, England, Portugal
  * 
  * @function useNationalTeamsViewModel

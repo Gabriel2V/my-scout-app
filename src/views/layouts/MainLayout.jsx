@@ -1,33 +1,45 @@
 /**
  * @component MainLayout
  * @description Layout principale (Shell) dell'applicazione.
- * * **Struttura:** Header (Logo + Nav + Search) -> Outlet (Contenuto Pagina) -> Footer.
- * * **Global Search:** Gestisce l'input di ricerca nella navbar che reindirizza a `/ricerca`.
- * * **ApiCounter:** Integra il widget di monitoraggio API globale.
+ * Struttura: Header (Logo + Nav + Search) -> Outlet (Contenuto Pagina) -> Footer.
+ * Global Search: Gestisce l'input di ricerca nella navbar che reindirizza a `/ricerca`.
+ * Implementa una ricerca "a imbuto": la prima barra cerca Nazioni/Squadre, la seconda (opzionale) un giocatore in quelle squadre.
+ * ApiCounter: Integra il widget di monitoraggio API globale.
  */
 import { Outlet, useNavigate, useLocation, useSearchParams, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styles from '../../styles/Layout.module.css';
-import uniLogo from '../../assets/logo_uni.png'; 
+import uniLogo from '../../assets/logo_uni.png';
 import ApiCounter from '../components/ApiCounter';
 
 export default function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  
-  // Sincronizza l'input della navbar con i query params URL
-  const [localInput, setLocalInput] = useState(searchParams.get('q') || '');
 
+  // Stato per la Squadra/Nazione (Barra 1)
+  const [localInput, setLocalInput] = useState(searchParams.get('q') || '');
+  // Stato per il Giocatore (Barra 2)
+  const [localPlayerInput, setLocalPlayerInput] = useState(searchParams.get('p') || '');
+
+  // Sincronizza l'input della navbar con i query params URL
   useEffect(() => {
     setLocalInput(searchParams.get('q') || '');
+    setLocalPlayerInput(searchParams.get('p') || '');
   }, [searchParams]);
 
-  /** Avvia la navigazione verso la pagina dei risultati */
+  /** Avvia la navigazione verso la pagina dei risultati con i parametri combinati */
   const triggerSearch = () => {
     const value = localInput.trim();
+    const playerValue = localPlayerInput.trim();
+
     if (value.length >= 1) {
-      navigate(`/ricerca?q=${encodeURIComponent(value)}`);
+      // Costruiamo l'URL con entrambi i parametri
+      let url = `/ricerca?q=${encodeURIComponent(value)}`;
+      if (playerValue.length >= 1) {
+        url += `&p=${encodeURIComponent(playerValue)}`;
+      }
+      navigate(url);
     } else if (value === '' && location.pathname === '/ricerca') {
       navigate('/');
     }
@@ -43,31 +55,54 @@ export default function MainLayout() {
         <div className={styles.headerLeft}>
           <div className={styles.logo} onClick={() => navigate('/')}>My Scout App</div>
           <nav className={styles.nav}>
-            <NavLink to="/" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>HOME</NavLink>
-            <NavLink to="/info" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>INFO</NavLink>
-            <NavLink to="/api-debug" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>API</NavLink>
+            <NavLink to="/" className={({ isActive }) => isActive ? styles.activeLink : styles.navLink}>HOME</NavLink>
+            <NavLink to="/info" className={({ isActive }) => isActive ? styles.activeLink : styles.navLink}>INFO</NavLink>
+            <NavLink to="/api-debug" className={({ isActive }) => isActive ? styles.activeLink : styles.navLink}>API</NavLink>
           </nav>
         </div>
 
-        <div className={styles.searchContainer}>
+        <div className={styles.searchContainer} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          {/* BARRA 1: Squadra / Nazione */}
           <div className={styles.searchBar}>
-            <input 
-              type="text" 
-              placeholder="Cerca nazioni, squadre, giocatori..." 
+            <input
+              type="text"
+              placeholder="Cerca squadra o nazione..."
               value={localInput}
-              onChange={(e) => setLocalInput(e.target.value)}
+              onChange={(e) => {
+                setLocalInput(e.target.value);
+                // Pulisce la barra del giocatore se svuoto la ricerca principale
+                if (e.target.value === '') setLocalPlayerInput('');
+              }}
               onKeyDown={handleKeyDown}
             />
-            <button className={styles.searchButton} onClick={triggerSearch}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </button>
+            {localPlayerInput.length === 0 && (
+              <button className={styles.searchButton} onClick={triggerSearch}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </button>
+            )}
           </div>
+
+          {/* BARRA 2: Giocatore (visibile solo se Barra 1 non è vuota) */}
+          {localInput.length > 0 && (
+            <div className={styles.searchBar}>
+              <input
+                type="text"
+                placeholder="Nome del giocatore (opzionale)..."
+                value={localPlayerInput}
+                onChange={(e) => setLocalPlayerInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                style={{ borderColor: 'var(--accent)' }}
+              />
+              {localPlayerInput.length > 0 && (
+                <button className={styles.searchButton} onClick={triggerSearch}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </header>
-      
+
       <main className={styles.content}>
         <Outlet context={{ globalSearchTerm: searchParams.get('q') || '', setSearchTerm: setLocalInput }} />
       </main>

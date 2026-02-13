@@ -1,8 +1,8 @@
 /**
  * @module ViewModels/useNationsViewModel
  * @description ViewModel per il recupero della lista delle nazioni supportate.
- * * Gestisce la cache persistente per evitare chiamate ripetute a dati che cambiano raramente.
- * * **Strategia di Cache:**
+ * Gestisce la cache persistente per evitare chiamate ripetute a dati che cambiano raramente.
+ * Strategia di Cache:
  * - Salva la lista completa in `localStorage` ('cache_nations').
  * - Al caricamento, controlla prima la cache. Se valida, evita la chiamata API.
  * - In caso di cache corrotta o vuota, forza il refresh dall'API.

@@ -1,7 +1,7 @@
 /**
  * @module Services/PlayerService
  * @description Servizio core per l'integrazione con l'API esterna (API-Sports).
- * * **Responsabilità:**
+ * Responsabilità:
  * - Gestione centralizzata delle chiamate HTTP (fetch).
  * - Monitoraggio proattivo dei limiti API (Rate Limiting) tramite conteggio locale.
  * - Deduplicazione delle richieste in volo (Request Deduplication) per evitare chiamate ridondanti.
@@ -39,9 +39,9 @@ class PlayerService {
   /**
    * Sincronizza il contatore locale con i dati effettivi del server.
    * Effettua una chiamata all'endpoint `/status` (che è GRATUITO).
-   * * **Logica Conservativa:** Aggiorna il contatore locale solo se il server riporta 
+   * Logica Conservativa: Aggiorna il contatore locale solo se il server riporta 
    * un utilizzo maggiore rispetto a quello tracciato localmente.
-   * * @returns {Promise<Object>} Oggetto usage aggiornato.
+   * @returns {Promise<Object>} Oggetto usage aggiornato.
    */
   async syncUsageWithApi() {
     try {
@@ -79,7 +79,6 @@ class PlayerService {
 
   /**
    * Recupera il conteggio attuale dal localStorage.
-   * @private
    */
   _getApiCounter() {
     const stored = localStorage.getItem('api_counter');
@@ -185,6 +184,9 @@ class PlayerService {
   getTeams(leagueId, season = 2024) { return this._apiCall(`teams?league=${leagueId}&season=${season}`); }
   getPlayersByTeam(teamId, season = 2024, page = 1) { return this._apiCall(`players?team=${teamId}&season=${season}&page=${page}`); }
   getPlayersByLeague(leagueId, season = 2024, page = 1) { return this._apiCall(`players?league=${leagueId}&season=${season}&page=${page}`); }
+  searchPlayerInTeam(searchTerm, teamId) { 
+    return this._apiCall(`players?search=${encodeURIComponent(searchTerm)}&team=${teamId}`); 
+  }
   
   async getTopPlayersBatch(batchIndex, season = 2024) {
     if (batchIndex >= this.topLeagues.length) return [];
