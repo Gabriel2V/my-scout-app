@@ -29,33 +29,45 @@
             <pre class="prettyprint source linenums"><code>/**
  * @component MainLayout
  * @description Layout principale (Shell) dell'applicazione.
- * * **Struttura:** Header (Logo + Nav + Search) -> Outlet (Contenuto Pagina) -> Footer.
- * * **Global Search:** Gestisce l'input di ricerca nella navbar che reindirizza a `/ricerca`.
- * * **ApiCounter:** Integra il widget di monitoraggio API globale.
+ * Struttura: Header (Logo + Nav + Search) -> Outlet (Contenuto Pagina) -> Footer.
+ * Global Search: Gestisce l'input di ricerca nella navbar che reindirizza a `/ricerca`.
+ * Implementa una ricerca "a imbuto": la prima barra cerca Nazioni/Squadre, la seconda (opzionale) un giocatore in quelle squadre.
+ * ApiCounter: Integra il widget di monitoraggio API globale.
  */
 import { Outlet, useNavigate, useLocation, useSearchParams, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styles from '../../styles/Layout.module.css';
-import uniLogo from '../../assets/logo_uni.png'; 
+import uniLogo from '../../assets/logo_uni.png';
 import ApiCounter from '../components/ApiCounter';
 
 export default function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  
-  // Sincronizza l'input della navbar con i query params URL
-  const [localInput, setLocalInput] = useState(searchParams.get('q') || '');
 
+  // Stato per la Squadra/Nazione (Barra 1)
+  const [localInput, setLocalInput] = useState(searchParams.get('q') || '');
+  // Stato per il Giocatore (Barra 2)
+  const [localPlayerInput, setLocalPlayerInput] = useState(searchParams.get('p') || '');
+
+  // Sincronizza l'input della navbar con i query params URL
   useEffect(() => {
     setLocalInput(searchParams.get('q') || '');
+    setLocalPlayerInput(searchParams.get('p') || '');
   }, [searchParams]);
 
-  /** Avvia la navigazione verso la pagina dei risultati */
+  /** Avvia la navigazione verso la pagina dei risultati con i parametri combinati */
   const triggerSearch = () => {
     const value = localInput.trim();
+    const playerValue = localPlayerInput.trim();
+
     if (value.length >= 1) {
-      navigate(`/ricerca?q=${encodeURIComponent(value)}`);
+      // Costruiamo l'URL con entrambi i parametri
+      let url = `/ricerca?q=${encodeURIComponent(value)}`;
+      if (playerValue.length >= 1) {
+        url += `&amp;p=${encodeURIComponent(playerValue)}`;
+      }
+      navigate(url);
     } else if (value === '' &amp;&amp; location.pathname === '/ricerca') {
       navigate('/');
     }
@@ -71,31 +83,54 @@ export default function MainLayout() {
         &lt;div className={styles.headerLeft}>
           &lt;div className={styles.logo} onClick={() => navigate('/')}>My Scout App&lt;/div>
           &lt;nav className={styles.nav}>
-            &lt;NavLink to="/" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>HOME&lt;/NavLink>
-            &lt;NavLink to="/info" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>INFO&lt;/NavLink>
-            &lt;NavLink to="/api-debug" className={({isActive}) => isActive ? styles.activeLink : styles.navLink}>API&lt;/NavLink>
+            &lt;NavLink to="/" className={({ isActive }) => isActive ? styles.activeLink : styles.navLink}>HOME&lt;/NavLink>
+            &lt;NavLink to="/info" className={({ isActive }) => isActive ? styles.activeLink : styles.navLink}>INFO&lt;/NavLink>
+            &lt;NavLink to="/api-debug" className={({ isActive }) => isActive ? styles.activeLink : styles.navLink}>API&lt;/NavLink>
           &lt;/nav>
         &lt;/div>
 
-        &lt;div className={styles.searchContainer}>
+        &lt;div className={styles.searchContainer} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          {/* BARRA 1: Squadra / Nazione */}
           &lt;div className={styles.searchBar}>
-            &lt;input 
-              type="text" 
-              placeholder="Cerca nazioni, squadre, giocatori..." 
+            &lt;input
+              type="text"
+              placeholder="Cerca squadra o nazione..."
               value={localInput}
-              onChange={(e) => setLocalInput(e.target.value)}
+              onChange={(e) => {
+                setLocalInput(e.target.value);
+                // Pulisce la barra del giocatore se svuoto la ricerca principale
+                if (e.target.value === '') setLocalPlayerInput('');
+              }}
               onKeyDown={handleKeyDown}
             />
-            &lt;button className={styles.searchButton} onClick={triggerSearch}>
-              &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                &lt;circle cx="11" cy="11" r="8">&lt;/circle>
-                &lt;line x1="21" y1="21" x2="16.65" y2="16.65">&lt;/line>
-              &lt;/svg>
-            &lt;/button>
+            {localPlayerInput.length === 0 &amp;&amp; (
+              &lt;button className={styles.searchButton} onClick={triggerSearch}>
+                &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">&lt;circle cx="11" cy="11" r="8">&lt;/circle>&lt;line x1="21" y1="21" x2="16.65" y2="16.65">&lt;/line>&lt;/svg>
+              &lt;/button>
+            )}
           &lt;/div>
+
+          {/* BARRA 2: Giocatore (visibile solo se Barra 1 non è vuota) */}
+          {localInput.length > 0 &amp;&amp; (
+            &lt;div className={styles.searchBar}>
+              &lt;input
+                type="text"
+                placeholder="Nome del giocatore (opzionale)..."
+                value={localPlayerInput}
+                onChange={(e) => setLocalPlayerInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                style={{ borderColor: 'var(--accent)' }}
+              />
+              {localPlayerInput.length > 0 &amp;&amp; (
+                &lt;button className={styles.searchButton} onClick={triggerSearch}>
+                  &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">&lt;circle cx="11" cy="11" r="8">&lt;/circle>&lt;line x1="21" y1="21" x2="16.65" y2="16.65">&lt;/line>&lt;/svg>
+                &lt;/button>
+              )}
+            &lt;/div>
+          )}
         &lt;/div>
       &lt;/header>
-      
+
       &lt;main className={styles.content}>
         &lt;Outlet context={{ globalSearchTerm: searchParams.get('q') || '', setSearchTerm: setLocalInput }} />
       &lt;/main>
@@ -135,7 +170,7 @@ export default function MainLayout() {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 05 2026 16:16:06 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Feb 13 2026 12:00:52 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>
