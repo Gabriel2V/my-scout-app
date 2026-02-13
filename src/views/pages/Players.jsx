@@ -8,7 +8,7 @@
  * - Context Preservation: Passa l'intera lista filtrata al dettaglio per la navigazione "Next/Prev".
  */
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { usePlayersViewModel } from '../../viewmodels/usePlayersViewModel';
 import GenericCard from '../components/GenericCard';
 import EmptyState from '../components/EmptyState';
@@ -17,6 +17,7 @@ import FilterBar from '../components/FilterBar';
 export default function Players() {
   const { players, loading, loadMore, hasMoreRemote } = usePlayersViewModel();
   const navigate = useNavigate();
+  const location = useLocation();
   
   // Stato filtri locali
   const [localSearch, setLocalSearch] = useState('');
@@ -123,7 +124,7 @@ export default function Players() {
                   state: { 
                     player: p, 
                     contextList: sorted, // Passa il contesto filtrato per prev/next
-                    from: window.location.pathname 
+                    from: location.pathname + location.search
                   } })}
               />
             </div>

@@ -6,10 +6,11 @@
  * per evitare chiamate API ridondanti al caricamento del dettaglio.
  * @param {Object} props.player - Oggetto Modello Player (istanza di models/Player).
  */
-import { Link } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 import styles from '../styles/PlayerCard.module.css';
 
 export function PlayerCard({ player }) {
+  const location = useLocation();
   return (
     <div className={styles.card}>
       <img src={player.photo} alt={player.name} className={styles.photo} />
@@ -19,7 +20,10 @@ export function PlayerCard({ player }) {
       {/* Passaggio stato via Router per navigazione istantanea */}
       <Link 
         to={`/giocatori/${player.id}`} 
-        state={{ player }} 
+        state={{
+          player: player,
+          from: location.pathname + location.search
+         }} 
         className={styles.btn}
       >
         Dettaglio

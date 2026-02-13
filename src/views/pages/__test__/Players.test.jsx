@@ -15,8 +15,7 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return { 
     ...actual, 
-    useOutletContext: () => ({ searchTerm: '' }), 
-    useLocation: () => ({ pathname: '/giocatori' }) 
+    useOutletContext: () => ({ searchTerm: '' })
   };
 });
 

@@ -4,7 +4,7 @@
  * Aggrega e visualizza tre categorie di risultati: Nazioni, Squadre e Giocatori.
  * Utilizza la query string `?q=` (e opzionalmente `&p=`) per mantenere lo stato ricaricabile.
  */
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useSearchViewModel } from '../../viewmodels/useSearchViewModel';
 import { PlayerCard } from '../PlayerCard';
 import GenericCard from '../components/GenericCard'; 
@@ -17,6 +17,7 @@ export default function SearchResults() {
   
   const { players, teams, nations, loading } = useSearchViewModel(searchTerm, playerTerm);
   const navigate = useNavigate();
+  const location = useLocation();
 
   if (loading) return <div className="loading">Ricerca in corso...</div>;
 
@@ -82,7 +83,7 @@ export default function SearchResults() {
               <div 
                 key={p.id} 
                 className={styles.playerWrapper} 
-                onClick={() => navigate(`/giocatori/${p.id}`, { state: { player: p, from: '/ricerca' } })}
+                onClick={() => navigate(`/giocatori/${p.id}`, { state: { player: p, from: location.pathname + location.search } })}
               >
                  <PlayerCard player={p} />
               </div>
