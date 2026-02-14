@@ -187,14 +187,14 @@ class PlayerService {
 
   getCountries() { return this._apiCall('countries'); }
   getLeagues(countryId) { return this._apiCall(`leagues?country=${countryId}`); }
-  getTeams(leagueId, season = 2025) { return this._apiCall(`teams?league=${leagueId}&season=${season}`); }
-  getPlayersByTeam(teamId, season = 2025, page = 1) { return this._apiCall(`players?team=${teamId}&season=${season}&page=${page}`); }
-  getPlayersByLeague(leagueId, season = 2025, page = 1) { return this._apiCall(`players?league=${leagueId}&season=${season}&page=${page}`); }
+  getTeams(leagueId, season = 2024) { return this._apiCall(`teams?league=${leagueId}&season=${season}`); }
+  getPlayersByTeam(teamId, season = 2024, page = 1) { return this._apiCall(`players?team=${teamId}&season=${season}&page=${page}`); }
+  getPlayersByLeague(leagueId, season = 2024, page = 1) { return this._apiCall(`players?league=${leagueId}&season=${season}&page=${page}`); }
   searchPlayerInTeam(searchTerm, teamId) {
     return this._apiCall(`players?search=${encodeURIComponent(searchTerm)}&team=${teamId}`);
   }
 
-  async getTopPlayersBatch(batchIndex, season = 2025) {
+  async getTopPlayersBatch(batchIndex, season = 2024) {
     if (batchIndex >= this.topLeagues.length) return [];
     const league = this.topLeagues[batchIndex];
     const data = await this._apiCall(`players/topscorers?league=${league.id}&season=${season}`);
