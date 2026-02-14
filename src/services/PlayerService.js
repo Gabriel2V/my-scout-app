@@ -63,6 +63,14 @@ class PlayerService {
 
       const data = await response.json();
 
+      if (data.errors && JSON.stringify(data.errors).toLowerCase().includes("limit for the day")) {
+        localStorage.setItem('api_counter', JSON.stringify({
+          count: this.dailyLimit,
+          date: new Date().toDateString()
+        }));
+        return this.getApiUsage();
+      }
+
       if (data.response && data.response.requests) {
         const serverUsed = data.response.requests.current;
         const localCounter = this._getApiCounter();
@@ -163,7 +171,14 @@ class PlayerService {
         // Rilevamento Errore Rate Limit (Piano Free: 10 calls/min)
         if (data.errors && Object.keys(data.errors).length > 0) {
           const errorMsg = JSON.stringify(data.errors).toLowerCase();
-
+          // Caso Limite giornaliero raggiunto segnalato dal server
+          if (errorMsg.includes("limit for the day")) {
+            localStorage.setItem('api_counter', JSON.stringify({
+              count: this.dailyLimit,
+              date: new Date().toDateString()
+            }));
+            throw new Error("Limite API giornaliero raggiunto (segnalato dal server).");
+          }
           // Se l'errore riguarda il limite al minuto, attende e riprova
           if ((errorMsg.includes("rate limit") || errorMsg.includes("per minute")) && retryCount < MAX_RETRIES) {
             console.warn(`[Rate Limit] Limite raggiunto per ${endpoint}. Riprovo tra 10s... (Tentativo ${retryCount + 1})`);
