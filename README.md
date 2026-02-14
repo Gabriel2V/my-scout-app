@@ -281,8 +281,8 @@ npm run full-report
 È possibile consultare online la documentazione tecnica e i report di copertura:
 
 - [Hub Documentazione](https://Gabriel2V.github.io/my-scout-app)
-- [📚 Documentazione Tecnica (JSDoc)](https://Gabriel2V.github.io/my-scout-app/jsdoc/index.html)
-- [📊 Report Copertura Test (Coverage)](https://Gabriel2V.github.io/my-scout-app/coverage/index.html)
+- [📚 Documentazione Tecnica (JSDoc)](https://Gabriel2V.github.io/my-scout-app/docs/jsdoc/)
+- [📊 Report Copertura Test (Coverage)](https://Gabriel2V.github.io/my-scout-app/docs/coverage/)
 
 ---
 
