@@ -15,6 +15,34 @@ describe('PlayerService API Calls', () => {
     PlayerService.pendingRequests.clear();
   });
 
+  test('Deve riprovare la chiamata se riceve un errore di rate limit al minuto', async () => {
+    vi.useFakeTimers();
+
+    // Primo tentativo: simula errore rate limit restituito dall'API
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ errors: { rateLimit: "Rate limit reached" }, response: [] })
+    });
+
+    // Secondo tentativo: simula successo
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ errors: [], response: [{ id: 1, name: 'Success' }] })
+    });
+
+    const callPromise = PlayerService.getCountries();
+
+    // Avanziamo i timer di 10 secondi per saltare lo sleep
+    await vi.advanceTimersByTimeAsync(10000);
+
+    const result = await callPromise;
+
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(result[0].name).toBe('Success');
+
+    vi.useRealTimers();
+  });
+
   test('getCountries deve restituire una lista di nazioni in caso di successo', async () => {
     const mockResponse = { response: [{ name: 'Italy', code: 'IT' }] };
     fetch.mockResolvedValueOnce({
@@ -28,17 +56,17 @@ describe('PlayerService API Calls', () => {
   });
 
   test('syncUsageWithApi deve aggiornare il contatore locale con i dati del server', async () => {
-    const today = new Date().toDateString(); 
+    const today = new Date().toDateString();
     const mockStatusResponse = {
       response: {
         requests: { current: 45, limit_day: 100 }
       }
     };
-    localStorage.setItem('api_counter', JSON.stringify({ 
-      count: 0, 
-      date: today  
+    localStorage.setItem('api_counter', JSON.stringify({
+      count: 0,
+      date: today
     }));
-    
+
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockStatusResponse,
@@ -46,7 +74,7 @@ describe('PlayerService API Calls', () => {
 
     const usage = await PlayerService.syncUsageWithApi();
     expect(usage.used).toBe(45);
-    
+
     const stored = JSON.parse(localStorage.getItem('api_counter'));
     expect(stored.count).toBe(45);
   });
@@ -59,7 +87,7 @@ describe('PlayerService API Calls', () => {
   test('syncUsageWithApi NON deve aggiornare se il server riporta un valore inferiore al locale', async () => {
     // Setup: locale a 50
     localStorage.setItem('api_counter', JSON.stringify({ count: 50, date: new Date().toDateString() }));
-    
+
     // Mock server a 40 (ritardo API)
     fetch.mockResolvedValueOnce({
       ok: true,

@@ -300,7 +300,7 @@ Evita il "double fetch".
     
 
     
-    <h4 class="name" id="_apiCall"><span class="type-signature">(async) </span>_apiCall<span class="signature">(endpoint)</span><span class="type-signature"> &rarr; {Promise.&lt;any>}</span></h4>
+    <h4 class="name" id="_apiCall"><span class="type-signature">(async) </span>_apiCall<span class="signature">(endpoint, retryCount)</span><span class="type-signature"> &rarr; {Promise.&lt;any>}</span></h4>
     
 
     
@@ -335,6 +335,8 @@ Gestisce il caching delle Promise in volo e gli errori API specifici.
         
 
         
+        <th>Default</th>
+        
 
         <th class="last">Description</th>
     </tr>
@@ -360,8 +362,41 @@ Gestisce il caching delle Promise in volo e gli errori API specifici.
             
 
             
+                <td class="default">
+                
+                </td>
+            
 
             <td class="description last">Il percorso relativo dell'API (es. "players?id=...").</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last">Contatore interno per i tentativi.</td>
         </tr>
 
     
@@ -402,7 +437,7 @@ Gestisce il caching delle Promise in volo e gli errori API specifici.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line132">line 132</a>
+        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line138">line 138</a>
     </li></ul></dd>
     
 
@@ -541,7 +576,7 @@ Gestisce il caching delle Promise in volo e gli errori API specifici.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line84">line 84</a>
+        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -629,7 +664,95 @@ Gestisce il caching delle Promise in volo e gli errori API specifici.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line96">line 96</a>
+        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line101">line 101</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_sleep"><span class="type-signature"></span>_sleep<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Helper per attendere X millisecondi
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -717,7 +840,7 @@ Gestisce il caching delle Promise in volo e gli errori API specifici.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line107">line 107</a>
+        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line112">line 112</a>
     </li></ul></dd>
     
 
@@ -823,7 +946,7 @@ Gestisce il caching delle Promise in volo e gli errori API specifici.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line199">line 199</a>
+        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line208">line 208</a>
     </li></ul></dd>
     
 
@@ -914,7 +1037,7 @@ un utilizzo maggiore rispetto a quello tracciato localmente.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line47">line 47</a>
+        <a href="services_PlayerService.js.html">services/PlayerService.js</a>, <a href="services_PlayerService.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -988,7 +1111,7 @@ un utilizzo maggiore rispetto a quello tracciato localmente.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Feb 13 2026 18:23:48 GMT+0100 (Ora standard dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Feb 14 2026 16:15:58 GMT+0100 (Ora standard dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

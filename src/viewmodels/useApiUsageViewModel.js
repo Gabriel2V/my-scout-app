@@ -36,8 +36,8 @@ export function useApiUsageViewModel(refreshRate = 2000) {
     // Refresh locale veloce per la UI (contatore interno)
     const localInterval = setInterval(() => updateUsage(false), refreshRate);
 
-    // Refresh dal server ogni 15 secondi per sincronizzare eventuali aumenti esterni
-    const serverInterval = setInterval(() => updateUsage(true), 15000);
+    // Refresh dal server ogni 20 secondi per sincronizzare eventuali aumenti esterni
+    const serverInterval = setInterval(() => updateUsage(true), 20000);
 
     return () => {
       clearInterval(localInterval);
